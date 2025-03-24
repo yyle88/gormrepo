@@ -225,6 +225,35 @@ func TestGormRepo_FindN(t *testing.T) {
 	t.Log(neatjsons.S(accounts))
 }
 
+func TestGormRepo_FindC(t *testing.T) {
+	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
+	require.True(t, repo.OK())
+
+	accounts, count, err := repo.FindC(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
+	}, func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Offset(1).Limit(2).Order(cls.Username.OrderByBottle("asc").Orders())
+	})
+	require.NoError(t, err)
+	require.NotEmpty(t, accounts)
+	require.Len(t, accounts, 1)
+	require.Equal(t, "demo-2-username", accounts[0].Username)
+	require.Equal(t, "demo-2-nickname", accounts[0].Nickname)
+	require.Equal(t, int64(2), count)
+	t.Log(neatjsons.S(accounts))
+}
+
+func TestGormRepo_Count(t *testing.T) {
+	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
+	require.True(t, repo.OK())
+
+	count, err := repo.Count(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(2), count)
+}
+
 func TestGormRepo_Update(t *testing.T) {
 	username := uuid.New().String()
 
