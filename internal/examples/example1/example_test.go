@@ -30,7 +30,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestExample(t *testing.T) {
-	var db *gorm.DB = caseDB
+	var db = caseDB
 
 	example1 := &models.Example{
 		ID:        0,

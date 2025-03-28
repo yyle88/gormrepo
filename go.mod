@@ -6,15 +6,15 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
-	github.com/yyle88/done v1.0.22
+	github.com/yyle88/done v1.0.23
 	github.com/yyle88/erero v1.0.19
 	github.com/yyle88/gormcngen v1.0.38
 	github.com/yyle88/gormcnm v1.0.48
-	github.com/yyle88/must v0.0.17
+	github.com/yyle88/must v0.0.19
 	github.com/yyle88/mutexmap v1.0.10
 	github.com/yyle88/neatjson v0.0.12
 	github.com/yyle88/osexistpath v0.0.17
-	github.com/yyle88/rese v0.0.4
+	github.com/yyle88/rese v0.0.7
 	github.com/yyle88/runpath v1.0.23
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12
@@ -27,7 +27,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.24 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/yyle88/formatgo v1.0.23 // indirect
-	github.com/yyle88/printgo v1.0.3 // indirect
+	github.com/yyle88/printgo v1.0.4 // indirect
 	github.com/yyle88/sortslice v1.0.7 // indirect
 	github.com/yyle88/sure v0.0.37 // indirect
 	github.com/yyle88/syntaxgo v0.0.47 // indirect

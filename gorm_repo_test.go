@@ -45,30 +45,8 @@ func TestMain(m *testing.M) {
 	m.Run()
 }
 
-func TestGormRepo_First(t *testing.T) {
-	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
-	require.True(t, repo.OK())
-
-	{
-		var account Account
-		require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Where(cls.Username.Eq("demo-1-username"))
-		}, &account).Error)
-		require.Equal(t, "demo-1-nickname", account.Nickname)
-	}
-
-	{
-		var account Account
-		require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Where(cls.Username.Eq("demo-2-username"))
-		}, &account).Error)
-		require.Equal(t, "demo-2-nickname", account.Nickname)
-	}
-}
-
 func TestGormRepo_FirstX(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	{
 		res, err := repo.FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
@@ -89,7 +67,6 @@ func TestGormRepo_FirstX(t *testing.T) {
 
 func TestGormRepo_FirstE(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	{
 		res, erb := repo.FirstE(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
@@ -112,7 +89,6 @@ func TestGormRepo_FirstE(t *testing.T) {
 
 func TestGormRepo_Where(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	{
 		var nicknames []string
@@ -142,7 +118,6 @@ func TestGormRepo_Where(t *testing.T) {
 
 func TestGormRepo_WhereE(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	{
 		var passwords []string
@@ -170,7 +145,6 @@ func TestGormRepo_WhereE(t *testing.T) {
 
 func TestGormRepo_Exist(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	{
 		exist, err := repo.Exist(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
@@ -189,21 +163,8 @@ func TestGormRepo_Exist(t *testing.T) {
 	}
 }
 
-func TestGormRepo_Find(t *testing.T) {
-	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
-	require.True(t, repo.OK())
-
-	var accounts []*Account
-	require.NoError(t, repo.Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-		return db.Where(cls.Username.Like("demo-%-username"))
-	}, &accounts).Error)
-	require.NotEmpty(t, accounts)
-	t.Log(neatjsons.S(accounts))
-}
-
 func TestGormRepo_FindX(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	accounts, err := repo.FindX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Like("demo-%-username"))
@@ -215,7 +176,6 @@ func TestGormRepo_FindX(t *testing.T) {
 
 func TestGormRepo_FindN(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	accounts, err := repo.FindN(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
@@ -227,7 +187,6 @@ func TestGormRepo_FindN(t *testing.T) {
 
 func TestGormRepo_FindC(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	accounts, count, err := repo.FindC(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
@@ -245,7 +204,6 @@ func TestGormRepo_FindC(t *testing.T) {
 
 func TestGormRepo_Count(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	count, err := repo.Count(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
@@ -265,15 +223,13 @@ func TestGormRepo_Update(t *testing.T) {
 	}).Error)
 
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	newNickname := uuid.New().String()
-	err := repo.Update(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	require.NoError(t, repo.Update(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq(username))
 	}, func(cls *AccountColumns) (string, interface{}) {
 		return cls.Nickname.Kv(newNickname)
-	})
-	require.NoError(t, err)
+	}))
 
 	res, err := repo.FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq(username))
@@ -293,19 +249,17 @@ func TestGormRepo_Updates(t *testing.T) {
 	}).Error)
 
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
-	require.True(t, repo.OK())
 
 	newNickname := uuid.New().String()
 	newPassword := uuid.New().String()
-	err := repo.Updates(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	require.NoError(t, repo.Updates(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq(username))
 	}, func(cls *AccountColumns) map[string]interface{} {
 		return cls.
 			Kw(cls.Nickname.Kv(newNickname)).
 			Kw(cls.Password.Kv(newPassword)).
 			AsMap()
-	})
-	require.NoError(t, err)
+	}))
 
 	res, err := repo.FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq(username))

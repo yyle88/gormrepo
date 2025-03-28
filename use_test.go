@@ -77,10 +77,10 @@ func TestGenerateColumns(t *testing.T) {
 
 func TestUse(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
-	require.True(t, repo.OK())
+	require.NotNil(t, repo)
 }
 
 func TestUmc(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
-	require.True(t, repo.OK())
+	require.NotNil(t, repo)
 }

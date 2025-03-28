@@ -13,7 +13,7 @@ func TestRepo_Gorm(t *testing.T) {
 	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
 
 	{
-		res, err := repo.Gorm(caseDB).FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		res, err := repo.Repo(caseDB).FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 			return db.Where(cls.Username.Eq("demo-1-username"))
 		})
 		require.NoError(t, err)
@@ -21,36 +21,11 @@ func TestRepo_Gorm(t *testing.T) {
 	}
 
 	require.NoError(t, caseDB.Transaction(func(db *gorm.DB) error {
-		res, err := repo.Gorm(db).FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		res, err := repo.Repo(db).FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 			return db.Where(cls.Username.Eq("demo-2-username"))
 		})
 		require.NoError(t, err)
 		require.Equal(t, "demo-2-nickname", res.Nickname)
-		return nil
-	}))
-}
-
-func TestRepo_Morm(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
-
-	{
-		var nickname string
-		require.NoError(t, repo.Morm(caseDB).WhereE(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Where(cls.Username.Eq("demo-1-username"))
-		}, func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Select(string(cls.Nickname)).First(&nickname)
-		}))
-		require.Equal(t, "demo-1-nickname", nickname)
-	}
-
-	require.NoError(t, caseDB.Transaction(func(db *gorm.DB) error {
-		var nickname string
-		require.NoError(t, repo.Morm(db).WhereE(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Where(cls.Username.Eq("demo-2-username"))
-		}, func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Select(string(cls.Nickname)).First(&nickname)
-		}))
-		require.Equal(t, "demo-2-nickname", nickname)
 		return nil
 	}))
 }

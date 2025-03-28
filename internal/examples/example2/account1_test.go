@@ -65,7 +65,7 @@ func TestCompare(t *testing.T) {
 }
 
 func TestAccount(t *testing.T) {
-	var db *gorm.DB = caseDB
+	var db = caseDB
 
 	account1 := &models.Account{
 		Username: "abc",
