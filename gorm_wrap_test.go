@@ -30,6 +30,17 @@ func TestGormWrap_First(t *testing.T) {
 	}
 }
 
+func TestGormWrap_Where(t *testing.T) {
+	repo := gormrepo.NewGormWrap(gormrepo.Umc(caseDB, &Account{}))
+
+	db := repo.Where(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq("demo-1-username"))
+	})
+	var account Account
+	require.NoError(t, db.First(&account).Error)
+	require.Equal(t, "demo-1-nickname", account.Nickname)
+}
+
 func TestGormWrap_Find(t *testing.T) {
 	repo := gormrepo.NewGormWrap(gormrepo.Use(caseDB, &Account{}))
 
@@ -43,13 +54,7 @@ func TestGormWrap_Find(t *testing.T) {
 
 func TestGormWrap_Update(t *testing.T) {
 	username := uuid.New().String()
-
-	require.NoError(t, caseDB.Save(&Account{
-		Model:    gorm.Model{},
-		Username: username,
-		Password: uuid.New().String(),
-		Nickname: uuid.New().String(),
-	}).Error)
+	require.NoError(t, caseDB.Save(newAccount(username)).Error)
 
 	repo := gormrepo.NewGormWrap(gormrepo.Use(caseDB, &Account{}))
 
@@ -69,13 +74,7 @@ func TestGormWrap_Update(t *testing.T) {
 
 func TestGormWrap_Updates(t *testing.T) {
 	username := uuid.New().String()
-
-	require.NoError(t, caseDB.Save(&Account{
-		Model:    gorm.Model{},
-		Username: username,
-		Password: uuid.New().String(),
-		Nickname: uuid.New().String(),
-	}).Error)
+	require.NoError(t, caseDB.Save(newAccount(username)).Error)
 
 	repo := gormrepo.NewGormWrap(gormrepo.Use(caseDB, &Account{}))
 
@@ -96,4 +95,22 @@ func TestGormWrap_Updates(t *testing.T) {
 	}, &res).Error)
 	require.Equal(t, newNickname, res.Nickname)
 	require.Equal(t, newPassword, res.Password)
+}
+
+func TestGormWrap_Invoke(t *testing.T) {
+	username := uuid.New().String()
+	require.NoError(t, caseDB.Save(newAccount(username)).Error)
+
+	repo := gormrepo.NewGormWrap(gormrepo.Use(caseDB, &Account{}))
+
+	newNickname := uuid.New().String()
+	require.NoError(t, repo.Morm().Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username)).Update(cls.Nickname.Kv(newNickname))
+	}).Error)
+
+	var account Account
+	require.NoError(t, repo.Morm().Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username)).First(&account)
+	}).Error)
+	require.Equal(t, newNickname, account.Nickname)
 }

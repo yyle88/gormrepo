@@ -18,7 +18,7 @@ func NewGormRepo[MOD any, CLS any](db *gorm.DB, _ *MOD, cls CLS) *GormRepo[MOD, 
 	}
 }
 
-func (repo *GormRepo[MOD, CLS]) FirstX(where func(db *gorm.DB, cls CLS) *gorm.DB) (*MOD, error) {
+func (repo *GormRepo[MOD, CLS]) First(where func(db *gorm.DB, cls CLS) *gorm.DB) (*MOD, error) {
 	var result = new(MOD)
 	if err := repo.Gorm().First(where, result).Error; err != nil {
 		return nil, err
@@ -38,14 +38,6 @@ func (repo *GormRepo[MOD, CLS]) Where(where func(db *gorm.DB, cls CLS) *gorm.DB)
 	return where(repo.db, repo.cls)
 }
 
-func (repo *GormRepo[MOD, CLS]) WhereE(where func(db *gorm.DB, cls CLS) *gorm.DB, clsDo func(db *gorm.DB, cls CLS) *gorm.DB) error {
-	db := where(repo.db, repo.cls)
-	if err := clsDo(db, repo.cls).Error; err != nil {
-		return err
-	}
-	return nil
-}
-
 func (repo *GormRepo[MOD, CLS]) Exist(where func(db *gorm.DB, cls CLS) *gorm.DB) (bool, error) {
 	var exists bool
 	if err := where(repo.db, repo.cls).Model((*MOD)(nil)).Select("1").Limit(1).Find(&exists).Error; err != nil {
@@ -54,7 +46,7 @@ func (repo *GormRepo[MOD, CLS]) Exist(where func(db *gorm.DB, cls CLS) *gorm.DB)
 	return exists, nil
 }
 
-func (repo *GormRepo[MOD, CLS]) FindX(where func(db *gorm.DB, cls CLS) *gorm.DB) ([]*MOD, error) {
+func (repo *GormRepo[MOD, CLS]) Find(where func(db *gorm.DB, cls CLS) *gorm.DB) ([]*MOD, error) {
 	var results []*MOD
 	if err := repo.Gorm().Find(where, &results).Error; err != nil {
 		return nil, err
@@ -104,8 +96,15 @@ func (repo *GormRepo[MOD, CLS]) Update(where func(db *gorm.DB, cls CLS) *gorm.DB
 	return nil
 }
 
-func (repo *GormRepo[MOD, CLS]) Updates(where func(db *gorm.DB, cls CLS) *gorm.DB, valuesFunc func(cls CLS) map[string]interface{}) error {
-	if err := repo.Gorm().Updates(where, valuesFunc).Error; err != nil {
+func (repo *GormRepo[MOD, CLS]) Updates(where func(db *gorm.DB, cls CLS) *gorm.DB, mapValues func(cls CLS) map[string]interface{}) error {
+	if err := repo.Gorm().Updates(where, mapValues).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *GormRepo[MOD, CLS]) Invoke(clsRun func(db *gorm.DB, cls CLS) *gorm.DB) error {
+	if err := clsRun(repo.db, repo.cls).Error; err != nil {
 		return err
 	}
 	return nil

@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"github.com/yyle88/gormcngen"
 	"github.com/yyle88/gormcnm"
@@ -18,6 +19,15 @@ type Account struct {
 	Username string `gorm:"unique;"`
 	Password string `gorm:"size:255;"`
 	Nickname string `gorm:"column:nickname;"`
+}
+
+func newAccount(username string) *Account {
+	return &Account{
+		Model:    gorm.Model{},
+		Username: username,
+		Password: uuid.New().String(),
+		Nickname: uuid.New().String(),
+	}
 }
 
 func (*Account) TableName() string {

@@ -45,11 +45,11 @@ func TestMain(m *testing.M) {
 	m.Run()
 }
 
-func TestGormRepo_FirstX(t *testing.T) {
+func TestGormRepo_First(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
 
 	{
-		res, err := repo.FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		res, err := repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 			return db.Where(cls.Username.Eq("demo-1-username"))
 		})
 		require.NoError(t, err)
@@ -57,7 +57,7 @@ func TestGormRepo_FirstX(t *testing.T) {
 	}
 
 	{
-		res, err := repo.FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		res, err := repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 			return db.Where(cls.Username.Eq("demo-2-username"))
 		})
 		require.NoError(t, err)
@@ -116,33 +116,6 @@ func TestGormRepo_Where(t *testing.T) {
 	}
 }
 
-func TestGormRepo_WhereE(t *testing.T) {
-	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
-
-	{
-		var passwords []string
-		require.NoError(t, repo.WhereE(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Model(&Account{}).Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
-		}, func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Distinct(cls.Password.Name()).Find(&passwords)
-		}))
-		t.Log(passwords)
-		require.Len(t, passwords, 2)
-		sort.Strings(passwords)
-		require.Equal(t, []string{"demo-1-password", "demo-2-password"}, passwords)
-	}
-	{
-		var nickname string
-		require.NoError(t, repo.WhereE(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Model(&Account{}).Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
-		}, func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
-			return db.Select("MAX(" + cls.Nickname.Name() + ")").First(&nickname)
-		}))
-		t.Log(nickname)
-		require.Equal(t, "demo-2-nickname", nickname)
-	}
-}
-
 func TestGormRepo_Exist(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
 
@@ -163,10 +136,10 @@ func TestGormRepo_Exist(t *testing.T) {
 	}
 }
 
-func TestGormRepo_FindX(t *testing.T) {
+func TestGormRepo_Find(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
 
-	accounts, err := repo.FindX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	accounts, err := repo.Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Like("demo-%-username"))
 	})
 	require.NoError(t, err)
@@ -214,13 +187,7 @@ func TestGormRepo_Count(t *testing.T) {
 
 func TestGormRepo_Update(t *testing.T) {
 	username := uuid.New().String()
-
-	require.NoError(t, caseDB.Save(&Account{
-		Model:    gorm.Model{},
-		Username: username,
-		Password: uuid.New().String(),
-		Nickname: uuid.New().String(),
-	}).Error)
+	require.NoError(t, caseDB.Save(newAccount(username)).Error)
 
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
 
@@ -231,7 +198,7 @@ func TestGormRepo_Update(t *testing.T) {
 		return cls.Nickname.Kv(newNickname)
 	}))
 
-	res, err := repo.FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	res, err := repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq(username))
 	})
 	require.NoError(t, err)
@@ -240,13 +207,7 @@ func TestGormRepo_Update(t *testing.T) {
 
 func TestGormRepo_Updates(t *testing.T) {
 	username := uuid.New().String()
-
-	require.NoError(t, caseDB.Save(&Account{
-		Model:    gorm.Model{},
-		Username: username,
-		Password: uuid.New().String(),
-		Nickname: uuid.New().String(),
-	}).Error)
+	require.NoError(t, caseDB.Save(newAccount(username)).Error)
 
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
 
@@ -261,10 +222,33 @@ func TestGormRepo_Updates(t *testing.T) {
 			AsMap()
 	}))
 
-	res, err := repo.FirstX(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	res, err := repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq(username))
 	})
 	require.NoError(t, err)
 	require.Equal(t, newNickname, res.Nickname)
 	require.Equal(t, newPassword, res.Password)
+}
+
+func TestGormRepo_Invoke(t *testing.T) {
+	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
+
+	{
+		var passwords []string
+		require.NoError(t, repo.Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Model(&Account{}).Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"})).Distinct(cls.Password.Name()).Find(&passwords)
+		}))
+		t.Log(passwords)
+		require.Len(t, passwords, 2)
+		sort.Strings(passwords)
+		require.Equal(t, []string{"demo-1-password", "demo-2-password"}, passwords)
+	}
+	{
+		var nickname string
+		require.NoError(t, repo.Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Model(&Account{}).Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"})).Select("MAX(" + cls.Nickname.Name() + ")").First(&nickname)
+		}))
+		t.Log(nickname)
+		require.Equal(t, "demo-2-nickname", nickname)
+	}
 }
