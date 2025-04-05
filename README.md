@@ -102,8 +102,8 @@ if one, cls := gormclass.Use(&Example{}); cls.OK() {
 | Function | Param | Return            | Description                                                                                                                                        | 
 |----------|-------|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Cls`    | `MOD` | `CLS`             | Returns the column information (`cls`), useful when only column data is needed.                                                                    |
-| `Use`    | `MOD` | `MOD, CLS`        | Returns the model (`mod`) and its associated columns (`cls`), ideal for queries or operations that need both.                                      |
-| `Umc`    | `MOD` | `MOD, CLS`        | Returns the model (`mod`) and its associated columns (`cls`), functioning identically to the `Use` function.                                       |
+| `Use`    | `MOD` | `MOD, CLS`        | Returns the model (`mod`) and its associated columns (`cls`), suitable for queries or operations that need both.                                      |
+| `Umc`    | `MOD` | `MOD, CLS`        | Returns the model (`mod`) and its associated columns (`cls`), functioning the same as the `Use` function.                                       |
 | `Usc`    | `MOD` | `[]MOD, CLS`      | Returns a slice of models (`MOD`) and the associated columns (`cls`), suitable for queries returning multiple models (e.g., `Find` queries).       |
 | `Msc`    | `MOD` | `MOD, []MOD, CLS` | Returns the model (`mod`), the model slice (`[]MOD`), and the associated columns (`cls`), useful for queries requiring both model and column data. |
 | `One`    | `MOD` | `MOD`             | Returns the model (`mod`), ensuring type safety by checking whether the argument is a pointer type at compile-time.                                |

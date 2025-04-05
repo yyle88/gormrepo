@@ -6,14 +6,12 @@ import (
 
 type GormRepo[MOD any, CLS any] struct {
 	db  *gorm.DB
-	mod *MOD
 	cls CLS
 }
 
 func NewGormRepo[MOD any, CLS any](db *gorm.DB, _ *MOD, cls CLS) *GormRepo[MOD, CLS] {
 	return &GormRepo[MOD, CLS]{
 		db:  db,
-		mod: nil, // 这里就是设置个空值避免共享对象
 		cls: cls,
 	}
 }

@@ -1,12 +1,12 @@
 package gormclass
 
-// Use returns the model (`mod`) and its associated columns (`cls`), ideal for queries or operations that need both.
+// Use returns the model (`mod`) and its associated columns (`cls`), suitable for queries or operations that need both.
 // Use 返回模型（`mod`）、关联的列（`cls`），适用于需要同时获取模型和列数据的查询或操作。
 func Use[MOD GormClass[CLS], CLS any](one MOD) (MOD, CLS) {
 	return one, one.Columns()
 }
 
-// Umc returns the model (mod) and the associated columns (cls), functioning identically to the Use function.
+// Umc returns the model (mod) and the associated columns (cls), functioning the same as the Use function.
 // Umc 返回模型（mod）和关联的列（cls），功能与 Use 函数相同。
 func Umc[MOD GormClass[CLS], CLS any](one MOD) (MOD, CLS) {
 	return one, one.Columns()

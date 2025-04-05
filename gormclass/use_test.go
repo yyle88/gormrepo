@@ -12,6 +12,7 @@ import (
 	"github.com/yyle88/gormrepo/gormclass"
 	"github.com/yyle88/neatjson/neatjsons"
 	"github.com/yyle88/osexistpath/osmustexist"
+	"github.com/yyle88/rese"
 	"github.com/yyle88/runpath"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -30,14 +31,18 @@ func (*Account) TableName() string {
 }
 
 func (a *Account) Columns() *AccountColumns {
+	return a.TableColumns(gormcnm.NewPlainDecoration())
+}
+
+func (a *Account) TableColumns(decoration gormcnm.ColumnNameDecoration) *AccountColumns {
 	return &AccountColumns{
-		ID:        gormcnm.Cnm(a.ID, "id"),
-		CreatedAt: gormcnm.Cnm(a.CreatedAt, "created_at"),
-		UpdatedAt: gormcnm.Cnm(a.UpdatedAt, "updated_at"),
-		DeletedAt: gormcnm.Cnm(a.DeletedAt, "deleted_at"),
-		Username:  gormcnm.Cnm(a.Username, "username"),
-		Password:  gormcnm.Cnm(a.Password, "password"),
-		Nickname:  gormcnm.Cnm(a.Nickname, "nickname"),
+		ID:        gormcnm.Cmn(a.ID, "id", decoration),
+		CreatedAt: gormcnm.Cmn(a.CreatedAt, "created_at", decoration),
+		UpdatedAt: gormcnm.Cmn(a.UpdatedAt, "updated_at", decoration),
+		DeletedAt: gormcnm.Cmn(a.DeletedAt, "deleted_at", decoration),
+		Username:  gormcnm.Cmn(a.Username, "username", decoration),
+		Password:  gormcnm.Cmn(a.Password, "password", decoration),
+		Nickname:  gormcnm.Cmn(a.Nickname, "nickname", decoration),
 	}
 }
 
@@ -67,12 +72,16 @@ func (*Example) TableName() string {
 }
 
 func (a *Example) Columns() *ExampleColumns {
+	return a.TableColumns(gormcnm.NewPlainDecoration())
+}
+
+func (a *Example) TableColumns(decoration gormcnm.ColumnNameDecoration) *ExampleColumns {
 	return &ExampleColumns{
-		ID:        gormcnm.Cnm(a.ID, "id"),
-		Name:      gormcnm.Cnm(a.Name, "name"),
-		Age:       gormcnm.Cnm(a.Age, "age"),
-		CreatedAt: gormcnm.Cnm(a.CreatedAt, "created_at"),
-		UpdatedAt: gormcnm.Cnm(a.UpdatedAt, "updated_at"),
+		ID:        gormcnm.Cmn(a.ID, "id", decoration),
+		Name:      gormcnm.Cmn(a.Name, "name", decoration),
+		Age:       gormcnm.Cmn(a.Age, "age", decoration),
+		CreatedAt: gormcnm.Cmn(a.CreatedAt, "created_at", decoration),
+		UpdatedAt: gormcnm.Cmn(a.UpdatedAt, "updated_at", decoration),
 	}
 }
 
@@ -90,8 +99,9 @@ type ExampleColumns struct {
 // Tests the generation of columns for models.
 // 测试模型列的生成。
 func TestGenerateColumns(t *testing.T) {
-	absPath := runpath.Path() // Retrieve the absolute path of the source file based on the current test file's location
+	// Retrieve the absolute path of the source file based on the current test file's location
 	// 获取当前测试文件位置基础上的源文件绝对路径
+	absPath := runpath.Path()
 	t.Log(absPath)
 
 	// Verify the existence of the target file. The file should be created manually to ensure it can be located by the code.
@@ -105,152 +115,112 @@ func TestGenerateColumns(t *testing.T) {
 	options := gormcngen.NewOptions().
 		WithColumnClassExportable(true). // Generate exportable struct names (e.g., ExampleColumns) // 生成可导出的结构体名称（例如 ExampleColumns）
 		WithColumnsMethodRecvName("a").
-		WithColumnsCheckFieldType(true)
+		WithColumnsCheckFieldType(true).
+		WithIsGenFuncTableColumns(true)
 
 	// Configure code generation settings
 	// 配置代码生成设置
 	cfg := gormcngen.NewConfigs(objects, options, absPath)
-	cfg.Gen() // Generate and write the code to the target location (e.g., "gormcnm.gen.go") // 生成并将代码写入目标位置（例如 "gormcnm.gen.go"）
+	// Generate and write the code to the target location (e.g., "gormcnm.gen.go")
+	// 生成并将代码写入目标位置（例如 "gormcnm.gen.go"）
+	cfg.Gen()
 }
 
-// Demonstrates the usage of gormrepo with the Account struct.
-// 演示如何使用 gormrepo 处理 Account 结构体。
-func TestUseAccount(t *testing.T) {
-	// Example: Using gormrepo with Account model
-	// 示例：使用 gormrepo 处理 Account 模型
+func TestUseWithAccount(t *testing.T) {
 	if account, cls := gormclass.Use(&Account{}); cls.OK() {
 		t.Logf("TableName: %s", account.TableName())
 		t.Logf("Columns: %s", neatjsons.S(cls))
 	}
-
-	// Alternative: Limit the scope of the account and cls variables for better control
-	// 其它方式：限制 account 和 cls 变量的作用范围以更好地控制
-	{
-		var account Account
-		var cls = account.Columns()
-		require.True(t, cls.OK(), "Expected Columns to be OK")
-	}
 }
 
-// Demonstrates the usage of gormrepo with the Example struct.
-// 演示如何使用 gormrepo 处理 Example 结构体。
-func TestUseExample(t *testing.T) {
-	// Example: Using gormrepo with Example model
-	// 示例：使用 gormrepo 处理 Example 模型
+func TestUseWithExample(t *testing.T) {
 	if example, cls := gormclass.Use(&Example{}); cls.OK() {
 		t.Logf("TableName: %s", example.TableName())
 		t.Logf("Columns: %s", neatjsons.S(cls))
 	}
-
-	// Alternative: Limit the scope of the example and cls variables for better control
-	// 其它方式：限制 example 和 cls 变量的作用范围以更好地控制
-	{
-		var example Example
-		var cls = example.Columns()
-		require.True(t, cls.OK(), "Expected Columns to be OK")
-	}
 }
 
-// Demonstrates the usage of both Account and Example models in the same test case.
-// 演示如何在同一测试中使用 Account 和 Example 模型。
 func TestAccountAndExample(t *testing.T) {
 	var account Account
 	if cls := account.Columns(); cls.OK() {
-		t.Log("Account columns are valid")
+		t.Log(cls.Username)
 	}
 
 	var example Example
 	if cls := example.Columns(); cls.OK() {
-		t.Log("Example columns are valid")
+		t.Log(cls.Name)
 	}
 
 	t.Logf("Account TableName: %s", account.TableName())
 	t.Logf("Example TableName: %s", example.TableName())
 }
 
-// Demonstrates how to retrieve column information for the Account model.
-// 演示如何访问 Account 模型的列信息。
 func TestColumnsWithAccount(t *testing.T) {
 	cls := gormclass.Cls(&Account{})
-	require.True(t, cls.OK(), "Expected cls to be OK for Account")
+	require.True(t, cls.OK())
 	t.Logf("Account Columns: %s", neatjsons.S(cls))
 }
 
-// Demonstrates how gormrepo ensures the model is treated as a pointer type.
-// 演示 gormrepo 如何确保模型被当作指针类型处理。
-func TestEnsurePointerInputType(t *testing.T) {
-
+func TestOnePointerOutput(t *testing.T) {
 	{
 		var account Account
 		one := gormclass.One(&account)
-		require.Equal(t, reflect.Ptr, reflect.TypeOf(one).Kind(), "Expected pointer type")
+		require.Equal(t, reflect.Ptr, reflect.TypeOf(one).Kind())
 	}
 
 	{
 		example := Example{}
 		one := gormclass.One(&example)
-		require.Equal(t, reflect.Ptr, reflect.TypeOf(one).Kind(), "Expected pointer type")
+		require.Equal(t, reflect.Ptr, reflect.TypeOf(one).Kind())
 	}
 }
 
-// Demonstrates the usage of the Ums function with the Example model.
-// 演示如何使用 Ums 函数处理 Example 模型。
 func TestUmsWithExample(t *testing.T) {
 	examples := gormclass.Ums(&Example{})
 	t.Logf("Ums result: %s", neatjsons.S(examples))
+	t.Logf("result cap: %d", cap(examples))
 }
 
-// Demonstrates the usage of the Uss function with the Example model.
-// 演示如何使用 Uss 函数处理 Example 模型。
 func TestUssWithExample(t *testing.T) {
 	examples := gormclass.Uss[*Example]()
 	t.Logf("Uss result: %s", neatjsons.S(examples))
 	t.Logf("result cap: %d", cap(examples))
 }
 
-// Demonstrates the usage of the Usn function with the Example model.
-// 演示如何使用 Usn 函数处理 Example 模型。
 func TestUsnWithExample(t *testing.T) {
 	examples := gormclass.Usn[*Example](100)
 	t.Logf("Usn result: %s", neatjsons.S(examples))
 	t.Logf("result cap: %d", cap(examples))
 }
 
-// Demonstrates the usage of the Usc function with the Example model.
-// 演示如何使用 Usc 函数处理 Example 模型。
 func TestUscWithExample(t *testing.T) {
 	examples, cls := gormclass.Usc(&Example{})
-	require.True(t, cls.OK(), "Expected cls to be OK for Example")
+	require.True(t, cls.OK())
 	t.Logf("Usc result: %s", neatjsons.S(examples))
 }
 
-// Demonstrates the usage of the Msc function with the Example model.
-// 演示如何使用 Msc 函数处理 Example 模型。
 func TestMscWithExample(t *testing.T) {
 	one, examples, cls := gormclass.Msc(&Example{})
-	require.True(t, cls.OK(), "Expected cls to be OK for Example")
+	require.True(t, cls.OK())
 	t.Logf("Msc TableName: %s", one.TableName())
 	t.Logf("Msc examples: %s", neatjsons.S(examples))
 	t.Logf("result cap: %d", cap(examples))
 }
 
-// Demonstrates the usage of the Nsc function with the Example model.
-// 演示如何使用 Nsc 函数处理 Example 模型。
 func TestNscWithExample(t *testing.T) {
 	one, examples, cls := gormclass.Nsc(&Example{}, 32)
-	require.True(t, cls.OK(), "Expected cls to be OK for Example")
+	require.True(t, cls.OK())
 	t.Logf("Msc TableName: %s", one.TableName())
 	t.Logf("Msc examples: %s", neatjsons.S(examples))
 	t.Logf("result cap: %d", cap(examples))
+	require.Equal(t, 32, cap(examples))
 }
 
 func TestExample(t *testing.T) {
 	db := done.VCE(gorm.Open(sqlite.Open("file::memory:?cache=private"), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})).Nice()
-	defer func() {
-		done.Done(done.VCE(db.DB()).Nice().Close())
-	}()
+	defer rese.F0(rese.P1(db.DB()).Close)
 
 	done.Done(db.AutoMigrate(&Example{}))
 
@@ -277,7 +247,7 @@ func TestExample(t *testing.T) {
 		require.NoError(t, db.Table(resA.TableName()).Where(cls.Name.Eq("aaa")).First(&resA).Error)
 		require.Equal(t, "aaa", resA.Name)
 	}
-	t.Log("select res.name:", resA.Name)
+	t.Log("res.name:", resA.Name)
 
 	var maxAge int
 	if one, cls := gormclass.Use(&Example{}); cls.OK() {
