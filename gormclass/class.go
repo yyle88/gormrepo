@@ -27,3 +27,9 @@ type TableClass[CLS any] interface {
 	TableName() string
 	TableColumns(gormcnm.ColumnNameDecoration) CLS
 }
+
+// TableCols is used for models that implement the TableColumns method to return associated columns (cls) with decoration.
+// TableCols 用于实现 TableColumns 方法以返回带装饰器的关联列（cls）的模型。
+type TableCols[CLS any] interface {
+	TableColumns(gormcnm.ColumnNameDecoration) CLS
+}

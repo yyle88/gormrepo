@@ -34,8 +34,8 @@ github.com/yyle88/gormcnm v1.0.53 h1:VtEHANzAwsZXF+yXqs3ksiaPb/eIX9ZA/jceJfXzTiA
 github.com/yyle88/gormcnm v1.0.53/go.mod h1:K1cG2Ic/A0yFHu/4FDgEIYpFUKx1wSqNdjyv2n5638I=
 github.com/yyle88/must v0.0.20 h1:i+RU2v2wPEZba4MoA/2eUXYfZtSq99b5Ej5vlAkgn7Q=
 github.com/yyle88/must v0.0.20/go.mod h1:eh05Aksb3JGi2tzb6OBgoY37icxT0OHmBQEM1dvMaVQ=
-github.com/yyle88/mutexmap v1.0.11 h1:pI7a/mXKAbZkOI9uIDPp11l97dKp2Iw1F7aydGw8DRU=
-github.com/yyle88/mutexmap v1.0.11/go.mod h1:QUYDuARLPlGj414kHewQ5tt8jkDxQXoai8H3C4Gg+yc=
+github.com/yyle88/mutexmap v1.0.12 h1:gEcQlZq/pxMlesqkSVvuDOoC09LTmcFZ36DBBkFhUO4=
+github.com/yyle88/mutexmap v1.0.12/go.mod h1:QUYDuARLPlGj414kHewQ5tt8jkDxQXoai8H3C4Gg+yc=
 github.com/yyle88/neatjson v0.0.12 h1:M6y4IsHbe2/3drF/kDl3zBpaN29lmfW4MetEQcoG04A=
 github.com/yyle88/neatjson v0.0.12/go.mod h1:LT3nIhKyB3lkD3INiIXCN3FejNu+g+qvzCJ+fZSZaRc=
 github.com/yyle88/osexistpath v0.0.17 h1:+F206hMCYMRcGweKoYNRRDgcWolZgKRYzGrDYd9O2n4=
@@ -54,8 +54,8 @@ github.com/yyle88/syntaxgo v0.0.48 h1:JbyUnpq1pnf/hXgkfQ65bGMzJh/EVOvkXR7Ttqjcpg
 github.com/yyle88/syntaxgo v0.0.48/go.mod h1:Zx2vsDL+025u78thQwDqM6z33t7/czEuRAOzRvVsGxk=
 github.com/yyle88/tern v0.0.6 h1:tCGF8MoNZaAJaWM/kpZMbBkbYtRz9ZmKcMLXGy2qxEQ=
 github.com/yyle88/tern v0.0.6/go.mod h1:g9weyOMLtXYyt37EAshZPUTTHdH7WFauuxDi4oPr7/8=
-github.com/yyle88/zaplog v0.0.21 h1:b3YBP7ThOofapa8CS/k//Odc/hXmaCmkc1rV4Jgj1VQ=
-github.com/yyle88/zaplog v0.0.21/go.mod h1:jN9/2IXYlpHOgoIyOTid1EPlUyGBWzFjr0dX9YKLkC0=
+github.com/yyle88/zaplog v0.0.22 h1:hozMmQ0bhXLS6bkR3yHwW5cH8YelK09Df3lhy1k3iMM=
+github.com/yyle88/zaplog v0.0.22/go.mod h1:lOdA2Ju4Alify777G8AvdZVqfCPUEpkWjsLgEOkVfS4=
 go.uber.org/goleak v1.3.0 h1:2K3zAYmnTNqV73imy9J1T3WC+gmCePx2hEGkimedGto=
 go.uber.org/goleak v1.3.0/go.mod h1:CoHD4mav9JJNrW/WLlf7HGZPjdw8EucARQHekz1X6bE=
 go.uber.org/multierr v1.11.0 h1:blXXJkSxSSfBVBlC76pxqeO+LN3aDfLQo+309xJstO0=

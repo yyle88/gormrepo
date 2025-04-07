@@ -1,4 +1,4 @@
-package example3
+package example3_test
 
 import (
 	"math/rand/v2"
@@ -12,7 +12,7 @@ import (
 	"github.com/yyle88/gormrepo/gormclass"
 	"github.com/yyle88/gormrepo/gormjoin"
 	"github.com/yyle88/gormrepo/gormtablerepo"
-	"github.com/yyle88/gormrepo/internal/examples/example3/models"
+	models "github.com/yyle88/gormrepo/internal/examples/example3/example3models"
 	"github.com/yyle88/neatjson/neatjsons"
 	"github.com/yyle88/rese"
 	"gorm.io/driver/sqlite"

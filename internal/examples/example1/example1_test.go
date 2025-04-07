@@ -1,4 +1,4 @@
-package example1
+package example1_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/yyle88/done"
 	"github.com/yyle88/gormrepo/gormclass"
-	"github.com/yyle88/gormrepo/internal/examples/example1/models"
+	models "github.com/yyle88/gormrepo/internal/examples/example1/example1models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

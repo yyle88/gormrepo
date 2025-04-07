@@ -11,7 +11,7 @@ require (
 	github.com/yyle88/gormcngen v1.0.41
 	github.com/yyle88/gormcnm v1.0.53
 	github.com/yyle88/must v0.0.20
-	github.com/yyle88/mutexmap v1.0.11
+	github.com/yyle88/mutexmap v1.0.12
 	github.com/yyle88/neatjson v0.0.12
 	github.com/yyle88/osexistpath v0.0.17
 	github.com/yyle88/rese v0.0.9
@@ -32,7 +32,7 @@ require (
 	github.com/yyle88/sure v0.0.38 // indirect
 	github.com/yyle88/syntaxgo v0.0.48 // indirect
 	github.com/yyle88/tern v0.0.6 // indirect
-	github.com/yyle88/zaplog v0.0.21 // indirect
+	github.com/yyle88/zaplog v0.0.22 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac // indirect

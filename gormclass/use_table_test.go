@@ -8,7 +8,7 @@ import (
 	"github.com/yyle88/neatjson/neatjsons"
 )
 
-func TestTableUseWithAccount(t *testing.T) {
+func TestUseTableWithAccount(t *testing.T) {
 	one, tableName, cls := gormclass.UseTable(&Account{})
 	t.Log(one.TableName())
 	t.Log(tableName)
@@ -16,7 +16,7 @@ func TestTableUseWithAccount(t *testing.T) {
 	t.Log(neatjsons.S(cls))
 }
 
-func TestTableUmcWithExample(t *testing.T) {
+func TestUmcTableWithExample(t *testing.T) {
 	one, tableName, cls := gormclass.UmcTable(&Example{})
 	t.Log(one.TableName())
 	t.Log(tableName)
