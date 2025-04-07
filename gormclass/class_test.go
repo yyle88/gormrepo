@@ -8,7 +8,7 @@ import (
 )
 
 func TestImplementGormClass(t *testing.T) {
-	var x gormclass.GormClass[*AccountColumns] = &Account{}
+	var x gormclass.ModelCols[*AccountColumns] = &Account{}
 	c := x.Columns()
 	t.Log(c.Username)
 	t.Log(c.Nickname)
@@ -16,7 +16,7 @@ func TestImplementGormClass(t *testing.T) {
 }
 
 func TestImplementClassType(t *testing.T) {
-	var x gormclass.ClassType[*AccountColumns] = &Account{}
+	var x gormclass.ModelClass[*AccountColumns] = &Account{}
 	t.Log(x.TableName())
 	c := x.Columns()
 	t.Log(c.Username)
