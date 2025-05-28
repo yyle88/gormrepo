@@ -104,12 +104,12 @@ func TestGormWrap_Invoke(t *testing.T) {
 	repo := gormrepo.NewGormWrap(gormrepo.Use(caseDB, &Account{}))
 
 	newNickname := uuid.New().String()
-	require.NoError(t, repo.Morm().Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	require.NoError(t, repo.Mold().Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq(username)).Update(cls.Nickname.Kv(newNickname))
 	}).Error)
 
 	var account Account
-	require.NoError(t, repo.Morm().Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	require.NoError(t, repo.Mold().Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq(username)).First(&account)
 	}).Error)
 	require.Equal(t, newNickname, account.Nickname)

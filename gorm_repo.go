@@ -1,6 +1,7 @@
 package gormrepo
 
 import (
+	"github.com/yyle88/gormcnm"
 	"gorm.io/gorm"
 )
 
@@ -60,11 +61,31 @@ func (repo *GormRepo[MOD, CLS]) FindN(where func(db *gorm.DB, cls CLS) *gorm.DB,
 	return results, nil
 }
 
-func (repo *GormRepo[MOD, CLS]) FindC(where func(db *gorm.DB, cls CLS) *gorm.DB, paging func(db *gorm.DB, cls CLS) *gorm.DB) ([]*MOD, int64, error) {
+func (repo *GormRepo[MOD, CLS]) FindC(where func(db *gorm.DB, cls CLS) *gorm.DB, orderByPage func(db *gorm.DB, cls CLS) *gorm.DB) ([]*MOD, int64, error) {
 	var results []*MOD
 	{
 		db := where(repo.db, repo.cls)
-		db = paging(db, repo.cls)
+		db = orderByPage(db, repo.cls)
+		if err := db.Find(&results).Error; err != nil {
+			return nil, 0, err
+		}
+	}
+	var count int64
+	{
+		db := repo.db.Model((*MOD)(nil))
+		if err := where(db, repo.cls).Count(&count).Error; err != nil {
+			return nil, 0, err
+		}
+	}
+	return results, count, nil
+}
+
+func (repo *GormRepo[MOD, CLS]) FindP(where func(db *gorm.DB, cls CLS) *gorm.DB, orderByFunc func(cls CLS) gormcnm.OrderByBottle, pageParam *Pagination) ([]*MOD, int64, error) {
+	var results = make([]*MOD, 0, pageParam.Limit)
+	{
+		db := where(repo.db, repo.cls)
+		db = db.Order(string(orderByFunc(repo.cls))) // gorm order func only receive a few types, so we convert it to string.
+		db = db.Limit(pageParam.Limit).Offset(pageParam.Offset)
 		if err := db.Find(&results).Error; err != nil {
 			return nil, 0, err
 		}

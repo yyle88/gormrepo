@@ -60,7 +60,7 @@ func TestRepo_With(t *testing.T) {
 	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
 
 	ctx := context.Background()
-	res, err := repo.With(caseDB, ctx).First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	res, err := repo.With(ctx, caseDB).First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq("demo-1-username"))
 	})
 	require.NoError(t, err)
@@ -72,7 +72,7 @@ func TestRepo_Wrap(t *testing.T) {
 
 	ctx := context.Background()
 	var account Account
-	require.NoError(t, repo.Wrap(caseDB, ctx).First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	require.NoError(t, repo.Wrap(ctx, caseDB).First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq("demo-1-username"))
 	}, &account).Error)
 	require.Equal(t, "demo-1-nickname", account.Nickname)

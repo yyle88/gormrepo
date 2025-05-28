@@ -24,10 +24,10 @@ func (repo *Repo[MOD, CLS]) Gorm(db *gorm.DB) *GormWrap[MOD, CLS] {
 	return NewGormWrap(db, (*MOD)(nil), repo.cls)
 }
 
-func (repo *Repo[MOD, CLS]) With(db *gorm.DB, ctx context.Context) *GormRepo[MOD, CLS] {
+func (repo *Repo[MOD, CLS]) With(ctx context.Context, db *gorm.DB) *GormRepo[MOD, CLS] {
 	return repo.Repo(db.WithContext(ctx))
 }
 
-func (repo *Repo[MOD, CLS]) Wrap(db *gorm.DB, ctx context.Context) *GormWrap[MOD, CLS] {
+func (repo *Repo[MOD, CLS]) Wrap(ctx context.Context, db *gorm.DB) *GormWrap[MOD, CLS] {
 	return repo.Gorm(db.WithContext(ctx))
 }
