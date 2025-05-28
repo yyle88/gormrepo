@@ -63,6 +63,22 @@ err := repo.Updates(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 require.NoError(t, err)
 ```
 
+---
+
+## GormRepo API Overview
+
+| Function  | Param                                                                                       | Return          | Description                                                                                              |
+|-----------|---------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------------------------------------------|
+| `First`   | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `*MOD, error`   | Select the first record matching the specified conditions, suitable for single-record queries.           |
+| `Where`   | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `*gorm.DB`      | Constructs a GORM query with specified conditions, suitable for building custom queries or aggregations. |
+| `Exist`   | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `bool, error`   | Checks if any record exists matching the specified conditions, suitable for existence validation.        |
+| `Find`    | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `[]*MOD, error` | Select all records matching the specified conditions, designed for queries returning multiple records.   |
+| `Count`   | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `int64, error`  | Counts the number of records matching the specified conditions, suitable for quantifying query results.  |
+| `Update`  | `where func(db *gorm.DB, cls CLS) *gorm.DB, valueFunc func(cls CLS) (string, interface{})`  | `error`         | Updates a single column for records matching the specified conditions, suitable for targeted updates.    |
+| `Updates` | `where func(db *gorm.DB, cls CLS) *gorm.DB, mapValues func(cls CLS) map[string]interface{}` | `error`         | Updates multiple columns for records matching the specified conditions, designed for batch updates.      |
+
+---
+
 #### Select Data
 
 ```go
@@ -102,8 +118,8 @@ if one, cls := gormclass.Use(&Example{}); cls.OK() {
 | Function | Param | Return            | Description                                                                                                                                        | 
 |----------|-------|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Cls`    | `MOD` | `CLS`             | Returns the column information (`cls`), useful when only column data is needed.                                                                    |
-| `Use`    | `MOD` | `MOD, CLS`        | Returns the model (`mod`) and its associated columns (`cls`), suitable for queries or operations that need both.                                      |
-| `Umc`    | `MOD` | `MOD, CLS`        | Returns the model (`mod`) and its associated columns (`cls`), functioning the same as the `Use` function.                                       |
+| `Use`    | `MOD` | `MOD, CLS`        | Returns the model (`mod`) and its associated columns (`cls`), suitable for queries or operations that need both.                                   |
+| `Umc`    | `MOD` | `MOD, CLS`        | Returns the model (`mod`) and its associated columns (`cls`), functioning the same as the `Use` function.                                          |
 | `Usc`    | `MOD` | `[]MOD, CLS`      | Returns a slice of models (`MOD`) and the associated columns (`cls`), suitable for queries returning multiple models (e.g., `Find` queries).       |
 | `Msc`    | `MOD` | `MOD, []MOD, CLS` | Returns the model (`mod`), the model slice (`[]MOD`), and the associated columns (`cls`), useful for queries requiring both model and column data. |
 | `One`    | `MOD` | `MOD`             | Returns the model (`mod`), ensuring type safety by checking whether the argument is a pointer type at compile-time.                                |

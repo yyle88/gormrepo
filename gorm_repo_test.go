@@ -176,10 +176,10 @@ func TestGormRepo_FindC(t *testing.T) {
 	t.Log(neatjsons.S(accounts))
 }
 
-func TestGormRepo_FindP(t *testing.T) {
+func TestGormRepo_FindPageAndCount(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
 
-	accounts, count, err := repo.FindP(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+	accounts, count, err := repo.FindPageAndCount(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
 	}, func(cls *AccountColumns) gormcnm.OrderByBottle {
 		return cls.Username.OrderByBottle("asc")
@@ -193,6 +193,27 @@ func TestGormRepo_FindP(t *testing.T) {
 	require.Equal(t, "demo-2-username", accounts[0].Username)
 	require.Equal(t, "demo-2-nickname", accounts[0].Nickname)
 	require.Equal(t, int64(2), count)
+	t.Log(neatjsons.S(accounts))
+}
+
+func TestGormRepo_FindPage(t *testing.T) {
+	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
+
+	accounts, err := repo.FindPage(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
+	}, func(cls *AccountColumns) gormcnm.OrderByBottle {
+		return cls.Username.OrderByBottle("desc").Ob(cls.Nickname.Ob("asc"))
+	}, &gormrepo.Pagination{
+		Offset: 0,
+		Limit:  2,
+	})
+	require.NoError(t, err)
+	require.NotEmpty(t, accounts)
+	require.Len(t, accounts, 2)
+	require.Equal(t, "demo-2-username", accounts[0].Username)
+	require.Equal(t, "demo-2-nickname", accounts[0].Nickname)
+	require.Equal(t, "demo-1-username", accounts[1].Username)
+	require.Equal(t, "demo-1-nickname", accounts[1].Nickname)
 	t.Log(neatjsons.S(accounts))
 }
 

@@ -56,6 +56,22 @@ err := repo.Updates(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 require.NoError(t, err)
 ```
 
+---
+
+## GormRepo API 概览
+
+| 函数        | 参数                                                                                          | 返回值             | 描述               |
+|-----------|---------------------------------------------------------------------------------------------|-----------------|------------------|
+| `First`   | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `*MOD, error`   | 查询单条记录，适合获取单条数据。 |
+| `Where`   | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `*gorm.DB`      | 构建查询条件，适合自定义查询。  |
+| `Exist`   | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `bool, error`   | 检查记录是否存在，适合验证数据。 |
+| `Find`    | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `[]*MOD, error` | 查询多条记录，适合获取列表数据。 |
+| `Count`   | `where func(db *gorm.DB, cls CLS) *gorm.DB`                                                 | `int64, error`  | 统计记录数量，适合计数查询。   |
+| `Update`  | `where func(db *gorm.DB, cls CLS) *gorm.DB, valueFunc func(cls CLS) (string, interface{})`  | `error`         | 更新单列数据，适合修改一个字段。 |
+| `Updates` | `where func(db *gorm.DB, cls CLS) *gorm.DB, mapValues func(cls CLS) map[string]interface{}` | `error`         | 更新多列数据，适合批量修改字段。 |
+
+---
+
 #### 查询数据
 
 ```go

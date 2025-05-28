@@ -61,11 +61,11 @@ func (repo *GormRepo[MOD, CLS]) FindN(where func(db *gorm.DB, cls CLS) *gorm.DB,
 	return results, nil
 }
 
-func (repo *GormRepo[MOD, CLS]) FindC(where func(db *gorm.DB, cls CLS) *gorm.DB, orderByPage func(db *gorm.DB, cls CLS) *gorm.DB) ([]*MOD, int64, error) {
+func (repo *GormRepo[MOD, CLS]) FindC(where func(db *gorm.DB, cls CLS) *gorm.DB, paging func(db *gorm.DB, cls CLS) *gorm.DB) ([]*MOD, int64, error) {
 	var results []*MOD
 	{
 		db := where(repo.db, repo.cls)
-		db = orderByPage(db, repo.cls)
+		db = paging(db, repo.cls)
 		if err := db.Find(&results).Error; err != nil {
 			return nil, 0, err
 		}
@@ -80,24 +80,28 @@ func (repo *GormRepo[MOD, CLS]) FindC(where func(db *gorm.DB, cls CLS) *gorm.DB,
 	return results, count, nil
 }
 
-func (repo *GormRepo[MOD, CLS]) FindP(where func(db *gorm.DB, cls CLS) *gorm.DB, orderByFunc func(cls CLS) gormcnm.OrderByBottle, pageParam *Pagination) ([]*MOD, int64, error) {
-	var results = make([]*MOD, 0, pageParam.Limit)
-	{
-		db := where(repo.db, repo.cls)
-		db = db.Order(string(orderByFunc(repo.cls))) // gorm order func only receive a few types, so we convert it to string.
-		db = db.Limit(pageParam.Limit).Offset(pageParam.Offset)
-		if err := db.Find(&results).Error; err != nil {
-			return nil, 0, err
-		}
+func (repo *GormRepo[MOD, CLS]) FindPageAndCount(where func(db *gorm.DB, cls CLS) *gorm.DB, ordering func(cls CLS) gormcnm.OrderByBottle, page *Pagination) ([]*MOD, int64, error) {
+	results, err := repo.FindPage(where, ordering, page)
+	if err != nil {
+		return nil, 0, err
 	}
+	db := repo.db.Model((*MOD)(nil))
 	var count int64
-	{
-		db := repo.db.Model((*MOD)(nil))
-		if err := where(db, repo.cls).Count(&count).Error; err != nil {
-			return nil, 0, err
-		}
+	if err := where(db, repo.cls).Count(&count).Error; err != nil {
+		return nil, 0, err
 	}
 	return results, count, nil
+}
+
+func (repo *GormRepo[MOD, CLS]) FindPage(where func(db *gorm.DB, cls CLS) *gorm.DB, ordering func(cls CLS) gormcnm.OrderByBottle, page *Pagination) ([]*MOD, error) {
+	db := where(repo.db, repo.cls)
+	db = db.Order(string(ordering(repo.cls))) // gorm order func only receive a few types, so we convert it to string.
+	db = db.Limit(page.Limit).Offset(page.Offset)
+	var results = make([]*MOD, 0, page.Limit)
+	if err := db.Find(&results).Error; err != nil {
+		return nil, err
+	}
+	return results, nil
 }
 
 func (repo *GormRepo[MOD, CLS]) Count(where func(db *gorm.DB, cls CLS) *gorm.DB) (int64, error) {
