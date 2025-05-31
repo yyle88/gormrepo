@@ -1,6 +1,8 @@
 package example4
 
-import models "github.com/yyle88/gormrepo/internal/examples/example4/example4models"
+import (
+	"github.com/yyle88/gormrepo/internal/examples/example4/internal/models"
+)
 
 type User struct {
 	models.User

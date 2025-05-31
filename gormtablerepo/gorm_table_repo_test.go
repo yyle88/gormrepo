@@ -7,6 +7,7 @@ import (
 	"github.com/yyle88/done"
 	"github.com/yyle88/gormcngen"
 	"github.com/yyle88/gormcnm"
+	"github.com/yyle88/gormcnm/gormcnmstub"
 	"github.com/yyle88/gormrepo/gormclass"
 	"github.com/yyle88/gormrepo/gormtablerepo"
 	"github.com/yyle88/must"
@@ -82,13 +83,11 @@ func TestNewTableRepo(t *testing.T) {
 	require.Equal(t, "students", repo.GetTableName())
 }
 
-func TestTableRepo_Repo(t *testing.T) {
+func TestTableRepo_Gorm_Repo(t *testing.T) {
 	db := done.VCE(gorm.Open(sqlite.Open("file::memory:?cache=private"), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})).Nice()
-	defer func() {
-		must.Done(rese.P1(db.DB()).Close())
-	}()
+	defer rese.F0(rese.P1(db.DB()).Close)
 
 	done.Done(db.AutoMigrate(&Student{}))
 
@@ -104,20 +103,52 @@ func TestTableRepo_Repo(t *testing.T) {
 	}).Error)
 
 	repo := gormtablerepo.NewTableRepo(gormclass.UseTable(&Student{}))
-	{
+	t.Run("case-1", func(t *testing.T) {
 		studentA, err := repo.Repo(db).First(func(db *gorm.DB, cls *StudentColumns) *gorm.DB {
 			return db.Where(cls.Name.Eq("A"))
 		})
 		require.NoError(t, err)
 		require.Equal(t, "A", studentA.Name)
 		require.Equal(t, 100, studentA.Rank)
-	}
-	{
+	})
+	t.Run("case-2", func(t *testing.T) {
 		studentB, err := repo.Repo(db).First(func(db *gorm.DB, cls *StudentColumns) *gorm.DB {
 			return db.Where(cls.Name.Eq("B"))
 		})
 		require.NoError(t, err)
 		require.Equal(t, "B", studentB.Name)
 		require.Equal(t, 85, studentB.Rank)
+	})
+}
+
+func TestTableRepo_BuildColumns(t *testing.T) {
+	db := done.VCE(gorm.Open(sqlite.Open("file::memory:?cache=private"), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})).Nice()
+	defer rese.F0(rese.P1(db.DB()).Close)
+
+	done.Done(db.AutoMigrate(&Student{}))
+
+	must.Done(db.Save(&Student{ID: 0, Name: "A", Rank: 100}).Error)
+	must.Done(db.Save(&Student{ID: 0, Name: "B", Rank: 85}).Error)
+	must.Done(db.Save(&Student{ID: 0, Name: "C", Rank: 90}).Error)
+
+	type Result struct {
+		Name  string
+		Score int
 	}
+	var result = &Result{}
+	repo := gormtablerepo.NewTableRepo(gormclass.UseTable(&Student{}))
+	err := repo.Repo(db).Mold().Invoke(func(db *gorm.DB, cls *StudentColumns) *gorm.DB {
+		return db.Select(
+			gormcnmstub.MergeSlices(repo.BuildColumns(func(cls *StudentColumns) []string {
+				return []string{
+					cls.Name.AsName(gormcnm.Cnm(result.Name, "name")),
+					cls.Rank.AsName(gormcnm.Cnm(result.Score, "score")),
+				}
+			}))).Where(cls.Name.Eq("B")).First(result)
+	})
+	require.NoError(t, err)
+	require.Equal(t, "B", result.Name)
+	require.Equal(t, 85, result.Score)
 }

@@ -1,4 +1,4 @@
-package example4models
+package models
 
 import (
 	"testing"
@@ -20,7 +20,7 @@ func TestGenerateColumns(t *testing.T) {
 
 	// List the models for which columns will be generated. Both pointer and non-pointer types are supported.
 	// 设置需要生成列的模型，这里支持指针类型和非指针类型。
-	objects := []any{&User{}, &Order{}, &Product{}}
+	objects := []any{&User{}, &Order{}}
 
 	options := gormcngen.NewOptions().
 		WithColumnClassExportable(true). // Generate exportable struct names (e.g., ExampleColumns) // 生成可导出的结构体名称（例如 ExampleColumns）

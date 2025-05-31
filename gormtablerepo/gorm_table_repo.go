@@ -1,10 +1,5 @@
 package gormtablerepo
 
-import (
-	"github.com/yyle88/gormrepo"
-	"gorm.io/gorm"
-)
-
 type TableRepo[MOD any, CLS any] struct {
 	tableName string
 	tbColumns CLS
@@ -25,10 +20,6 @@ func (repo *TableRepo[MOD, CLS]) TableColumns() CLS {
 	return repo.tbColumns
 }
 
-func (repo *TableRepo[MOD, CLS]) Repo(db *gorm.DB) *gormrepo.GormRepo[MOD, CLS] {
-	return gormrepo.NewRepo((*MOD)(nil), repo.tbColumns).Repo(db)
-}
-
-func (repo *TableRepo[MOD, CLS]) Gorm(db *gorm.DB) *gormrepo.GormWrap[MOD, CLS] {
-	return gormrepo.NewRepo((*MOD)(nil), repo.tbColumns).Gorm(db)
+func (repo *TableRepo[MOD, CLS]) BuildColumns(run func(cls CLS) []string) []string {
+	return run(repo.tbColumns)
 }

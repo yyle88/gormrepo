@@ -12,7 +12,7 @@ import (
 	"github.com/yyle88/gormrepo/gormclass"
 	"github.com/yyle88/gormrepo/gormjoin"
 	"github.com/yyle88/gormrepo/gormtablerepo"
-	models "github.com/yyle88/gormrepo/internal/examples/example3/example3models"
+	"github.com/yyle88/gormrepo/internal/examples/example3/internal/models"
 	"github.com/yyle88/neatjson/neatjsons"
 	"github.com/yyle88/rese"
 	"gorm.io/driver/sqlite"

@@ -1,4 +1,4 @@
-package example4models
+package models
 
 type User struct {
 	ID   uint

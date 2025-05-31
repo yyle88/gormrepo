@@ -1,4 +1,4 @@
-package example4models
+package models
 
 import "github.com/yyle88/gormcnm"
 

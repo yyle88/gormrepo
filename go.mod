@@ -7,9 +7,9 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
 	github.com/yyle88/done v1.0.25
-	github.com/yyle88/erero v1.0.20
+	github.com/yyle88/erero v1.0.21
 	github.com/yyle88/gormcngen v1.0.43
-	github.com/yyle88/gormcnm v1.0.53
+	github.com/yyle88/gormcnm v1.0.54
 	github.com/yyle88/must v0.0.23
 	github.com/yyle88/mutexmap v1.0.13
 	github.com/yyle88/neatjson v0.0.12
@@ -24,7 +24,7 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/mattn/go-sqlite3 v1.14.24 // indirect
+	github.com/mattn/go-sqlite3 v1.14.28 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/yyle88/formatgo v1.0.24 // indirect
 	github.com/yyle88/printgo v1.0.5 // indirect

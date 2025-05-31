@@ -13,7 +13,7 @@ import (
 	"github.com/yyle88/gormrepo/gormjoin"
 	"github.com/yyle88/gormrepo/gormtablerepo"
 	"github.com/yyle88/gormrepo/internal/examples/example4"
-	models "github.com/yyle88/gormrepo/internal/examples/example4/example4models"
+	"github.com/yyle88/gormrepo/internal/examples/example4/internal/models"
 	"github.com/yyle88/must"
 	"github.com/yyle88/neatjson/neatjsons"
 	"github.com/yyle88/rese"
@@ -172,9 +172,9 @@ func TestPreload3t(t *testing.T) {
 func selectFunc2(t *testing.T, db *gorm.DB) []*UserOrderProduct {
 	// 查询并预加载
 	var users []*example4.User
-	db.Preload("Orders").Preload("Orders.Products", func(db *gorm.DB) *gorm.DB {
+	require.NoError(t, db.Preload("Orders").Preload("Orders.Products", func(db *gorm.DB) *gorm.DB {
 		return db.Where("name IN ?", []string{"Laptop", "Mouse", "Phone"})
-	}).Where("users.id >= ?", 2).Find(&users)
+	}).Where("users.id >= ?", 2).Find(&users).Error)
 
 	var results []*UserOrderProduct
 	for _, user := range users {
@@ -209,9 +209,9 @@ func selectFunc3(t *testing.T, db *gorm.DB) []*UserOrderProduct {
 	// 查询并预加载
 	var users []*UserWithOrdersWithProducts
 	// 这里要使用成员属性名称，而不是别的比如 Orders 和 Orders.Products
-	db.Preload("SubOrders").Preload("SubOrders.SubProducts", func(db *gorm.DB) *gorm.DB {
+	require.NoError(t, db.Preload("SubOrders").Preload("SubOrders.SubProducts", func(db *gorm.DB) *gorm.DB {
 		return db.Where("name IN ?", []string{"Laptop", "Mouse", "Phone"})
-	}).Where("users.id >= ?", 2).Find(&users)
+	}).Where("users.id >= ?", 2).Find(&users).Error)
 
 	var results []*UserOrderProduct
 	for _, user := range users {

@@ -1,4 +1,4 @@
-package example2models
+package models
 
 import (
 	"time"
