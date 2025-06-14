@@ -11,7 +11,7 @@ import (
 )
 
 func TestRepo_Repo(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
 	t.Run("demo1", func(t *testing.T) {
 		res, err := repo.Repo(caseDB).First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
@@ -34,7 +34,7 @@ func TestRepo_Repo(t *testing.T) {
 }
 
 func TestRepo_Gorm(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
 	t.Run("demo1", func(t *testing.T) {
 		var account Account
@@ -57,7 +57,7 @@ func TestRepo_Gorm(t *testing.T) {
 }
 
 func TestRepo_With(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
 	ctx := context.Background()
 	res, err := repo.With(ctx, caseDB).First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
@@ -68,7 +68,7 @@ func TestRepo_With(t *testing.T) {
 }
 
 func TestRepo_Wrap(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
 	ctx := context.Background()
 	var account Account

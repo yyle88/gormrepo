@@ -122,9 +122,11 @@ if one, cls := gormclass.Use(&Example{}); cls.OK() {
 
 ---
 
-## 许可
+## 许可证类型
 
 项目采用 MIT 许可证，详情请参阅 [LICENSE](LICENSE)。
+
+---
 
 ## 贡献新代码
 
@@ -140,6 +142,8 @@ if one, cls := gormclass.Use(&Example{}); cls.OK() {
 8. 发起 Pull Request （通过网页界面操作）。
 
 请确保测试通过并更新相关文档。
+
+---
 
 ## 贡献与支持
 

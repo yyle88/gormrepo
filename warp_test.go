@@ -11,7 +11,7 @@ import (
 )
 
 func TestGormRepo_Gorm(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
 	var account Account
 	require.NoError(t, repo.Repo(caseDB).Gorm().First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
@@ -21,7 +21,7 @@ func TestGormRepo_Gorm(t *testing.T) {
 }
 
 func TestGormWrap_Repo(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
 	res, err := repo.Gorm(caseDB).Repo().First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq("demo-1-username"))
@@ -31,7 +31,7 @@ func TestGormWrap_Repo(t *testing.T) {
 }
 
 func TestGormRepo_Mold(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
 	{
 		var nickname string
@@ -52,7 +52,7 @@ func TestGormRepo_Mold(t *testing.T) {
 }
 
 func TestGormWrap_Mold(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
 	{
 		var nickname string
@@ -73,7 +73,7 @@ func TestGormWrap_Mold(t *testing.T) {
 }
 
 func TestGormRepo_WithContext(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 	ctx := context.Background()
 	type contextKeyType struct{}
 	ctx = context.WithValue(ctx, contextKeyType{}, "value-abc")
@@ -93,7 +93,7 @@ func TestGormRepo_WithContext(t *testing.T) {
 }
 
 func TestGormWrap_WithContext(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 	ctx := context.Background()
 	type contextKeyType struct{}
 	ctx = context.WithValue(ctx, contextKeyType{}, "value-abc")

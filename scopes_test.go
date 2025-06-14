@@ -13,7 +13,7 @@ import (
 
 // TestRepo_NewScope tests NewScope by filtering Accounts by username.
 func TestRepo_NewScope(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{})) // Init repo with Account
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{})) // Init repo with Account
 
 	// Create scope to filter by username="demo-1-username"
 	scope := repo.NewScope(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
@@ -32,7 +32,7 @@ func TestRepo_NewScope(t *testing.T) {
 
 // TestRepo_Paginate tests new-paginate-scope with ordering and pagination.
 func TestRepo_Paginate(t *testing.T) {
-	repo := gormrepo.NewRepo(gormclass.Use(&Account{})) // Init repo with Account
+	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{})) // Init repo with Account
 
 	// Create scope to filter by username in ("demo-1-username", "demo-2-username")
 	condScope := repo.NewScope(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {

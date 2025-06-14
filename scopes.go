@@ -17,7 +17,7 @@ type ScopeFunction = func(db *gorm.DB) *gorm.DB
 //
 // Returns:
 //   - A ScopeFunction that can be used with db.Scopes() to apply the where condition.
-func (repo *Repo[MOD, CLS]) NewScope(where func(db *gorm.DB, cls CLS) *gorm.DB) ScopeFunction {
+func (repo *BaseRepo[MOD, CLS]) NewScope(where func(db *gorm.DB, cls CLS) *gorm.DB) ScopeFunction {
 	return func(db *gorm.DB) *gorm.DB {
 		return where(db, repo.cls)
 	}
@@ -31,7 +31,7 @@ func (repo *Repo[MOD, CLS]) NewScope(where func(db *gorm.DB, cls CLS) *gorm.DB) 
 //
 // Returns:
 //   - A ScopeFunction that can be used with db.Scopes() to apply the where condition.
-func (repo *Repo[MOD, CLS]) NewWhereScope(where func(db *gorm.DB, cls CLS) *gorm.DB) ScopeFunction {
+func (repo *BaseRepo[MOD, CLS]) NewWhereScope(where func(db *gorm.DB, cls CLS) *gorm.DB) ScopeFunction {
 	return func(db *gorm.DB) *gorm.DB {
 		return where(db, repo.cls)
 	}
@@ -44,7 +44,7 @@ func (repo *Repo[MOD, CLS]) NewWhereScope(where func(db *gorm.DB, cls CLS) *gorm
 //
 // Returns:
 //   - A ScopeFunction that can be used with db.Scopes() to apply the ordering condition.
-func (repo *Repo[MOD, CLS]) NewOrderScope(ordering func(cls CLS) gormcnm.OrderByBottle) ScopeFunction {
+func (repo *BaseRepo[MOD, CLS]) NewOrderScope(ordering func(cls CLS) gormcnm.OrderByBottle) ScopeFunction {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Order(string(ordering(repo.cls)))
 	}
@@ -77,7 +77,7 @@ func (p *Pagination) Scope() ScopeFunction {
 //
 // Returns:
 //   - A ScopeFunction that can be used with db.Scopes() to apply ordering, limit, and offset.
-func (repo *Repo[MOD, CLS]) NewPaginateScope(ordering func(cls CLS) gormcnm.OrderByBottle, page *Pagination) ScopeFunction {
+func (repo *BaseRepo[MOD, CLS]) NewPaginateScope(ordering func(cls CLS) gormcnm.OrderByBottle, page *Pagination) ScopeFunction {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Order(string(ordering(repo.cls))).Limit(page.Limit).Offset(page.Offset)
 	}
