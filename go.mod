@@ -43,4 +43,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-retract [v0.0.0, v0.0.30] // rename repo-name
+retract (
+	[v1.0.0, v1.0.30] // rename repo-name
+	[v0.0.0, v0.0.30] // rename repo-name
+)
