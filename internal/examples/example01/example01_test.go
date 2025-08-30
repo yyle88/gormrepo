@@ -1,13 +1,16 @@
 package example01_test
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"github.com/yyle88/done"
 	"github.com/yyle88/gormrepo/gormclass"
 	"github.com/yyle88/gormrepo/internal/examples/example01/internal/models"
+	"github.com/yyle88/rese"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -16,12 +19,11 @@ import (
 var caseDB *gorm.DB
 
 func TestMain(m *testing.M) {
-	db := done.VCE(gorm.Open(sqlite.Open("file::memory:?cache=private"), &gorm.Config{
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
-	})).Nice()
-	defer func() {
-		done.Done(done.VCE(db.DB()).Nice().Close())
-	}()
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
 
 	done.Done(db.AutoMigrate(&models.Example{}))
 

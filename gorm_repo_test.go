@@ -1,6 +1,7 @@
 package gormrepo_test
 
 import (
+	"fmt"
 	"sort"
 	"testing"
 
@@ -20,22 +21,21 @@ import (
 var caseDB *gorm.DB
 
 func TestMain(m *testing.M) {
-	db := done.VCE(gorm.Open(sqlite.Open("file::memory:?cache=private"), &gorm.Config{
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
-	})).Nice()
-	defer func() {
-		must.Done(rese.P1(db.DB()).Close())
-	}()
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
 
-	done.Done(db.AutoMigrate(&Account{}))
+	must.Done(db.AutoMigrate(&Account{}))
 
-	must.Done(db.Save(&Account{
+	done.Done(db.Save(&Account{
 		Model:    gorm.Model{},
 		Username: "demo-1-username",
 		Password: "demo-1-password",
 		Nickname: "demo-1-nickname",
 	}).Error)
-	must.Done(db.Save(&Account{
+	done.Done(db.Save(&Account{
 		Model:    gorm.Model{},
 		Username: "demo-2-username",
 		Password: "demo-2-password",

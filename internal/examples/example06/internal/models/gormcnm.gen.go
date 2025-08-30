@@ -7,20 +7,18 @@ import (
 	"gorm.io/gorm"
 )
 
-// 通过 gormcnm.gen_test.go 生成
-
-func (*Order) Columns() *OrderColumns {
+func (c *Order) Columns() *OrderColumns {
 	return &OrderColumns{
-		ID:        "id",
-		CreatedAt: "created_at",
-		UpdatedAt: "updated_at",
-		DeletedAt: "deleted_at",
-		OrderNo:   "order_no",
-		UserID:    "user_id",
-		Amount:    "amount",
-		Status:    "status",
-		PayMethod: "pay_method",
-		Remark:    "remark",
+		ID:        gormcnm.Cnm(c.ID, "id"),
+		CreatedAt: gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt: gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt: gormcnm.Cnm(c.DeletedAt, "deleted_at"),
+		OrderNo:   gormcnm.Cnm(c.OrderNo, "order_no"),
+		UserID:    gormcnm.Cnm(c.UserID, "user_id"),
+		Amount:    gormcnm.Cnm(c.Amount, "amount"),
+		Status:    gormcnm.Cnm(c.Status, "status"),
+		PayMethod: gormcnm.Cnm(c.PayMethod, "pay_method"),
+		Remark:    gormcnm.Cnm(c.Remark, "remark"),
 	}
 }
 

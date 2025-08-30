@@ -7,19 +7,17 @@ import (
 	"gorm.io/gorm"
 )
 
-// 这个文件通过 gormcnm.gen_test.go 生成
-
-func (*Product) Columns() *ProductColumns {
+func (c *Product) Columns() *ProductColumns {
 	return &ProductColumns{
-		ID:         "id",
-		Name:       "name",
-		Price:      "price",
-		Stock:      "stock",
-		CategoryID: "category_id",
-		Status:     "status",
-		CreatedAt:  "created_at",
-		UpdatedAt:  "updated_at",
-		DeletedAt:  "deleted_at",
+		ID:         gormcnm.Cnm(c.ID, "id"),
+		Name:       gormcnm.Cnm(c.Name, "name"),
+		Price:      gormcnm.Cnm(c.Price, "price"),
+		Stock:      gormcnm.Cnm(c.Stock, "stock"),
+		CategoryID: gormcnm.Cnm(c.CategoryID, "category_id"),
+		Status:     gormcnm.Cnm(c.Status, "status"),
+		CreatedAt:  gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt:  gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt:  gormcnm.Cnm(c.DeletedAt, "deleted_at"),
 	}
 }
 
@@ -38,16 +36,16 @@ type ProductColumns struct {
 	DeletedAt  gormcnm.ColumnName[gorm.DeletedAt]
 }
 
-func (*Category) Columns() *CategoryColumns {
+func (c *Category) Columns() *CategoryColumns {
 	return &CategoryColumns{
-		ID:        "id",
-		Name:      "name",
-		Code:      "code",
-		Sort:      "sort",
-		Status:    "status",
-		CreatedAt: "created_at",
-		UpdatedAt: "updated_at",
-		DeletedAt: "deleted_at",
+		ID:        gormcnm.Cnm(c.ID, "id"),
+		Name:      gormcnm.Cnm(c.Name, "name"),
+		Code:      gormcnm.Cnm(c.Code, "code"),
+		Sort:      gormcnm.Cnm(c.Sort, "sort"),
+		Status:    gormcnm.Cnm(c.Status, "status"),
+		CreatedAt: gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt: gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt: gormcnm.Cnm(c.DeletedAt, "deleted_at"),
 	}
 }
 

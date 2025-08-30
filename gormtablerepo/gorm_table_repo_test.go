@@ -1,8 +1,10 @@
 package gormtablerepo_test
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"github.com/yyle88/done"
 	"github.com/yyle88/gormcngen"
@@ -84,9 +86,10 @@ func TestNewTableRepo(t *testing.T) {
 }
 
 func TestTableRepo_Gorm_Repo(t *testing.T) {
-	db := done.VCE(gorm.Open(sqlite.Open("file::memory:?cache=private"), &gorm.Config{
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
-	})).Nice()
+	}))
 	defer rese.F0(rese.P1(db.DB()).Close)
 
 	done.Done(db.AutoMigrate(&Student{}))
@@ -122,9 +125,10 @@ func TestTableRepo_Gorm_Repo(t *testing.T) {
 }
 
 func TestTableRepo_BuildColumns(t *testing.T) {
-	db := done.VCE(gorm.Open(sqlite.Open("file::memory:?cache=private"), &gorm.Config{
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
-	})).Nice()
+	}))
 	defer rese.F0(rese.P1(db.DB()).Close)
 
 	done.Done(db.AutoMigrate(&Student{}))

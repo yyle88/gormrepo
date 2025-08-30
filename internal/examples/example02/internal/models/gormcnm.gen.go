@@ -7,15 +7,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func (*Account) Columns() *AccountColumns {
+func (c *Account) Columns() *AccountColumns {
 	return &AccountColumns{
-		ID:        "id",
-		CreatedAt: "created_at",
-		UpdatedAt: "updated_at",
-		DeletedAt: "deleted_at",
-		Username:  "username",
-		Password:  "password",
-		Nickname:  "nickname",
+		ID:        gormcnm.Cnm(c.ID, "id"),
+		CreatedAt: gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt: gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt: gormcnm.Cnm(c.DeletedAt, "deleted_at"),
+		Username:  gormcnm.Cnm(c.Username, "username"),
+		Password:  gormcnm.Cnm(c.Password, "password"),
+		Nickname:  gormcnm.Cnm(c.Nickname, "nickname"),
 	}
 }
 
@@ -32,13 +32,13 @@ type AccountColumns struct {
 	Nickname  gormcnm.ColumnName[string]
 }
 
-func (*Example) Columns() *ExampleColumns {
+func (c *Example) Columns() *ExampleColumns {
 	return &ExampleColumns{
-		ID:        "id",
-		Name:      "name",
-		Age:       "age",
-		CreatedAt: "created_at",
-		UpdatedAt: "updated_at",
+		ID:        gormcnm.Cnm(c.ID, "id"),
+		Name:      gormcnm.Cnm(c.Name, "name"),
+		Age:       gormcnm.Cnm(c.Age, "age"),
+		CreatedAt: gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt: gormcnm.Cnm(c.UpdatedAt, "updated_at"),
 	}
 }
 

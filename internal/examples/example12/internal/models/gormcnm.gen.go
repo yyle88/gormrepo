@@ -7,21 +7,21 @@ import (
 	"gorm.io/gorm"
 )
 
-func (*SaleRecord) Columns() *SaleRecordColumns {
+func (c *SaleRecord) Columns() *SaleRecordColumns {
 	return &SaleRecordColumns{
-		ID:          "id",
-		CreatedAt:   "created_at",
-		UpdatedAt:   "updated_at",
-		DeletedAt:   "deleted_at",
-		ProductName: "product_name",
-		Category:    "category",
-		Region:      "region",
-		SaleDate:    "sale_date",
-		Quantity:    "quantity",
-		UnitPrice:   "unit_price",
-		TotalAmount: "total_amount",
-		SalesRep:    "sales_rep",
-		Channel:     "channel",
+		ID:          gormcnm.Cnm(c.ID, "id"),
+		CreatedAt:   gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt:   gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt:   gormcnm.Cnm(c.DeletedAt, "deleted_at"),
+		ProductName: gormcnm.Cnm(c.ProductName, "product_name"),
+		Category:    gormcnm.Cnm(c.Category, "category"),
+		Region:      gormcnm.Cnm(c.Region, "region"),
+		SaleDate:    gormcnm.Cnm(c.SaleDate, "sale_date"),
+		Quantity:    gormcnm.Cnm(c.Quantity, "quantity"),
+		UnitPrice:   gormcnm.Cnm(c.UnitPrice, "unit_price"),
+		TotalAmount: gormcnm.Cnm(c.TotalAmount, "total_amount"),
+		SalesRep:    gormcnm.Cnm(c.SalesRep, "sales_rep"),
+		Channel:     gormcnm.Cnm(c.Channel, "channel"),
 	}
 }
 

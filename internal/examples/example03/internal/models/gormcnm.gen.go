@@ -7,16 +7,16 @@ import (
 	"gorm.io/gorm"
 )
 
-func (*User) Columns() *UserColumns {
+func (c *User) Columns() *UserColumns {
 	return &UserColumns{
-		ID:        "id",
-		Name:      "name",
-		Email:     "email",
-		Age:       "age",
-		Status:    "status",
-		CreatedAt: "created_at",
-		UpdatedAt: "updated_at",
-		DeletedAt: "deleted_at",
+		ID:        gormcnm.Cnm(c.ID, "id"),
+		Name:      gormcnm.Cnm(c.Name, "name"),
+		Email:     gormcnm.Cnm(c.Email, "email"),
+		Age:       gormcnm.Cnm(c.Age, "age"),
+		Status:    gormcnm.Cnm(c.Status, "status"),
+		CreatedAt: gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt: gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt: gormcnm.Cnm(c.DeletedAt, "deleted_at"),
 	}
 }
 

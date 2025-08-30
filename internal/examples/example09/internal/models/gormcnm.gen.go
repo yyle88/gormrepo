@@ -7,21 +7,21 @@ import (
 	"gorm.io/gorm"
 )
 
-func (*Employee) Columns() *EmployeeColumns {
+func (c *Employee) Columns() *EmployeeColumns {
 	return &EmployeeColumns{
-		ID:         "id",
-		CreatedAt:  "created_at",
-		UpdatedAt:  "updated_at",
-		DeletedAt:  "deleted_at",
-		EmployeeID: "employee_id",
-		Name:       "name",
-		Department: "department",
-		Position:   "position",
-		Email:      "email",
-		Salary:     "salary",
-		Status:     "status",
-		Manager:    "manager",
-		HireYear:   "hire_year",
+		ID:         gormcnm.Cnm(c.ID, "id"),
+		CreatedAt:  gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt:  gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt:  gormcnm.Cnm(c.DeletedAt, "deleted_at"),
+		EmployeeID: gormcnm.Cnm(c.EmployeeID, "employee_id"),
+		Name:       gormcnm.Cnm(c.Name, "name"),
+		Department: gormcnm.Cnm(c.Department, "department"),
+		Position:   gormcnm.Cnm(c.Position, "position"),
+		Email:      gormcnm.Cnm(c.Email, "email"),
+		Salary:     gormcnm.Cnm(c.Salary, "salary"),
+		Status:     gormcnm.Cnm(c.Status, "status"),
+		Manager:    gormcnm.Cnm(c.Manager, "manager"),
+		HireYear:   gormcnm.Cnm(c.HireYear, "hire_year"),
 	}
 }
 

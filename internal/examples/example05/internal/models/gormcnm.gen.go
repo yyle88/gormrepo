@@ -7,21 +7,19 @@ import (
 	"gorm.io/gorm"
 )
 
-// 通过 gormcnm.gen_test.go 生成
-
-func (*Article) Columns() *ArticleColumns {
+func (c *Article) Columns() *ArticleColumns {
 	return &ArticleColumns{
-		ID:          "id",
-		Title:       "title",
-		Content:     "content",
-		AuthorID:    "author_id",
-		Status:      "status",
-		ViewCount:   "view_count",
-		LikeCount:   "like_count",
-		PublishedAt: "published_at",
-		CreatedAt:   "created_at",
-		UpdatedAt:   "updated_at",
-		DeletedAt:   "deleted_at",
+		ID:          gormcnm.Cnm(c.ID, "id"),
+		Title:       gormcnm.Cnm(c.Title, "title"),
+		Content:     gormcnm.Cnm(c.Content, "content"),
+		AuthorID:    gormcnm.Cnm(c.AuthorID, "author_id"),
+		Status:      gormcnm.Cnm(c.Status, "status"),
+		ViewCount:   gormcnm.Cnm(c.ViewCount, "view_count"),
+		LikeCount:   gormcnm.Cnm(c.LikeCount, "like_count"),
+		PublishedAt: gormcnm.Cnm(c.PublishedAt, "published_at"),
+		CreatedAt:   gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt:   gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt:   gormcnm.Cnm(c.DeletedAt, "deleted_at"),
 	}
 }
 

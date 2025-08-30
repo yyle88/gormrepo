@@ -1,18 +1,21 @@
 package example11_test
 
 import (
-	"database/sql" // Added for sqlDB.Close()
+	"fmt"
 	"math/rand/v2"
 	"strconv"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"github.com/yyle88/gormcnm"
 	"github.com/yyle88/gormrepo/gormclass"
 	"github.com/yyle88/gormrepo/gormjoin"
 	"github.com/yyle88/gormrepo/gormtablerepo"
 	"github.com/yyle88/gormrepo/internal/examples/example11/internal/models"
+	"github.com/yyle88/must"
 	"github.com/yyle88/neatjson/neatjsons"
+	"github.com/yyle88/rese"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -21,27 +24,13 @@ import (
 var caseDB *gorm.DB
 
 func TestMain(m *testing.M) {
-	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
-	})
-	if err != nil {
-		panic(err)
-	}
-	sqlDB, err := db.DB()
-	if err != nil {
-		panic(err)
-	}
-	defer func(sqlDB *sql.DB) { // Added defer for sqlDB.Close()
-		err := sqlDB.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(sqlDB)
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
 
-	err = db.AutoMigrate(&models.User{}, &models.Order{}) // Changed done.Done to require.NoError
-	if err != nil {
-		panic(err)
-	}
+	must.Done(db.AutoMigrate(&models.User{}, &models.Order{}))
 
 	const userCount = 10
 	users := make([]*models.User, 0, userCount)
@@ -51,10 +40,7 @@ func TestMain(m *testing.M) {
 			Name: "name" + strconv.Itoa(idx+1),
 		})
 	}
-	err = db.Create(&users).Error // Changed done.Done to require.NoError
-	if err != nil {
-		panic(err)
-	}
+	must.Done(db.Create(&users).Error)
 
 	const orderCount = 20
 	orders := make([]*models.Order, 0, orderCount)
@@ -67,10 +53,7 @@ func TestMain(m *testing.M) {
 			Amount: float64(rand.IntN(1000)) + rand.Float64(),
 		})
 	}
-	err = db.Create(&orders).Error // Changed done.Done to require.NoError
-	if err != nil {
-		panic(err)
-	}
+	must.Done(db.Create(&orders).Error)
 
 	caseDB = db
 	m.Run()

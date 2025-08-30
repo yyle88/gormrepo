@@ -7,23 +7,21 @@ import (
 	"gorm.io/gorm"
 )
 
-// 通过 gormcnm.gen_test.go 生成
-
-func (*Book) Columns() *BookColumns {
+func (c *Book) Columns() *BookColumns {
 	return &BookColumns{
-		ID:          "id",
-		CreatedAt:   "created_at",
-		UpdatedAt:   "updated_at",
-		DeletedAt:   "deleted_at",
-		Title:       "title",
-		Author:      "author",
-		ISBN:        "isbn",
-		Price:       "price",
-		PublishYear: "publish_year",
-		Rating:      "rating",
-		Sales:       "sales",
-		Category:    "category",
-		Status:      "status",
+		ID:          gormcnm.Cnm(c.ID, "id"),
+		CreatedAt:   gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt:   gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt:   gormcnm.Cnm(c.DeletedAt, "deleted_at"),
+		Title:       gormcnm.Cnm(c.Title, "title"),
+		Author:      gormcnm.Cnm(c.Author, "author"),
+		ISBN:        gormcnm.Cnm(c.ISBN, "isbn"),
+		Price:       gormcnm.Cnm(c.Price, "price"),
+		PublishYear: gormcnm.Cnm(c.PublishYear, "publish_year"),
+		Rating:      gormcnm.Cnm(c.Rating, "rating"),
+		Sales:       gormcnm.Cnm(c.Sales, "sales"),
+		Category:    gormcnm.Cnm(c.Category, "category"),
+		Status:      gormcnm.Cnm(c.Status, "status"),
 	}
 }
 

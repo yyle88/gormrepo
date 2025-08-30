@@ -7,20 +7,20 @@ import (
 	"gorm.io/gorm"
 )
 
-func (a *Guest) Columns() *GuestColumns {
-	return a.TableColumns(gormcnm.NewPlainDecoration())
+func (c *Guest) Columns() *GuestColumns {
+	return c.TableColumns(gormcnm.NewPlainDecoration())
 }
 
-func (a *Guest) TableColumns(decoration gormcnm.ColumnNameDecoration) *GuestColumns {
+func (c *Guest) TableColumns(decoration gormcnm.ColumnNameDecoration) *GuestColumns {
 	return &GuestColumns{
-		ID:        gormcnm.Cmn(a.ID, "id", decoration),
-		CreatedAt: gormcnm.Cmn(a.CreatedAt, "created_at", decoration),
-		UpdatedAt: gormcnm.Cmn(a.UpdatedAt, "updated_at", decoration),
-		DeletedAt: gormcnm.Cmn(a.DeletedAt, "deleted_at", decoration),
-		Username:  gormcnm.Cmn(a.Username, "username", decoration),
-		Nickname:  gormcnm.Cmn(a.Nickname, "nickname", decoration),
-		Phone:     gormcnm.Cmn(a.Phone, "phone", decoration),
-		Email:     gormcnm.Cmn(a.Email, "email", decoration),
+		ID:        gormcnm.Cmn(c.ID, "id", decoration),
+		CreatedAt: gormcnm.Cmn(c.CreatedAt, "created_at", decoration),
+		UpdatedAt: gormcnm.Cmn(c.UpdatedAt, "updated_at", decoration),
+		DeletedAt: gormcnm.Cmn(c.DeletedAt, "deleted_at", decoration),
+		Username:  gormcnm.Cmn(c.Username, "username", decoration),
+		Nickname:  gormcnm.Cmn(c.Nickname, "nickname", decoration),
+		Phone:     gormcnm.Cmn(c.Phone, "phone", decoration),
+		Email:     gormcnm.Cmn(c.Email, "email", decoration),
 	}
 }
 
@@ -38,21 +38,21 @@ type GuestColumns struct {
 	Email     gormcnm.ColumnName[string]
 }
 
-func (a *Order) Columns() *OrderColumns {
-	return a.TableColumns(gormcnm.NewPlainDecoration())
+func (c *Order) Columns() *OrderColumns {
+	return c.TableColumns(gormcnm.NewPlainDecoration())
 }
 
-func (a *Order) TableColumns(decoration gormcnm.ColumnNameDecoration) *OrderColumns {
+func (c *Order) TableColumns(decoration gormcnm.ColumnNameDecoration) *OrderColumns {
 	return &OrderColumns{
-		ID:          gormcnm.Cmn(a.ID, "id", decoration),
-		CreatedAt:   gormcnm.Cmn(a.CreatedAt, "created_at", decoration),
-		UpdatedAt:   gormcnm.Cmn(a.UpdatedAt, "updated_at", decoration),
-		DeletedAt:   gormcnm.Cmn(a.DeletedAt, "deleted_at", decoration),
-		GuestID:     gormcnm.Cmn(a.GuestID, "guest_id", decoration),
-		ProductName: gormcnm.Cmn(a.ProductName, "product_name", decoration),
-		Amount:      gormcnm.Cmn(a.Amount, "amount", decoration),
-		Cost:        gormcnm.Cmn(a.Cost, "cost", decoration),
-		Address:     gormcnm.Cmn(a.Address, "address", decoration),
+		ID:          gormcnm.Cmn(c.ID, "id", decoration),
+		CreatedAt:   gormcnm.Cmn(c.CreatedAt, "created_at", decoration),
+		UpdatedAt:   gormcnm.Cmn(c.UpdatedAt, "updated_at", decoration),
+		DeletedAt:   gormcnm.Cmn(c.DeletedAt, "deleted_at", decoration),
+		GuestID:     gormcnm.Cmn(c.GuestID, "guest_id", decoration),
+		ProductName: gormcnm.Cmn(c.ProductName, "product_name", decoration),
+		Amount:      gormcnm.Cmn(c.Amount, "amount", decoration),
+		Cost:        gormcnm.Cmn(c.Cost, "cost", decoration),
+		Address:     gormcnm.Cmn(c.Address, "address", decoration),
 	}
 }
 

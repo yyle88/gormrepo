@@ -41,24 +41,3 @@ type OrderColumns struct {
 	UserID gormcnm.ColumnName[uint]
 	Amount gormcnm.ColumnName[float64]
 }
-
-func (c *Product) Columns() *ProductColumns {
-	return c.TableColumns(gormcnm.NewPlainDecoration())
-}
-
-func (c *Product) TableColumns(decoration gormcnm.ColumnNameDecoration) *ProductColumns {
-	return &ProductColumns{
-		ID:      gormcnm.Cmn(c.ID, "id", decoration),
-		OrderID: gormcnm.Cmn(c.OrderID, "order_id", decoration),
-		Name:    gormcnm.Cmn(c.Name, "name", decoration),
-	}
-}
-
-type ProductColumns struct {
-	// Embedding operation functions make it easy to use // 继承操作函数便于使用
-	gormcnm.ColumnOperationClass
-	// The column names and types of the model's columns // 模型各列的列名和类型
-	ID      gormcnm.ColumnName[uint]
-	OrderID gormcnm.ColumnName[uint]
-	Name    gormcnm.ColumnName[string]
-}

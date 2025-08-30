@@ -7,19 +7,19 @@ import (
 	"gorm.io/gorm"
 )
 
-func (*Account) Columns() *AccountColumns {
+func (c *Account) Columns() *AccountColumns {
 	return &AccountColumns{
-		ID:            "id",
-		CreatedAt:     "created_at",
-		UpdatedAt:     "updated_at",
-		DeletedAt:     "deleted_at",
-		AccountNumber: "account_number",
-		AccountName:   "account_name",
-		Balance:       "balance",
-		AccountType:   "account_type",
-		Status:        "status",
-		BankCode:      "bank_code",
-		BranchCode:    "branch_code",
+		ID:            gormcnm.Cnm(c.ID, "id"),
+		CreatedAt:     gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt:     gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt:     gormcnm.Cnm(c.DeletedAt, "deleted_at"),
+		AccountNumber: gormcnm.Cnm(c.AccountNumber, "account_number"),
+		AccountName:   gormcnm.Cnm(c.AccountName, "account_name"),
+		Balance:       gormcnm.Cnm(c.Balance, "balance"),
+		AccountType:   gormcnm.Cnm(c.AccountType, "account_type"),
+		Status:        gormcnm.Cnm(c.Status, "status"),
+		BankCode:      gormcnm.Cnm(c.BankCode, "bank_code"),
+		BranchCode:    gormcnm.Cnm(c.BranchCode, "branch_code"),
 	}
 }
 
@@ -40,20 +40,20 @@ type AccountColumns struct {
 	BranchCode    gormcnm.ColumnName[string]
 }
 
-func (*Transaction) Columns() *TransactionColumns {
+func (c *Transaction) Columns() *TransactionColumns {
 	return &TransactionColumns{
-		ID:                "id",
-		CreatedAt:         "created_at",
-		UpdatedAt:         "updated_at",
-		DeletedAt:         "deleted_at",
-		TransactionID:     "transaction_id",
-		FromAccountNumber: "from_account_number",
-		ToAccountNumber:   "to_account_number",
-		Amount:            "amount",
-		TransactionType:   "transaction_type",
-		Description:       "description",
-		Status:            "status",
-		Reference:         "reference",
+		ID:                gormcnm.Cnm(c.ID, "id"),
+		CreatedAt:         gormcnm.Cnm(c.CreatedAt, "created_at"),
+		UpdatedAt:         gormcnm.Cnm(c.UpdatedAt, "updated_at"),
+		DeletedAt:         gormcnm.Cnm(c.DeletedAt, "deleted_at"),
+		TransactionID:     gormcnm.Cnm(c.TransactionID, "transaction_id"),
+		FromAccountNumber: gormcnm.Cnm(c.FromAccountNumber, "from_account_number"),
+		ToAccountNumber:   gormcnm.Cnm(c.ToAccountNumber, "to_account_number"),
+		Amount:            gormcnm.Cnm(c.Amount, "amount"),
+		TransactionType:   gormcnm.Cnm(c.TransactionType, "transaction_type"),
+		Description:       gormcnm.Cnm(c.Description, "description"),
+		Status:            gormcnm.Cnm(c.Status, "status"),
+		Reference:         gormcnm.Cnm(c.Reference, "reference"),
 	}
 }
 
