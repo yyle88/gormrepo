@@ -36,6 +36,7 @@ func (*Account) TableName() string {
 
 func (a *Account) Columns() *AccountColumns {
 	return &AccountColumns{
+		// Auto-generated: column names and types mapping. DO NOT EDIT. // 自动生成：列名和类型映射。请勿编辑。
 		ID:        gormcnm.Cnm(a.ID, "id"),
 		CreatedAt: gormcnm.Cnm(a.CreatedAt, "created_at"),
 		UpdatedAt: gormcnm.Cnm(a.UpdatedAt, "updated_at"),
@@ -47,9 +48,9 @@ func (a *Account) Columns() *AccountColumns {
 }
 
 type AccountColumns struct {
-	// Embedding operation functions make it easy to use // 继承操作函数便于使用
+	// Auto-generated: embedding operation functions to make it simple to use. DO NOT EDIT. // 自动生成：嵌入操作函数便于使用。请勿编辑。
 	gormcnm.ColumnOperationClass
-	// The column names and types of the model's columns // 模型各列的列名和类型
+	// Auto-generated: column names and types in database table. DO NOT EDIT. // 自动生成：数据库表的列名和类型。请勿编辑。
 	ID        gormcnm.ColumnName[uint]
 	CreatedAt gormcnm.ColumnName[time.Time]
 	UpdatedAt gormcnm.ColumnName[time.Time]
@@ -81,7 +82,8 @@ func TestGenerateColumns(t *testing.T) {
 
 	// Configure code generation settings
 	// 配置代码生成设置
-	cfg := gormcngen.NewConfigs(objects, options, absPath)
+	cfg := gormcngen.NewConfigs(objects, options, absPath).
+		WithIsGenPreventEdit(false)
 	cfg.Gen() // Generate and write the code to the target location (e.g., "gormcnm.gen.go") // 生成并将代码写入目标位置（例如 "gormcnm.gen.go"）
 }
 

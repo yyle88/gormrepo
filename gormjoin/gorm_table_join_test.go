@@ -28,15 +28,16 @@ func (a *Guest) Columns() *GuestColumns {
 
 func (a *Guest) TableColumns(decoration gormcnm.ColumnNameDecoration) *GuestColumns {
 	return &GuestColumns{
+		// Auto-generated: column mapping in table operations. DO NOT EDIT. // 自动生成：表操作的列映射。请勿编辑。
 		ID:   gormcnm.Cmn(a.ID, "id", decoration),
 		Name: gormcnm.Cmn(a.Name, "name", decoration),
 	}
 }
 
 type GuestColumns struct {
-	// Embedding operation functions make it easy to use // 继承操作函数便于使用
+	// Auto-generated: embedding operation functions to make it simple to use. DO NOT EDIT. // 自动生成：嵌入操作函数便于使用。请勿编辑。
 	gormcnm.ColumnOperationClass
-	// The column names and types of the model's columns // 模型各列的列名和类型
+	// Auto-generated: column names and types in database table. DO NOT EDIT. // 自动生成：数据库表的列名和类型。请勿编辑。
 	ID   gormcnm.ColumnName[uint]
 	Name gormcnm.ColumnName[string]
 }
@@ -57,6 +58,7 @@ func (a *Order) Columns() *OrderColumns {
 
 func (a *Order) TableColumns(decoration gormcnm.ColumnNameDecoration) *OrderColumns {
 	return &OrderColumns{
+		// Auto-generated: column mapping in table operations. DO NOT EDIT. // 自动生成：表操作的列映射。请勿编辑。
 		ID:      gormcnm.Cmn(a.ID, "id", decoration),
 		GuestID: gormcnm.Cmn(a.GuestID, "guest_id", decoration),
 		Amount:  gormcnm.Cmn(a.Amount, "amount", decoration),
@@ -64,9 +66,9 @@ func (a *Order) TableColumns(decoration gormcnm.ColumnNameDecoration) *OrderColu
 }
 
 type OrderColumns struct {
-	// Embedding operation functions make it easy to use // 继承操作函数便于使用
+	// Auto-generated: embedding operation functions to make it simple to use. DO NOT EDIT. // 自动生成：嵌入操作函数便于使用。请勿编辑。
 	gormcnm.ColumnOperationClass
-	// The column names and types of the model's columns // 模型各列的列名和类型
+	// Auto-generated: column names and types in database table. DO NOT EDIT. // 自动生成：数据库表的列名和类型。请勿编辑。
 	ID      gormcnm.ColumnName[uint]
 	GuestID gormcnm.ColumnName[uint]
 	Amount  gormcnm.ColumnName[float64]
@@ -95,7 +97,8 @@ func TestGenerateColumns(t *testing.T) {
 
 	// Configure code generation settings
 	// 配置代码生成设置
-	cfg := gormcngen.NewConfigs(objects, options, absPath)
+	cfg := gormcngen.NewConfigs(objects, options, absPath).
+		WithIsGenPreventEdit(false)
 	cfg.Gen() // Generate and write the code to the target location (e.g., "gormcnm.gen.go") // 生成并将代码写入目标位置（例如 "gormcnm.gen.go"）
 }
 

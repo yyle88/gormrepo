@@ -95,7 +95,7 @@ func (repo *GormRepo[MOD, CLS]) FindPageAndCount(where func(db *gorm.DB, cls CLS
 
 func (repo *GormRepo[MOD, CLS]) FindPage(where func(db *gorm.DB, cls CLS) *gorm.DB, ordering func(cls CLS) gormcnm.OrderByBottle, page *Pagination) ([]*MOD, error) {
 	db := where(repo.db, repo.cls)
-	db = db.Order(string(ordering(repo.cls))) // gorm order func only receive a few types, so we convert it to string.
+	db = db.Order(string(ordering(repo.cls))) // gorm method just receives a few types, so we convert it to string.
 	db = db.Limit(page.Limit).Offset(page.Offset)
 	var results = make([]*MOD, 0, page.Limit)
 	if err := db.Find(&results).Error; err != nil {
@@ -128,6 +128,47 @@ func (repo *GormRepo[MOD, CLS]) Updates(where func(db *gorm.DB, cls CLS) *gorm.D
 
 func (repo *GormRepo[MOD, CLS]) Invoke(clsRun func(db *gorm.DB, cls CLS) *gorm.DB) error {
 	if err := clsRun(repo.db, repo.cls).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *GormRepo[MOD, CLS]) Create(one *MOD) error {
+	if err := repo.db.Create(one).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *GormRepo[MOD, CLS]) Save(one *MOD) error {
+	if err := repo.db.Save(one).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *GormRepo[MOD, CLS]) Delete(one *MOD) error {
+	// 使用 GORM Delete 时，Delete 的参数 one 不允许传 nil，因此 GORM 内部需要有效指针进行反射
+	// When using GORM Delete, param one cannot be nil, as GORM requires valid instance for internal reflection
+	if err := repo.db.Delete(one).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *GormRepo[MOD, CLS]) DeleteW(where func(db *gorm.DB, cls CLS) *gorm.DB) error {
+	// GORM Delete 需要有效指针，不能传 nil，否则报错 "invalid value, should be pointer to struct or slice"
+	// GORM Delete needs valid instance, not nil, otherwise error "invalid value, should be instance to struct or slice"
+	if err := where(repo.db, repo.cls).Delete(new(MOD)).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *GormRepo[MOD, CLS]) DeleteM(one *MOD, where func(db *gorm.DB, cls CLS) *gorm.DB) error {
+	// 使用 GORM Delete 时，Delete 的参数 one 不允许传 nil，因此 GORM 内部需要有效指针进行反射
+	// When using GORM Delete, param one cannot be nil, as GORM requires valid instance for internal reflection
+	if err := where(repo.db, repo.cls).Delete(one).Error; err != nil {
 		return err
 	}
 	return nil

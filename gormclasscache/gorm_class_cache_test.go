@@ -55,6 +55,7 @@ func (*TestModel) TableName() string {
 
 func (c *TestModel) Columns() *TestModelColumns {
 	return &TestModelColumns{
+		// Auto-generated: column names and types mapping. DO NOT EDIT. // 自动生成：列名和类型映射。请勿编辑。
 		ID:       gormcnm.Cnm(c.ID, "id"),
 		Username: gormcnm.Cnm(c.Username, "username"),
 		Password: gormcnm.Cnm(c.Password, "password"),
@@ -70,7 +71,7 @@ func (c *TestModel) Columns() *TestModelColumns {
 // 支持流畅的查询构建，完整的 IDE 支持和错误预防
 
 type TestModelColumns struct {
-	// The column names and types of the model's columns // 模型各列的列名和类型
+	// Auto-generated: column names and types in database table. DO NOT EDIT. // 自动生成：数据库表的列名和类型。请勿编辑。
 	ID       gormcnm.ColumnName[uint]
 	Username gormcnm.ColumnName[string]
 	Password gormcnm.ColumnName[string]
@@ -118,7 +119,8 @@ func TestGenerateColumns(t *testing.T) {
 	// Creates optimized column definitions into this test file
 	// 步骤4：创建生成配置并执行代码生成
 	// 直接在此测试文件中生成优化的列定义
-	cfg := gormcngen.NewConfigs(objects, options, absPath)
+	cfg := gormcngen.NewConfigs(objects, options, absPath).
+		WithIsGenPreventEdit(false)
 	cfg.Gen() // Execute code generation to current file // 执行代码生成到当前文件
 }
 

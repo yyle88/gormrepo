@@ -38,6 +38,7 @@ func (a *Account) Columns() *AccountColumns {
 
 func (a *Account) TableColumns(decoration gormcnm.ColumnNameDecoration) *AccountColumns {
 	return &AccountColumns{
+		// Auto-generated: column mapping in table operations. DO NOT EDIT. // 自动生成：表操作的列映射。请勿编辑。
 		ID:        gormcnm.Cmn(a.ID, "id", decoration),
 		CreatedAt: gormcnm.Cmn(a.CreatedAt, "created_at", decoration),
 		UpdatedAt: gormcnm.Cmn(a.UpdatedAt, "updated_at", decoration),
@@ -49,9 +50,9 @@ func (a *Account) TableColumns(decoration gormcnm.ColumnNameDecoration) *Account
 }
 
 type AccountColumns struct {
-	// Embedding operation functions make it easy to use // 继承操作函数便于使用
+	// Auto-generated: embedding operation functions to make it simple to use. DO NOT EDIT. // 自动生成：嵌入操作函数便于使用。请勿编辑。
 	gormcnm.ColumnOperationClass
-	// The column names and types of the model's columns // 模型各列的列名和类型
+	// Auto-generated: column names and types in database table. DO NOT EDIT. // 自动生成：数据库表的列名和类型。请勿编辑。
 	ID        gormcnm.ColumnName[uint]
 	CreatedAt gormcnm.ColumnName[time.Time]
 	UpdatedAt gormcnm.ColumnName[time.Time]
@@ -79,6 +80,7 @@ func (a *Example) Columns() *ExampleColumns {
 
 func (a *Example) TableColumns(decoration gormcnm.ColumnNameDecoration) *ExampleColumns {
 	return &ExampleColumns{
+		// Auto-generated: column mapping in table operations. DO NOT EDIT. // 自动生成：表操作的列映射。请勿编辑。
 		ID:        gormcnm.Cmn(a.ID, "id", decoration),
 		Name:      gormcnm.Cmn(a.Name, "name", decoration),
 		Age:       gormcnm.Cmn(a.Age, "age", decoration),
@@ -88,9 +90,9 @@ func (a *Example) TableColumns(decoration gormcnm.ColumnNameDecoration) *Example
 }
 
 type ExampleColumns struct {
-	// Embedding operation functions make it easy to use // 继承操作函数便于使用
+	// Auto-generated: embedding operation functions to make it simple to use. DO NOT EDIT. // 自动生成：嵌入操作函数便于使用。请勿编辑。
 	gormcnm.ColumnOperationClass
-	// The column names and types of the model's columns // 模型各列的列名和类型
+	// Auto-generated: column names and types in database table. DO NOT EDIT. // 自动生成：数据库表的列名和类型。请勿编辑。
 	ID        gormcnm.ColumnName[int32]
 	Name      gormcnm.ColumnName[string]
 	Age       gormcnm.ColumnName[int]
@@ -122,7 +124,8 @@ func TestGenerateColumns(t *testing.T) {
 
 	// Configure code generation settings
 	// 配置代码生成设置
-	cfg := gormcngen.NewConfigs(objects, options, absPath)
+	cfg := gormcngen.NewConfigs(objects, options, absPath).
+		WithIsGenPreventEdit(false)
 	// Generate and write the code to the target location (e.g., "gormcnm.gen.go")
 	// 生成并将代码写入目标位置（例如 "gormcnm.gen.go"）
 	cfg.Gen()

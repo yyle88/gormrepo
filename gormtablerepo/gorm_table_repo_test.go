@@ -37,6 +37,7 @@ func (a *Student) Columns() *StudentColumns {
 
 func (a *Student) TableColumns(decoration gormcnm.ColumnNameDecoration) *StudentColumns {
 	return &StudentColumns{
+		// Auto-generated: column mapping in table operations. DO NOT EDIT. // 自动生成：表操作的列映射。请勿编辑。
 		ID:   gormcnm.Cmn(a.ID, "id", decoration),
 		Name: gormcnm.Cmn(a.Name, "name", decoration),
 		Rank: gormcnm.Cmn(a.Rank, "rank", decoration),
@@ -44,9 +45,9 @@ func (a *Student) TableColumns(decoration gormcnm.ColumnNameDecoration) *Student
 }
 
 type StudentColumns struct {
-	// Embedding operation functions make it easy to use // 继承操作函数便于使用
+	// Auto-generated: embedding operation functions to make it simple to use. DO NOT EDIT. // 自动生成：嵌入操作函数便于使用。请勿编辑。
 	gormcnm.ColumnOperationClass
-	// The column names and types of the model's columns // 模型各列的列名和类型
+	// Auto-generated: column names and types in database table. DO NOT EDIT. // 自动生成：数据库表的列名和类型。请勿编辑。
 	ID   gormcnm.ColumnName[uint]
 	Name gormcnm.ColumnName[string]
 	Rank gormcnm.ColumnName[int]
@@ -75,7 +76,8 @@ func TestGenerateColumns(t *testing.T) {
 
 	// Configure code generation settings
 	// 配置代码生成设置
-	cfg := gormcngen.NewConfigs(objects, options, absPath)
+	cfg := gormcngen.NewConfigs(objects, options, absPath).
+		WithIsGenPreventEdit(false)
 	cfg.Gen() // Generate and write the code to the target location (e.g., "gormcnm.gen.go") // 生成并将代码写入目标位置（例如 "gormcnm.gen.go"）
 }
 

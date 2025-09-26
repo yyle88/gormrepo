@@ -1,13 +1,13 @@
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/yyle88/gormrepo/release.yml?branch=main&label=BUILD)](https://github.com/yyle88/gormrepo/actions/workflows/release.yml?query=branch%3Amain)
 [![GoDoc](https://pkg.go.dev/badge/github.com/yyle88/gormrepo)](https://pkg.go.dev/github.com/yyle88/gormrepo)
-[![Coverage Status](https://img.shields.io/coveralls/github/yyle88/gormrepo/master.svg)](https://coveralls.io/github/yyle88/gormrepo?branch=main)
-![Supported Go Versions](https://img.shields.io/badge/Go-1.22%2C%201.23-lightgrey.svg)
+[![Coverage Status](https://img.shields.io/coveralls/github/yyle88/gormrepo/main.svg)](https://coveralls.io/github/yyle88/gormrepo?branch=main)
+![Supported Go Versions](https://img.shields.io/badge/Go-1.22%2C%201.23%2C%201.24%2C%201.25-lightgrey.svg)
 [![GitHub Release](https://img.shields.io/github/release/yyle88/gormrepo.svg)](https://github.com/yyle88/gormrepo/releases)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yyle88/gormrepo)](https://goreportcard.com/report/github.com/yyle88/gormrepo)
 
 # 🚀 GORM Ecosystem - Enterprise-Grade Type-Safe Database Operations
 
-**gormrepo** is the centerpiece of a complete GORM ecosystem, delivering **type-safe**, **enterprise-grade**, and **highly efficient** database operations for Go developers.
+**gormrepo** is the centerpiece of a complete GORM ecosystem, delivering **type-safe**, **enterprise-grade**, and **very efficient** database operations for Go developers.
 
 > 🌟 **Combining the best of Java MyBatis Plus + Python SQLAlchemy, designed with Go's next-generation ORM toolchain**
 
@@ -21,25 +21,25 @@
 
 ## 🎯 Ecosystem Core Values
 
-### ✨ Compile-Time Type Safety
-- **Zero runtime errors**: Catch all column name and type errors at compile time
-- **Refactoring-compatible**: Field renames auto update all references
+### ✨ Compile-Time Type Safe
+- **Zero runtime errors**: Catch every column name and type errors at compile time
+- **Refactoring-compatible**: Field renames auto update every reference
 - **IDE intelligence**: Complete code completion and type checking
 
 ### 🔄 Intelligent Code Generation
-- **AST-level precision**: Smart code generation based on syntax trees
+- **AST precision**: Smart code generation based on syntax trees
 - **Zero maintenance cost**: Auto-generate and update column constants
-- **Incremental updates**: Preserve existing code structure
+- **Progressive updates**: Preserve existing code structure
 
 ### 🌍 Native Language Support
-- **Chinese field names**: Support Chinese and other native languages for business fields
+- **Chinese field names**: Support Chinese and native languages for business fields
 - **Automatic conversion**: Smart generation of database-compatible column mappings
-- **International-compatible**: Lower barriers for non-English developers
+- **Worldwide-compatible**: Reduce barriers for non-English developers
 
-### 🏢 Enterprise Repository Pattern
+### 🏢 Enterprise Repo Pattern
 - **CRUD encapsulation**: Out-of-the-box common database operations
 - **Pagination support**: Built-in pagination, counting, and sorting
-- **Scope isolation**: Elegant temporary variable management
+- **Scope isolation**: Elegant temp variable management
 
 ---
 
@@ -85,9 +85,9 @@
 ## 📦 Ecosystem Components
 
 ### 🔹 [gormcnm](https://github.com/yyle88/gormcnm) - Type-Safe Column Foundation
-**Core Value**: Eliminate hardcoded column names, achieve compile-time type safety
+**Core Value**: Eliminate hardcoded column names, achieve compile-time type safe
 - `ColumnName[T]` generic type definition
-- Full SQL operations: `Eq()`, `Gt()`, `Lt()`, `In()`, `Between()`, etc.
+- Complete SQL operations: `Eq()`, `Gt()`, `Lt()`, `In()`, `Between()`, etc.
 - Expression building: `ExprAdd()`, `ExprSub()`, `ExprMul()`, etc.
 
 ### 🔹 [gormcngen](https://github.com/yyle88/gormcngen) - Smart Code Generation
@@ -96,10 +96,10 @@
 - Auto-generate column structs and methods
 - Support custom column mappings and embedded fields
 
-### 🔹 [gormrepo](https://github.com/yyle88/gormrepo) - Enterprise Repository Pattern ⭐
-**Core Value**: Simplify GORM operations with enterprise-grade experience
-- Generic repository pattern `GormRepo[MOD, CLS]`
-- Functional condition building
+### 🔹 [gormrepo](https://github.com/yyle88/gormrepo) - Enterprise Repo Pattern ⭐
+**Core Value**: Streamline GORM operations with enterprise-grade experience
+- Generic repo pattern `GormRepo[MOD, CLS]`
+- Flexible condition building
 - Complete pagination, counting, and existence checks
 
 ### 🔹 [gormmom](https://github.com/yyle88/gormmom) - Native Language Support
@@ -112,7 +112,7 @@
 **Core Value**: Complete Chinese API for native Chinese development
 - Pure Chinese method and type names (`T编码器`, `T表结构`, `T配置项`)
 - Chinese field name support (`V名称`, `V性别`, `V年龄`)
-- Built on gormmom with full ecosystem integration
+- Built on gormmom with complete ecosystem integration
 
 ---
 
@@ -126,7 +126,7 @@ go get github.com/yyle88/gormrepo
 
 ### Complete Usage Flow
 
-#### 1. Define Your Model (Supporting Native Fields)
+#### 1. Define The Model (Supporting Native Fields)
 
 ```go
 type User struct {
@@ -158,10 +158,10 @@ type UserColumns struct {
 }
 ```
 
-#### 3. Type-Safe Repository Operations (gormrepo Core Features)
+#### 3. Type-Safe Repo Operations (gormrepo Core Features)
 
 ```go
-// Create repository
+// Create repo
 repo := gormrepo.NewGormRepo(db, &User{}, (&User{}).Columns())
 
 // Type-safe queries - compile-time validation, zero runtime errors
@@ -208,9 +208,9 @@ err = repo.Updates(
 | **Hardcoded Strings** | ❌ "name", "email" literals | ✅ Type-safe column access |
 | **Typo Prevention** | ❌ Runtime SQL errors | ✅ Compile-time error detection |
 | **Type Validation** | ❌ Wrong type assignments | ✅ Generic type enforcement |
-| **Refactoring** | ❌ Manual find-replace | ✅ IDE auto-refactor |
+| **Refactoring** | ❌ Hand-written find-replace | ✅ IDE auto-update |
 | **Native Language** | ❌ English fields just | ✅ Support Chinese/others |
-| **Code Generation** | ❌ Manual maintenance | ✅ AST smart generation |
+| **Code Generation** | ❌ Hand-written maintenance | ✅ AST smart generation |
 
 ### Classic vs Ecosystem Approach
 
@@ -231,16 +231,34 @@ repo.First(func(db *gorm.DB, cls *UserColumns) *gorm.DB {
 
 ## 🔧 GormRepo API Documentation
 
+### Query Operations
 | Method | Parameters | Returns | Description |
 |--------|-----------|---------|-------------|
 | `First` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, error` | Query first matching record |
-| `Find` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `[]*MOD, error` | Query all matching records |
+| `Find` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `[]*MOD, error` | Query every matching records |
 | `FindPage` | `where, ordering, pagination` | `[]*MOD, error` | Paginated search |
 | `FindPageAndCount` | `where, ordering, pagination` | `[]*MOD, int64, error` | Paginated search with total count |
 | `Count` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `int64, error` | Count matching records |
 | `Exist` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `bool, error` | Check if records exist |
+
+### Create Operations
+| Method | Parameters | Returns | Description |
+|--------|-----------|---------|-------------|
+| `Create` | `one *MOD` | `error` | Create new record |
+| `Save` | `one *MOD` | `error` | Insert or update record |
+
+### Update Operations
+| Method | Parameters | Returns | Description |
+|--------|-----------|---------|-------------|
 | `Update` | `where, valueFunc` | `error` | Update single field |
 | `Updates` | `where, mapValues` | `error` | Update multiple fields |
+
+### Delete Operations
+| Method | Parameters | Returns | Description |
+|--------|-----------|---------|-------------|
+| `Delete` | `one *MOD` | `error` | Delete record by entity |
+| `DeleteW` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | Delete by conditions |
+| `DeleteM` | `one *MOD, where func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | Delete item with conditions |
 
 ---
 
@@ -248,13 +266,13 @@ repo.First(func(db *gorm.DB, cls *UserColumns) *gorm.DB {
 
 ### 🏢 Large Project Database Standardization
 - Unified type-safe operation standards
-- Reduce low-level errors in code reviews
-- Improve team collaboration efficiency
+- Reduce low-grade errors in code reviews
+- Improve team collaboration speed
 
-### 🌍 International Project Support
+### 🌍 Worldwide Project Support
 - Native field names reduce business understanding barriers
 - Auto-generate standard database column names
-- Support multilingual team collaboration
+- Support multi-language team collaboration
 
 ### ⚡ Rapid Development & Maintenance
 - Zero-configuration code generation
@@ -263,25 +281,25 @@ repo.First(func(db *gorm.DB, cls *UserColumns) *gorm.DB {
 
 ---
 
-## 🔄 Technology Comparison
+## 🔄 Tech Comparison
 
 | Ecosystem | Java MyBatis Plus | Python SQLAlchemy | Go GORM Ecosystem |
 |-----------|------------------|-------------------|-------------------|
 | **Type-Safe Columns** | `Example::getName` | `Example.name` | `cls.Name.Eq()` |
 | **Code Generation** | ✅ Plugin support | ✅ Reflection | ✅ AST precision |
-| **Repository Pattern** | ✅ BaseMapper | ✅ Session API | ✅ GormRepo |
-| **Native Language** | 🟡 Limited | 🟡 Limited | ✅ Full support |
+| **Repo Pattern** | ✅ BaseMapper | ✅ Session API | ✅ GormRepo |
+| **Native Language** | 🟡 Limited | 🟡 Limited | ✅ Complete support |
 
 ---
 
 ## 📝 Complete Examples
 
-Check [examples](internal/examples) directory for complete integration examples.
+Check [examples](internal/examples) DIR for complete integration examples.
 
 ---
 
 <!-- TEMPLATE (EN) BEGIN: STANDARD PROJECT FOOTER -->
-<!-- VERSION 2025-08-28 08:33:43.829511 +0000 UTC -->
+<!-- VERSION 2025-09-06 04:53:24.895249 +0000 UTC -->
 
 ## 📄 License
 
@@ -296,12 +314,12 @@ Contributions are welcome! Report bugs, suggest features, and contribute code:
 - 🐛 **Found a bug?** Open an issue on GitHub with reproduction steps
 - 💡 **Have a feature idea?** Create an issue to discuss the suggestion
 - 📖 **Documentation confusing?** Report it so we can improve
-- 🚀 **Need new features?** Share your use cases to help us understand requirements
-- ⚡ **Performance issue?** Help us optimize by reporting slow operations
+- 🚀 **Need new features?** Share the use cases to help us understand requirements
+- ⚡ **Performance issue?** Help us optimize through reporting slow operations
 - 🔧 **Configuration problem?** Ask questions about complex setups
-- 📢 **Follow project progress?** Watch the repo for new releases and features
-- 🌟 **Success stories?** Share how this package improved your workflow
-- 💬 **General feedback?** All suggestions and comments are welcome
+- 📢 **Follow project progress?** Watch the repo to get new releases and features
+- 🌟 **Success stories?** Share how this package improved the workflow
+- 💬 **Feedback?** We welcome suggestions and comments
 
 ---
 
@@ -309,13 +327,13 @@ Contributions are welcome! Report bugs, suggest features, and contribute code:
 
 New code contributions, follow this process:
 
-1. **Fork**: Fork the repo on GitHub (using the webpage interface).
+1. **Fork**: Fork the repo on GitHub (using the webpage UI).
 2. **Clone**: Clone the forked project (`git clone https://github.com/yourname/repo-name.git`).
 3. **Navigate**: Navigate to the cloned project (`cd repo-name`)
 4. **Branch**: Create a feature branch (`git checkout -b feature/xxx`).
-5. **Code**: Implement your changes with comprehensive tests
+5. **Code**: Implement the changes with comprehensive tests
 6. **Testing**: (Golang project) Ensure tests pass (`go test ./...`) and follow Go code style conventions
-7. **Documentation**: Update documentation for user-facing changes and use meaningful commit messages
+7. **Documentation**: Update documentation to support client-facing changes and use significant commit messages
 8. **Stage**: Stage changes (`git add .`)
 9. **Commit**: Commit changes (`git commit -m "Add feature xxx"`) ensuring backward compatible code
 10. **Push**: Push to the branch (`git push origin feature/xxx`).
@@ -327,7 +345,7 @@ Please ensure tests pass and include relevant documentation updates.
 
 ## 🌟 Support
 
-Welcome to contribute to this project by submitting pull requests and reporting issues.
+Welcome to contribute to this project via submitting merge requests and reporting issues.
 
 **Project Support:**
 
@@ -336,7 +354,7 @@ Welcome to contribute to this project by submitting pull requests and reporting 
 - 📝 **Write tech blogs** about development tools and workflows - we provide content writing support
 - 🌟 **Join the ecosystem** - committed to supporting open source and the (golang) development scene
 
-**Happy Coding with this package!** 🎉
+**Have Fun Coding with this package!** 🎉
 
 <!-- TEMPLATE (EN) END: STANDARD PROJECT FOOTER -->
 
@@ -352,5 +370,5 @@ Welcome to contribute to this project by submitting pull requests and reporting 
 
 - 🏗️ **[gormcnm](https://github.com/yyle88/gormcnm)** - Type-safe column foundation
 - 🤖 **[gormcngen](https://github.com/yyle88/gormcngen)** - Smart code generation
-- 🏢 **[gormrepo](https://github.com/yyle88/gormrepo)** - Enterprise repository pattern
+- 🏢 **[gormrepo](https://github.com/yyle88/gormrepo)** - Enterprise repo pattern
 - 🌍 **[gormmom](https://github.com/yyle88/gormmom)** - Native language programming

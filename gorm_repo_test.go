@@ -294,3 +294,124 @@ func TestGormRepo_Invoke(t *testing.T) {
 		require.Equal(t, "demo-2-nickname", nickname)
 	}
 }
+
+func TestGormRepo_Create(t *testing.T) {
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
+	must.Done(db.AutoMigrate(&Account{}))
+
+	repo := gormrepo.NewGormRepo(gormrepo.Use(db, &Account{}))
+
+	username := uuid.New().String()
+	account := newAccount(username)
+	require.NoError(t, repo.Create(account))
+	require.NotZero(t, account.ID)
+
+	res, err := repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	})
+	require.NoError(t, err)
+	require.Equal(t, username, res.Username)
+}
+
+func TestGormRepo_Save(t *testing.T) {
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
+	must.Done(db.AutoMigrate(&Account{}))
+
+	repo := gormrepo.NewGormRepo(gormrepo.Use(db, &Account{}))
+
+	username := uuid.New().String()
+	account := newAccount(username)
+	require.NoError(t, repo.Save(account))
+	require.NotZero(t, account.ID)
+
+	newNickname := uuid.New().String()
+	account.Nickname = newNickname
+	require.NoError(t, repo.Save(account))
+
+	res, err := repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	})
+	require.NoError(t, err)
+	require.Equal(t, newNickname, res.Nickname)
+}
+
+func TestGormRepo_Delete(t *testing.T) {
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
+	must.Done(db.AutoMigrate(&Account{}))
+
+	repo := gormrepo.NewGormRepo(gormrepo.Use(db, &Account{}))
+
+	username := uuid.New().String()
+	account := newAccount(username)
+	require.NoError(t, repo.Create(account))
+
+	require.NoError(t, repo.Delete(account))
+
+	exist, err := repo.Exist(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.ID.Eq(account.ID))
+	})
+	require.NoError(t, err)
+	require.False(t, exist)
+}
+
+func TestGormRepo_DeleteW(t *testing.T) {
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
+	must.Done(db.AutoMigrate(&Account{}))
+
+	repo := gormrepo.NewGormRepo(gormrepo.Use(db, &Account{}))
+
+	username := uuid.New().String()
+	account := newAccount(username)
+	require.NoError(t, repo.Create(account))
+
+	require.NoError(t, repo.DeleteW(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	}))
+
+	exist, err := repo.Exist(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	})
+	require.NoError(t, err)
+	require.False(t, exist)
+}
+
+func TestGormRepo_DeleteM(t *testing.T) {
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
+	must.Done(db.AutoMigrate(&Account{}))
+
+	repo := gormrepo.NewGormRepo(gormrepo.Use(db, &Account{}))
+
+	username := uuid.New().String()
+	account := newAccount(username)
+	require.NoError(t, repo.Create(account))
+
+	require.NoError(t, repo.DeleteM(account, func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	}))
+
+	exist, err := repo.Exist(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.ID.Eq(account.ID))
+	})
+	require.NoError(t, err)
+	require.False(t, exist)
+}

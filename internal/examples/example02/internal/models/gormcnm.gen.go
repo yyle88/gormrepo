@@ -1,3 +1,8 @@
+// Code generated using gormcngen. DO NOT EDIT.
+// This file was auto generated via github.com/yyle88/gormcngen
+// Generated from: gormcnm.gen_test.go:43 -> models_test.TestGenerateColumns
+// ========== GORMCNGEN:DO-NOT-EDIT-MARKER:END ==========
+
 package models
 
 import (
@@ -9,6 +14,7 @@ import (
 
 func (c *Account) Columns() *AccountColumns {
 	return &AccountColumns{
+		// Auto-generated: column names and types mapping. DO NOT EDIT. // 自动生成：列名和类型映射。请勿编辑。
 		ID:        gormcnm.Cnm(c.ID, "id"),
 		CreatedAt: gormcnm.Cnm(c.CreatedAt, "created_at"),
 		UpdatedAt: gormcnm.Cnm(c.UpdatedAt, "updated_at"),
@@ -20,9 +26,9 @@ func (c *Account) Columns() *AccountColumns {
 }
 
 type AccountColumns struct {
-	// Embedding operation functions make it easy to use // 继承操作函数便于使用
+	// Auto-generated: embedding operation functions to make it simple to use. DO NOT EDIT. // 自动生成：嵌入操作函数便于使用。请勿编辑。
 	gormcnm.ColumnOperationClass
-	// The column names and types of the model's columns // 模型各列的列名和类型
+	// Auto-generated: column names and types in database table. DO NOT EDIT. // 自动生成：数据库表的列名和类型。请勿编辑。
 	ID        gormcnm.ColumnName[uint]
 	CreatedAt gormcnm.ColumnName[time.Time]
 	UpdatedAt gormcnm.ColumnName[time.Time]
@@ -34,6 +40,7 @@ type AccountColumns struct {
 
 func (c *Example) Columns() *ExampleColumns {
 	return &ExampleColumns{
+		// Auto-generated: column names and types mapping. DO NOT EDIT. // 自动生成：列名和类型映射。请勿编辑。
 		ID:        gormcnm.Cnm(c.ID, "id"),
 		Name:      gormcnm.Cnm(c.Name, "name"),
 		Age:       gormcnm.Cnm(c.Age, "age"),
@@ -43,9 +50,9 @@ func (c *Example) Columns() *ExampleColumns {
 }
 
 type ExampleColumns struct {
-	// Embedding operation functions make it easy to use // 继承操作函数便于使用
+	// Auto-generated: embedding operation functions to make it simple to use. DO NOT EDIT. // 自动生成：嵌入操作函数便于使用。请勿编辑。
 	gormcnm.ColumnOperationClass
-	// The column names and types of the model's columns // 模型各列的列名和类型
+	// Auto-generated: column names and types in database table. DO NOT EDIT. // 自动生成：数据库表的列名和类型。请勿编辑。
 	ID        gormcnm.ColumnName[int32]
 	Name      gormcnm.ColumnName[string]
 	Age       gormcnm.ColumnName[int]
