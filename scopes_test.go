@@ -11,11 +11,11 @@ import (
 	"gorm.io/gorm"
 )
 
-// TestRepo_NewScope tests NewScope by matching Accounts by username.
+// TestRepo_NewScope tests NewScope via matching Accounts via username.
 func TestRepo_NewScope(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{})) // Init repo with Account
 
-	// Create scope to match by username="demo-1-username"
+	// Create scope to match via username="demo-1-username"
 	scope := repo.NewScope(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.Eq("demo-1-username"))
 	})
@@ -34,12 +34,12 @@ func TestRepo_NewScope(t *testing.T) {
 func TestRepo_Paginate(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{})) // Init repo with Account
 
-	// Create scope to match by username in ("demo-1-username", "demo-2-username")
+	// Create scope to match via username in ("demo-1-username", "demo-2-username")
 	condScope := repo.NewScope(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
 		return db.Where(cls.Username.In([]string{"demo-1-username", "demo-2-username"}))
 	})
 
-	// Create scope to sort by username (desc) nickname (asc) with limit=10, offset=0
+	// Create scope to sort via username (desc) nickname (asc) with limit=10, offset=0
 	pageScope := repo.NewPaginateScope(func(cls *AccountColumns) gormcnm.OrderByBottle {
 		return cls.Username.Ob("desc").Ob(cls.Nickname.Ob("asc"))
 	}, &gormrepo.Pagination{

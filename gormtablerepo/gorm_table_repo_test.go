@@ -60,11 +60,11 @@ func TestGenerateColumns(t *testing.T) {
 	// 获取当前测试文件位置基础上的源文件绝对路径
 	t.Log(absPath)
 
-	// Verify the existence of the target file. The file should be created manually to ensure it can be located by the code.
+	// Check the existence of the target file. The file should be created beforehand to ensure it can be located via the code.
 	// 检查目标文件是否存在。文件应手动创建，确保代码能够找到它。
 	require.True(t, osmustexist.IsFile(absPath))
 
-	// List the models for which columns will be generated. Both pointer and non-pointer types are supported.
+	// List the models to have columns generated. Both instance and non-instance types are supported.
 	// 设置需要生成列的模型，这里支持指针类型和非指针类型。
 	objects := []any{&Student{}}
 

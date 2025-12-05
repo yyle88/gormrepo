@@ -21,17 +21,17 @@ import (
 	"github.com/yyle88/runpath"
 )
 
-// TestModel represents a sample database model for testing caching features
-// Contains basic user account information with three essential fields
-// Used as the primary test subject for all caching approaches
+// TestModel represents a sample database object in testing caching features
+// Contains basic account information with three main fields
+// Used as the main test subject for each caching approach
 //
 // TestModel 代表用于测试缓存功能的示例数据库模型
 // 包含基本用户账户信息的三个基本字段
-// 用作所有缓存实现的主要测试对象
+// 用作每个缓存实现的主要测试对象
 type TestModel struct {
 	ID       uint   // Primary key ID // 主键标识符
-	Username string // User login username // 用户登录名
-	Password string // User password data // 用户密码哈希
+	Username string // Account login username // 用户登录名
+	Password string // Account password data // 用户密码哈希
 }
 
 // TableName gets the database table name for TestModel
@@ -64,7 +64,7 @@ func (c *TestModel) Columns() *TestModelColumns {
 
 // TestModelColumns contains type-safe column definitions for TestModel
 // Each field provides compile-time type checking and SQL operation methods
-// Enables fluent query building with full IDE support and error checking
+// Enables fluent database building with complete IDE support and error checking
 //
 // TestModelColumns 代表 TestModel 的类型安全列定义
 // 每个字段提供编译时类型检查和 SQL 操作方法
@@ -77,12 +77,12 @@ type TestModelColumns struct {
 	Password gormcnm.ColumnName[string]
 }
 
-// ===== Code generation logic for above model =====
+// ===== Code generation logic used with above object =====
 // ===== 上述模型的代码生成逻辑 =====
 
 // TestGenerateColumns creates type-safe column definitions for TestModel
 // Uses gormcngen to auto-generate Columns() method and TestModelColumns struct
-// Configured for optimal type safety and IDE integration without embedded operations
+// Configured to achieve best type checking and IDE integration without embedded operations
 // Run with: go generate ./... or go test -v -run TestGenerateColumns
 //
 // TestGenerateColumns 为 TestModel 生成类型安全的列定义
@@ -97,16 +97,16 @@ func TestGenerateColumns(t *testing.T) {
 	absPath := osmustexist.FILE(runpath.CurrentPath())
 	t.Log("Generation target file:", absPath) // Log target file path // 记录目标文件路径
 
-	// Step 2: Define model objects for column generation
-	// Support both pointer and value model types
+	// Step 2: Define struct objects used in column generation
+	// Support both address and value struct types
 	// 步骤2：定义用于生成列的模型对象
-	// 支持指针和非指针模型类型
+	// 支持地址和非地址模型类型
 	objects := []any{
 		&TestModel{}, // TestModel instance for analysis // TestModel 实例用于分析
 	}
 
 	// Step 3: Configure generation options with enterprise-grade settings
-	// Optimized for type safety, IDE support, and clean code generation
+	// Optimized to achieve type checking, IDE support, and clean code generation
 	// 步骤3：使用企业级设置配置生成选项
 	// 针对类型安全、IDE 支持和清洁代码生成进行优化
 	options := gormcngen.NewOptions().
@@ -124,11 +124,11 @@ func TestGenerateColumns(t *testing.T) {
 	cfg.Gen() // Execute code generation to current file // 执行代码生成到当前文件
 }
 
-// ===== Global cache instances for testing different approaches =====
+// ===== Global cache instances in testing different approaches =====
 // ===== 用于测试不同实现的全局缓存实例 =====
 
 // cache1 provides cachemap-based caching for UmcV1 testing
-// Uses mutexmap/cachemap with capacity of 1 for testing
+// Uses mutexmap/cachemap with size of 1 in testing
 // Supports concurrent access with built-in locking mechanisms
 //
 // cache1 为 UmcV1 测试提供基于 cachemap 的缓存
@@ -137,7 +137,7 @@ func TestGenerateColumns(t *testing.T) {
 var cache1 = cachemap.NewMap[string, interface{}](1)
 
 // cache2 provides mutexmap-based caching for UmcV2 testing
-// Uses direct mutexmap with capacity of 1 for testing
+// Uses direct mutexmap with size of 1 in testing
 // Offers alternate concurrent access patterns compared to cachemap
 //
 // cache2 为 UmcV2 测试提供基于 mutexmap 的缓存
@@ -155,7 +155,7 @@ var cache2 = mutexmap.NewMap[string, interface{}](1)
 var cache3 = &sync.Map{}
 
 // TestUmcV1 validates cachemap-based caching implementation (UmcV1)
-// Tests both initial cache population and subsequent cache access
+// Tests both first cache population and subsequent cache access
 // Verifies type safety, cache features, and correct column mappings
 //
 // TestUmcV1 验证基于 cachemap 的缓存实现（UmcV1）
@@ -167,7 +167,7 @@ func TestUmcV1(t *testing.T) {
 		// 测试用列数据填充缓存
 		one, cls := gormclasscache.UmcV1(&TestModel{}, cache1)
 
-		// Verify model instance is returned
+		// Verify instance is returned
 		// 验证模型实例返回
 		require.NotNil(t, one, "Model instance should not be nil")                                 // 模型实例不应为空
 		require.Equal(t, "test_models", one.TableName(), "Table name should match expected value") // 表名应匹配预期值
@@ -185,7 +185,7 @@ func TestUmcV1(t *testing.T) {
 		// 测试缓存检索而不重新生成
 		one, cls := gormclasscache.UmcV1(&TestModel{}, cache1)
 
-		// Verify results maintain accuracy
+		// Verify results maintain correctness
 		// 验证结果保持准确性
 		require.NotNil(t, one, "Model instance should not be nil")                          // 模型实例不应为空
 		require.NotNil(t, cls, "Columns struct should not be nil")                          // 列结构体不应为空
@@ -195,7 +195,7 @@ func TestUmcV1(t *testing.T) {
 
 // TestUmcV2 validates mutexmap-based caching implementation (UmcV2)
 // Tests alternate caching backend with direct mutexmap usage
-// Compares performance and behavior against cachemap method
+// Compares performance and features against cachemap method
 //
 // TestUmcV2 验证基于 mutexmap 的缓存实现（UmcV2）
 // 测试使用直接 mutexmap 的替代缓存后端
@@ -253,7 +253,7 @@ func TestUmcV3(t *testing.T) {
 	})
 
 	t.Run("TEST-2", func(t *testing.T) {
-		// Test optimal performance access from sync.Map cache
+		// Test high performance access from sync.Map cache
 		// 测试以最佳性能从 sync.Map 缓存中检索
 		one, cls := gormclasscache.UmcV3(&TestModel{}, cache3)
 

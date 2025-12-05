@@ -24,7 +24,7 @@ func TestGenerateColumns(t *testing.T) {
 	absPath := osmustexist.FILE(runtestpath.SrcPath(t))
 	t.Log(absPath)
 
-	// Define model objects for column generation - supports both pointer and non-pointer types
+	// Define data objects for column generation - supports both instance and non-instance types
 	// 定义需要生成列的模型对象 - 支持指针类型和非指针类型
 	objects := []any{
 		&models.Account{},

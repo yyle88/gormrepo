@@ -41,7 +41,7 @@ func TestTableRepo_Repo(t *testing.T) {
 		Offset: 1,
 	})
 	require.NoError(t, err)
-	require.Equal(t, int64(3), count) // Expecting 3 students in total count without pagination
+	require.Equal(t, int64(3), count) // Expecting 3 students in aggregate count without pagination
 	require.Len(t, students, 2)       // Expecting 2 students in the pagination result
 	require.Equal(t, "C", students[0].Name)
 	require.Equal(t, "B", students[1].Name)
@@ -77,7 +77,7 @@ func TestTableRepo_Gorm(t *testing.T) {
 		return db.Where(cls.Name.In([]string{"A", "B", "C"})).Count(&count)
 	}).Error
 	require.NoError(t, err)
-	require.Equal(t, int64(3), count) // Expecting 3 students in total count without pagination
+	require.Equal(t, int64(3), count) // Expecting 3 students in aggregate count without pagination
 	require.Len(t, students, 2)       // Expecting 2 students in the pagination result
 	require.Equal(t, "C", students[0].Name)
 	require.Equal(t, "B", students[1].Name)

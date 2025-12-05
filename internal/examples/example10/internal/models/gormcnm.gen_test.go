@@ -24,7 +24,7 @@ func TestGenerateColumns(t *testing.T) {
 	absPath := osmustexist.FILE(runtestpath.SrcPath(t))
 	t.Log(absPath)
 
-	// Define model objects for column generation - supports both pointer and non-pointer types
+	// Define struct objects for column generation - supports both pointer and non-pointer types
 	// 定义需要生成列的模型对象 - 支持指针类型和非指针类型
 	objects := []any{
 		&models.Author{},
@@ -37,7 +37,7 @@ func TestGenerateColumns(t *testing.T) {
 		WithColumnClassExportable(true). // Generate exportable column class names like ExampleColumns // 生成可导出的列类名称如 ExampleColumns
 		WithColumnsMethodRecvName("c").  // Set receiver name for column methods // 设置列方法的接收器名称
 		WithColumnsCheckFieldType(true). // Enable field type checking for type safe // 启用字段类型检查以获得更好的类型安全
-		WithIsGenFuncTableColumns(true)  // Generate table column functions for join operations // 生成表列函数用于连接操作
+		WithIsGenFuncTableColumns(true)  // Generate table column functions during join operations // 生成表列函数用于连接操作
 
 	// Create configuration and generate code to target file
 	// 创建配置并生成代码到目标文件

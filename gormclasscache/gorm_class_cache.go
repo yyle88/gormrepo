@@ -10,7 +10,7 @@ import (
 )
 
 // UmcV1 提供缓存功能，避免每次都调用 Columns 函数生成 gormcnm 对象，提升性能
-// UmcV1 provides caching functionality, avoiding the need to call the Columns function to generate gormcnm objects each time, thus improving performance.
+// UmcV1 provides caching feature, avoiding the need to invoke the Columns function to generate gormcnm objects each time, thus improving performance.
 func UmcV1[MOD gormclass.ModelClass[CLS], CLS any](a MOD, cache *cachemap.Map[string, interface{}]) (MOD, CLS) {
 	vax, _ := cache.Getset(a.TableName(), func() (interface{}, error) {
 		return a.Columns(), nil
@@ -23,7 +23,7 @@ func UmcV1[MOD gormclass.ModelClass[CLS], CLS any](a MOD, cache *cachemap.Map[st
 }
 
 // UmcV2 提供缓存功能，避免每次都调用 Columns 函数生成 gormcnm 对象，提升性能
-// UmcV2 provides caching functionality, avoiding the need to call the Columns function to generate gormcnm objects each time, thus improving performance.
+// UmcV2 provides caching feature, avoiding the need to invoke the Columns function to generate gormcnm objects each time, thus improving performance.
 func UmcV2[MOD gormclass.ModelClass[CLS], CLS any](a MOD, cache *mutexmap.Map[string, interface{}]) (MOD, CLS) {
 	vax, _ := cache.Getset(a.TableName(), func() interface{} {
 		return a.Columns()
@@ -36,7 +36,7 @@ func UmcV2[MOD gormclass.ModelClass[CLS], CLS any](a MOD, cache *mutexmap.Map[st
 }
 
 // UmcV3 提供缓存功能，避免每次都调用 Columns 函数生成 gormcnm 对象，提升性能
-// UmcV3 provides caching functionality, avoiding the need to call the Columns function to generate gormcnm objects each time, thus improving performance.
+// UmcV3 provides caching feature, avoiding the need to invoke the Columns function to generate gormcnm objects each time, thus improving performance.
 func UmcV3[MOD gormclass.ModelClass[CLS], CLS any](a MOD, cache *sync.Map) (MOD, CLS) {
 	value, ok := cache.Load(a.TableName())
 	if !ok {

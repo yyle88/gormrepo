@@ -1,118 +1,41 @@
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/yyle88/gormrepo/release.yml?branch=main&label=BUILD)](https://github.com/yyle88/gormrepo/actions/workflows/release.yml?query=branch%3Amain)
 [![GoDoc](https://pkg.go.dev/badge/github.com/yyle88/gormrepo)](https://pkg.go.dev/github.com/yyle88/gormrepo)
 [![Coverage Status](https://img.shields.io/coveralls/github/yyle88/gormrepo/main.svg)](https://coveralls.io/github/yyle88/gormrepo?branch=main)
-![Supported Go Versions](https://img.shields.io/badge/Go-1.22%2C%201.23%2C%201.24%2C%201.25-lightgrey.svg)
+[![Supported Go Versions](https://img.shields.io/badge/Go-1.22+-lightgrey.svg)](https://go.dev/)
 [![GitHub Release](https://img.shields.io/github/release/yyle88/gormrepo.svg)](https://github.com/yyle88/gormrepo/releases)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yyle88/gormrepo)](https://goreportcard.com/report/github.com/yyle88/gormrepo)
 
 # 🚀 GORM Ecosystem - Enterprise-Grade Type-Safe Database Operations
 
-**gormrepo** is the centerpiece of a complete GORM ecosystem, delivering **type-safe**, **enterprise-grade**, and **very efficient** database operations for Go developers.
+**gormrepo** is the centerpiece of a complete GORM ecosystem, delivering **type-safe**, **enterprise-grade**, and **quite efficient** database operations to Go developers.
 
 > 🌟 **Combining the best of Java MyBatis Plus + Python SQLAlchemy, designed with Go's next-generation ORM toolchain**
 
 ---
 
+## Ecosystem
+
+![GORM Type-Safe Ecosystem](https://github.com/yyle88/gormcnm/raw/main/assets/gormcnm-ecosystem.svg)
+
+---
+
 <!-- TEMPLATE (EN) BEGIN: LANGUAGE NAVIGATION -->
+
 ## CHINESE README
 
 [中文说明](README.zh.md)
 <!-- TEMPLATE (EN) END: LANGUAGE NAVIGATION -->
 
-## 🎯 Ecosystem Core Values
-
-### ✨ Compile-Time Type Safe
-- **Zero runtime errors**: Catch every column name and type errors at compile time
-- **Refactoring-compatible**: Field renames auto update every reference
-- **IDE intelligence**: Complete code completion and type checking
-
-### 🔄 Intelligent Code Generation
-- **AST precision**: Smart code generation based on syntax trees
-- **Zero maintenance cost**: Auto-generate and update column constants
-- **Progressive updates**: Preserve existing code structure
-
-### 🌍 Native Language Support
-- **Chinese field names**: Support Chinese and native languages for business fields
-- **Automatic conversion**: Smart generation of database-compatible column mappings
-- **Worldwide-compatible**: Reduce barriers for non-English developers
-
-### 🏢 Enterprise Repo Pattern
-- **CRUD encapsulation**: Out-of-the-box common database operations
-- **Pagination support**: Built-in pagination, counting, and sorting
-- **Scope isolation**: Elegant temp variable management
-
 ---
 
-## 🏗️ Architecture Overview
+## 🔄 Tech Comparison
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                    GORM Type-Safe Ecosystem                         │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐              │
-│  │  gormzhcn   │    │  gormmom    │    │  gormrepo   │              │
-│  │ Chinese API │───▶│ Native Lang │───▶│  Package    │─────┐        │
-│  │  Localize   │    │  Smart Tags │    │  Pattern    │     │        │
-│  └─────────────┘    └─────────────┘    └─────────────┘     │        │
-│         │                   │                              │        │
-│         │                   ▼                              ▼        │
-│         │            ┌─────────────┐              ┌─────────────┐   │
-│         │            │ gormcngen   │              │Application  │   │
-│         │            │Code Generate│─────────────▶│Custom Code  │   │
-│         │            │AST Operation│              │             │   │
-│         │            └─────────────┘              └─────────────┘   │
-│         │                   │                              ▲        │
-│         │                   ▼                              │        │
-│         └────────────▶┌─────────────┐◄─────────────────────┘        │
-│                       │   GORMCNM   │                               │
-│                       │ FOUNDATION  │                               │
-│                       │ Type-Safe   │                               │
-│                       │ Core Logic  │                               │
-│                       └─────────────┘                               │
-│                              │                                      │
-│                              ▼                                      │
-│                       ┌─────────────┐                               │
-│                       │    GORM     │                               │
-│                       │  Database   │                               │
-│                       └─────────────┘                               │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 📦 Ecosystem Components
-
-### 🔹 [gormcnm](https://github.com/yyle88/gormcnm) - Type-Safe Column Foundation
-**Core Value**: Eliminate hardcoded column names, achieve compile-time type safe
-- `ColumnName[T]` generic type definition
-- Complete SQL operations: `Eq()`, `Gt()`, `Lt()`, `In()`, `Between()`, etc.
-- Expression building: `ExprAdd()`, `ExprSub()`, `ExprMul()`, etc.
-
-### 🔹 [gormcngen](https://github.com/yyle88/gormcngen) - Smart Code Generation
-**Core Value**: Auto-generate `Columns()` methods with zero maintenance
-- AST syntax tree analysis and precise operations
-- Auto-generate column structs and methods
-- Support custom column mappings and embedded fields
-
-### 🔹 [gormrepo](https://github.com/yyle88/gormrepo) - Enterprise Repo Pattern ⭐
-**Core Value**: Streamline GORM operations with enterprise-grade experience
-- Generic repo pattern `GormRepo[MOD, CLS]`
-- Flexible condition building
-- Complete pagination, counting, and existence checks
-
-### 🔹 [gormmom](https://github.com/yyle88/gormmom) - Native Language Support
-**Core Value**: Smart tag generation supporting native language programming
-- AST-based automatic tag generation and updates
-- Intelligent column name conversion strategies
-- Automatic index name correction
-
-### 🔹 [gormzhcn](https://github.com/go-zwbc/gormzhcn) - Chinese Programming Interface
-**Core Value**: Complete Chinese API for native Chinese development
-- Pure Chinese method and type names (`T编码器`, `T表结构`, `T配置项`)
-- Chinese field name support (`V名称`, `V性别`, `V年龄`)
-- Built on gormmom with complete ecosystem integration
+| Ecosystem             | Java MyBatis Plus  | Python SQLAlchemy | Go GORM Ecosystem  |
+|-----------------------|--------------------|-------------------|--------------------|
+| **Type-Safe Columns** | `Example::getName` | `Example.name`    | `cls.Name.Eq()`    |
+| **Code Generation**   | ✅ Plugin support   | ✅ Reflection      | ✅ AST precision    |
+| **Repo Pattern**      | ✅ BaseMapper       | ✅ Session API     | ✅ GormRepo         |
+| **Native Language**   | 🟡 Limited         | 🟡 Limited        | ✅ Complete support |
 
 ---
 
@@ -129,9 +52,9 @@ go get github.com/yyle88/gormrepo
 #### 1. Define The Model (Supporting Native Fields)
 
 ```go
-type User struct {
+type Account struct {
     ID       uint   `gorm:"primaryKey"`
-    Username string `gorm:"uniqueIndex" cnm:"username"` 
+    Accountname string `gorm:"uniqueIndex" cnm:"accountname"` 
     Nickname string `gorm:"index" cnm:"nickname"`
     Age      int    `cnm:"age"`
 }
@@ -141,178 +64,319 @@ type User struct {
 
 ```go
 // Auto-generated
-func (*User) Columns() *UserColumns {
-    return &UserColumns{
+func (*Account) Columns() *AccountColumns {
+    return &AccountColumns{
         ID:       "id",
-        Username: "username",
+        Accountname: "accountname",
         Nickname: "nickname",
         Age:      "age",
     }
 }
 
-type UserColumns struct {
+type AccountColumns struct {
     ID       gormcnm.ColumnName[uint]
-    Username gormcnm.ColumnName[string]
+    Accountname gormcnm.ColumnName[string]
     Nickname gormcnm.ColumnName[string]
     Age      gormcnm.ColumnName[int]
 }
 ```
 
-#### 3. Type-Safe Repo Operations (gormrepo Core Features)
+#### 3. Create Repo
 
 ```go
-// Create repo
-repo := gormrepo.NewGormRepo(db, &User{}, (&User{}).Columns())
+repo := gormrepo.NewRepo(&Account{}, (&Account{}).Columns())
+```
 
-// Type-safe queries - compile-time validation, zero runtime errors
-user, err := repo.First(func(db *gorm.DB, cls *UserColumns) *gorm.DB {
-    return db.Where(cls.Username.Eq("alice")).
-              Where(cls.Age.Gte(18))
+#### 4. How to Select
+
+```go
+// Classic GORM
+err := db.Where("name = ?", "alice").First(&account).Error
+
+// gormrepo - First
+account, err := repo.With(ctx, db).First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Accountname.Eq("alice"))
 })
 
-// Batch queries
-users, err := repo.Find(func(db *gorm.DB, cls *UserColumns) *gorm.DB {
-    return db.Where(cls.Nickname.Like("%admin%"))
+// gormrepo - FirstE (returns ErrorOrNotExist)
+account, erb := repo.With(ctx, db).FirstE(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Accountname.Eq("alice"))
 })
 
-// Pagination with count
-users, total, err := repo.FindPageAndCount(
-    func(db *gorm.DB, cls *UserColumns) *gorm.DB {
-        return db.Where(cls.Age.Between(18, 65))
+// gormrepo - Find
+accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Gte(18))
+})
+
+// gormrepo - FindPage
+accounts, err := repo.With(ctx, db).FindPage(
+    func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+        return db.Where(cls.Age.Gte(18))
     },
-    func(cls *UserColumns) gormcnm.OrderByBottle {
+    func(cls *AccountColumns) gormcnm.OrderByBottle {
         return cls.ID.OrderByBottle("DESC")
     },
     &gormrepo.Pagination{Limit: 10, Offset: 0},
 )
 
-// Type-safe updates
-err = repo.Updates(
-    func(db *gorm.DB, cls *UserColumns) *gorm.DB {
+// gormrepo - FindPageAndCount
+accounts, count, err := repo.With(ctx, db).FindPageAndCount(
+    func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+        return db.Where(cls.Age.Between(18, 65))
+    },
+    func(cls *AccountColumns) gormcnm.OrderByBottle {
+        return cls.ID.OrderByBottle("DESC")
+    },
+    &gormrepo.Pagination{Limit: 10, Offset: 0},
+)
+
+// gormrepo - Count
+count, err := repo.With(ctx, db).Count(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Gte(18))
+})
+
+// gormrepo - Exist
+exist, err := repo.With(ctx, db).Exist(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Accountname.Eq("alice"))
+})
+
+// gormrepo - Where conditions: Eq, Ne, Gt, Lt, Gte, Lte
+accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Gt(18)).    // age > 18
+              Where(cls.Age.Lt(60)).    // age < 60
+              Where(cls.Age.Ne(30))     // age != 30
+})
+
+// gormrepo - Like / NotLike
+accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Nickname.Like("%test%")).
+              Where(cls.Accountname.NotLike("%admin%"))
+})
+
+// gormrepo - In / NotIn
+accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.ID.In([]uint{1, 2, 3})).
+              Where(cls.Age.NotIn([]int{18, 19, 20}))
+})
+
+// gormrepo - Between / NotBetween
+accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Between(20, 40)).
+              Where(cls.ID.NotBetween(100, 200))
+})
+
+// gormrepo - IsNull / IsNotNull
+accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Nickname.IsNotNull())
+})
+
+// gormrepo - Or conditions
+accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Gte(18)).
+              Or(cls.Nickname.Eq("vip"))
+})
+
+// gormrepo - Order / Select
+accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Gte(18)).
+              Order(cls.Age.Name() + " DESC").
+              Select(cls.ID.Name(), cls.Accountname.Name())
+})
+```
+
+#### Select Operations
+
+| Method             | Parameters                                  | Returns                  | Description                           |
+|--------------------|---------------------------------------------|--------------------------|---------------------------------------|
+| `First`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, error`            | Find first matching record            |
+| `FirstE`           | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, *ErrorOrNotExist` | Find first or not-exist indication    |
+| `Find`             | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `[]*MOD, error`          | Find each matching records            |
+| `FindPage`         | `where, ordering, pagination`               | `[]*MOD, error`          | Paginated search                      |
+| `FindPageAndCount` | `where, ordering, pagination`               | `[]*MOD, int64, error`   | Paginated search with record count    |
+| `Count`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `int64, error`           | Count matching records                |
+| `Exist`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `bool, error`            | Check if records exist                |
+
+#### 5. How to Create
+
+```go
+// Classic GORM
+err := db.Create(&Account{Accountname: "bob", Nickname: "Bob", Age: 25}).Error
+
+// gormrepo
+err := repo.With(ctx, db).Create(&Account{Accountname: "bob", Nickname: "Bob", Age: 25})
+```
+
+#### Create Operations
+
+| Method   | Parameters | Returns | Description          |
+|----------|------------|---------|----------------------|
+| `Create` | `one *MOD` | `error` | Create new record    |
+| `Save`   | `one *MOD` | `error` | Insert/update record |
+
+#### 6. How to Update
+
+```go
+// Classic GORM
+err := db.Model(&Account{}).Where("id = ?", 1).Updates(map[string]interface{}{"age": 26}).Error
+
+// gormrepo - Updates
+err := repo.With(ctx, db).Updates(
+    func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
         return db.Where(cls.ID.Eq(1))
     },
-    func(cls *UserColumns) map[string]interface{} {
-        return cls.Kw(cls.Age.Kv(25)).
+    func(cls *AccountColumns) map[string]interface{} {
+        return cls.Kw(cls.Age.Kv(26)).
                   Kw(cls.Nickname.Kv("NewNick")).
                   AsMap()
     },
 )
+
+// gormrepo - UpdatesM (using ColumnValueMap)
+err := repo.With(ctx, db).UpdatesM(
+    func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+        return db.Where(cls.ID.Eq(1))
+    },
+    func(cls *AccountColumns) *gormcnm.ColumnValueMap {
+        return cls.Kw(cls.Age.Kv(26)).
+                  Kw(cls.Nickname.Kv("NewNick"))
+    },
+)
+
+// gormrepo - UpdatesO (by primary key)
+account := &Account{ID: 1}
+err := repo.With(ctx, db).UpdatesO(account, func(cls *AccountColumns) *gormcnm.ColumnValueMap {
+    return cls.Kw(cls.Age.Kv(26))
+})
+
+// gormrepo - UpdatesC (combined conditions)
+account := &Account{ID: 1}
+err := repo.With(ctx, db).UpdatesC(account,
+    func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+        return db.Where(cls.Age.Lt(30))
+    },
+    func(cls *AccountColumns) *gormcnm.ColumnValueMap {
+        return cls.Kw(cls.Age.Kv(26))
+    },
+)
 ```
 
----
+#### Update Operations
 
-## 💡 Core Advantages Comparison
+| Method     | Parameters                 | Returns | Description                                  |
+|------------|----------------------------|---------|----------------------------------------------|
+| `Update`   | `where, valueFunc`         | `error` | Update single field                          |
+| `Updates`  | `where, mapValues`         | `error` | Update multiple fields                       |
+| `UpdatesM` | `where, newValues`         | `error` | Update with ColumnValueMap (M=Map)           |
+| `UpdatesO` | `object, newValues`        | `error` | Update via primary key (O=Object)            |
+| `UpdatesC` | `object, where, newValues` | `error` | Update with combined conditions (C=Combined) |
 
-| Feature | Classic GORM | GORM Ecosystem |
-|---------|-----------------|----------------|
-| **Hardcoded Strings** | ❌ "name", "email" literals | ✅ Type-safe column access |
-| **Typo Prevention** | ❌ Runtime SQL errors | ✅ Compile-time error detection |
-| **Type Validation** | ❌ Wrong type assignments | ✅ Generic type enforcement |
-| **Refactoring** | ❌ Hand-written find-replace | ✅ IDE auto-update |
-| **Native Language** | ❌ English fields just | ✅ Support Chinese/others |
-| **Code Generation** | ❌ Hand-written maintenance | ✅ AST smart generation |
-
-### Classic vs Ecosystem Approach
+#### 7. How to Delete
 
 ```go
-// ❌ Classic: Error-prone, hard to maintain
-db.Where("username = ?", "alice").
-   Where("age >= ?", 18).
-   First(&user)
+// Classic GORM
+err := db.Where("id = ?", 1).Delete(&Account{}).Error
 
-// ✅ Ecosystem: Type-safe, IDE intelligent hints
-repo.First(func(db *gorm.DB, cls *UserColumns) *gorm.DB {
-    return db.Where(cls.Username.Eq("alice")).
-              Where(cls.Age.Gte(18))
+// gormrepo - Delete (by instance)
+account := &Account{ID: 1}
+err := repo.With(ctx, db).Delete(account)
+
+// gormrepo - DeleteW (by where conditions)
+err := repo.With(ctx, db).DeleteW(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.ID.Eq(1))
+})
+
+// gormrepo - DeleteM (instance + conditions)
+account := &Account{ID: 1}
+err := repo.With(ctx, db).DeleteM(account, func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Lt(30))
 })
 ```
 
----
+#### Delete Operations
 
-## 🔧 GormRepo API Documentation
-
-### Query Operations
-| Method | Parameters | Returns | Description |
-|--------|-----------|---------|-------------|
-| `First` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, error` | Query first matching record |
-| `Find` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `[]*MOD, error` | Query every matching records |
-| `FindPage` | `where, ordering, pagination` | `[]*MOD, error` | Paginated search |
-| `FindPageAndCount` | `where, ordering, pagination` | `[]*MOD, int64, error` | Paginated search with total count |
-| `Count` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `int64, error` | Count matching records |
-| `Exist` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `bool, error` | Check if records exist |
-
-### Create Operations
-| Method | Parameters | Returns | Description |
-|--------|-----------|---------|-------------|
-| `Create` | `one *MOD` | `error` | Create new record |
-| `Save` | `one *MOD` | `error` | Insert or update record |
-
-### Update Operations
-| Method | Parameters | Returns | Description |
-|--------|-----------|---------|-------------|
-| `Update` | `where, valueFunc` | `error` | Update single field |
-| `Updates` | `where, mapValues` | `error` | Update multiple fields |
-
-### Delete Operations
-| Method | Parameters | Returns | Description |
-|--------|-----------|---------|-------------|
-| `Delete` | `one *MOD` | `error` | Delete record by entity |
-| `DeleteW` | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | Delete by conditions |
+| Method    | Parameters                                            | Returns | Description                 |
+|-----------|-------------------------------------------------------|---------|-----------------------------|
+| `Delete`  | `one *MOD`                                            | `error` | Delete record via instance  |
+| `DeleteW` | `where func(db *gorm.DB, cls CLS) *gorm.DB`           | `error` | Delete via conditions       |
 | `DeleteM` | `one *MOD, where func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | Delete item with conditions |
 
----
+#### 7. Custom Operations
 
-## 🌟 Enterprise Use Cases
+Use `Invoke` when above methods do not fit the case:
 
-### 🏢 Large Project Database Standardization
-- Unified type-safe operation standards
-- Reduce low-grade errors in code reviews
-- Improve team collaboration speed
+```go
+// Invoke - batch update
+err := repo.With(ctx, db).Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Gte(18)).Update(cls.Nickname.Name(), "adult")
+})
 
-### 🌍 Worldwide Project Support
-- Native field names reduce business understanding barriers
-- Auto-generate standard database column names
-- Support multi-language team collaboration
+// Invoke - increment field
+err := repo.With(ctx, db).Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.ID.Eq(1)).
+        Update(cls.Age.Name(), gorm.Expr(cls.Age.Name()+" + ?", 1))
+})
 
-### ⚡ Rapid Development & Maintenance
-- Zero-configuration code generation
-- IDE intelligent hints and refactoring support
-- Reduce 90% repetitive CRUD code
+// Invoke - select specific columns
+var names []string
+err := repo.With(ctx, db).Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Gte(18)).Pluck(cls.Accountname.Name(), &names)
+})
 
----
+// Invoke - complex conditions
+err := repo.With(ctx, db).Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+    return db.Where(cls.Age.Between(18, 60)).
+        Where(cls.Nickname.IsNotNull()).
+        Updates(map[string]interface{}{
+            cls.Nickname.Name(): "active",
+        })
+})
+```
 
-## 🔄 Tech Comparison
+#### Invoke Operations
 
-| Ecosystem | Java MyBatis Plus | Python SQLAlchemy | Go GORM Ecosystem |
-|-----------|------------------|-------------------|-------------------|
-| **Type-Safe Columns** | `Example::getName` | `Example.name` | `cls.Name.Eq()` |
-| **Code Generation** | ✅ Plugin support | ✅ Reflection | ✅ AST precision |
-| **Repo Pattern** | ✅ BaseMapper | ✅ Session API | ✅ GormRepo |
-| **Native Language** | 🟡 Limited | 🟡 Limited | ✅ Complete support |
+| Method   | Parameters                                   | Returns | Description              |
+|----------|----------------------------------------------|---------|--------------------------|
+| `Invoke` | `clsRun func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | Execute custom operation |
 
 ---
 
 ## 📝 Complete Examples
 
-Check [examples](internal/examples) DIR for complete integration examples.
+Check [examples](internal/examples) DIR with complete integration examples.
+
+---
+
+## Related Projects
+
+Explore the complete GORM ecosystem with these integrated packages:
+
+### Core Ecosystem
+
+- **[gormcnm](https://github.com/yyle88/gormcnm)** - GORM foundation providing type-safe column queries operations
+- **[gormcngen](https://github.com/yyle88/gormcngen)** - Code generation engine using AST, enables type-safe GORM operations
+- **[gormrepo](https://github.com/yyle88/gormrepo)** - Repo pattern implementation with GORM best practices (this project)
+- **[gormmom](https://github.com/yyle88/gormmom)** - Native language GORM tag generation engine with smart column naming
+- **[gormzhcn](https://github.com/go-zwbc/gormzhcn)** - Complete Chinese programming interface with GORM
+
+Each package targets different aspects of GORM development, from localization to type-safe operations and code generation.
 
 ---
 
 <!-- TEMPLATE (EN) BEGIN: STANDARD PROJECT FOOTER -->
-<!-- VERSION 2025-09-06 04:53:24.895249 +0000 UTC -->
+<!-- VERSION 2025-11-25 03:52:28.131064 +0000 UTC -->
 
 ## 📄 License
 
-MIT License. See [LICENSE](LICENSE).
+MIT License - see [LICENSE](LICENSE).
 
 ---
 
-## 🤝 Contributing
+## 💬 Contact & Feedback
 
 Contributions are welcome! Report bugs, suggest features, and contribute code:
 
-- 🐛 **Found a bug?** Open an issue on GitHub with reproduction steps
-- 💡 **Have a feature idea?** Create an issue to discuss the suggestion
+- 🐛 **Mistake reports?** Open an issue on GitHub with reproduction steps
+- 💡 **Fresh ideas?** Create an issue to discuss
 - 📖 **Documentation confusing?** Report it so we can improve
 - 🚀 **Need new features?** Share the use cases to help us understand requirements
 - ⚡ **Performance issue?** Help us optimize through reporting slow operations
@@ -333,11 +397,11 @@ New code contributions, follow this process:
 4. **Branch**: Create a feature branch (`git checkout -b feature/xxx`).
 5. **Code**: Implement the changes with comprehensive tests
 6. **Testing**: (Golang project) Ensure tests pass (`go test ./...`) and follow Go code style conventions
-7. **Documentation**: Update documentation to support client-facing changes and use significant commit messages
+7. **Documentation**: Update documentation to support client-facing changes
 8. **Stage**: Stage changes (`git add .`)
 9. **Commit**: Commit changes (`git commit -m "Add feature xxx"`) ensuring backward compatible code
 10. **Push**: Push to the branch (`git push origin feature/xxx`).
-11. **PR**: Open a pull request on GitHub (on the GitHub webpage) with detailed description.
+11. **PR**: Open a merge request on GitHub (on the GitHub webpage) with detailed description.
 
 Please ensure tests pass and include relevant documentation updates.
 
@@ -354,7 +418,7 @@ Welcome to contribute to this project via submitting merge requests and reportin
 - 📝 **Write tech blogs** about development tools and workflows - we provide content writing support
 - 🌟 **Join the ecosystem** - committed to supporting open source and the (golang) development scene
 
-**Have Fun Coding with this package!** 🎉
+**Have Fun Coding with this package!** 🎉🎉🎉
 
 <!-- TEMPLATE (EN) END: STANDARD PROJECT FOOTER -->
 
@@ -362,13 +426,4 @@ Welcome to contribute to this project via submitting merge requests and reportin
 
 ## 📈 GitHub Stars
 
-[![starring](https://starchart.cc/yyle88/gormrepo.svg?variant=adaptive)](https://starchart.cc/yyle88/gormrepo)
-
----
-
-## 🔗 Related Projects
-
-- 🏗️ **[gormcnm](https://github.com/yyle88/gormcnm)** - Type-safe column foundation
-- 🤖 **[gormcngen](https://github.com/yyle88/gormcngen)** - Smart code generation
-- 🏢 **[gormrepo](https://github.com/yyle88/gormrepo)** - Enterprise repo pattern
-- 🌍 **[gormmom](https://github.com/yyle88/gormmom)** - Native language programming
+[![Starring](https://starchart.cc/yyle88/gormrepo.svg?variant=adaptive)](https://starchart.cc/yyle88/gormrepo)

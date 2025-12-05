@@ -1,61 +1,61 @@
 package gormclass
 
-// Use returns the model (`mod`) and its associated columns (`cls`), suitable for queries or operations that need both.
-// Use 返回模型（`mod`）、关联的列（`cls`），适用于需要同时获取模型和列数据的查询或操作。
+// Use returns the data (`mod`) and its associated columns (`cls`), supporting queries and operations that need both.
+// Use 返回数据（`mod`）、关联的列（`cls`），适用于需要同时获取数据和列信息的查询或操作。
 func Use[MOD ModelCols[CLS], CLS any](one MOD) (MOD, CLS) {
 	return one, one.Columns()
 }
 
-// Umc returns the model (mod) and the associated columns (cls), functioning the same as the Use function.
-// Umc 返回模型（mod）和关联的列（cls），功能与 Use 函数相同。
+// Umc returns the data (mod) and the associated columns (cls), functioning the same as the Use function.
+// Umc 返回数据（mod）和关联的列（cls），功能与 Use 函数相同。
 func Umc[MOD ModelCols[CLS], CLS any](one MOD) (MOD, CLS) {
 	return one, one.Columns()
 }
 
-// Cls returns the column information (`cls`), useful when only column data is needed.
+// Cls returns the column information (`cls`), used when just column data is required.
 // Cls 返回列信息（`cls`），适用于仅需要列数据的场景。
 func Cls[MOD ModelCols[CLS], CLS any](one MOD) CLS {
 	return one.Columns()
 }
 
-// Usc returns a slice of models (`MOD`) and the associated columns (`cls`), suitable for queries returning multiple models (e.g., `Find` queries).
-// Usc 返回多个模型（`MOD`）、关联的列（`cls`），适用于返回多个模型的查询（如 `Find` 查询）。
+// Usc returns a slice of records (`MOD`) and the associated columns (`cls`), supporting queries returning multiple records (e.g., `Find` queries).
+// Usc 返回多个记录（`MOD`）、关联的列（`cls`），适用于返回多个记录的查询（如 `Find` 查询）。
 func Usc[MOD ModelCols[CLS], CLS any](one MOD) ([]MOD, CLS) {
 	return []MOD{}, one.Columns()
 }
 
-// Msc returns the model (`mod`), the model slice (`[]MOD`), and the associated columns (`cls`), useful for queries requiring both model and column data.
-// Msc 返回模型（`mod`）、模型切片（`[]MOD`）、关联的列（`cls`），适用于需要模型和列数据的查询。
+// Msc returns the data (`mod`), the data slice (`[]MOD`), and the associated columns (`cls`), supporting queries requiring both data and column information.
+// Msc 返回数据（`mod`）、数据切片（`[]MOD`）、关联的列（`cls`），适用于需要数据和列信息的查询。
 func Msc[MOD ModelCols[CLS], CLS any](one MOD) (MOD, []MOD, CLS) {
 	return one, []MOD{}, one.Columns()
 }
 
-// Nsc returns the model (`mod`), a slice of models (`[]MOD`) with a specified initial capacity, and the associated columns (`cls`),
-// Nsc 返回模型（`mod`）、具有指定初始容量的模型切片（`[]MOD`）和关联的列（`cls`）。
+// Nsc returns the data (`mod`), a slice of records (`[]MOD`) with a specified starting size, and the associated columns (`cls`),
+// Nsc 返回数据（`mod`）、具有指定起始容量的记录切片（`[]MOD`）和关联的列（`cls`）。
 func Nsc[MOD ModelCols[CLS], CLS any](one MOD, cap int) (MOD, []MOD, CLS) {
 	return one, make([]MOD, 0, cap), one.Columns()
 }
 
-// One returns the model (mod), ensuring type safety by checking whether the argument is a pointer type at compile-time.
-// One 返回模型（mod），通过编译时检查确保类型安全。
+// One returns the data (mod), ensuring type-safe operations through compile-time checking of the argument type.
+// One 返回数据（mod），通过编译时检查确保类型安全。
 func One[MOD ModelCols[CLS], CLS any](one MOD) MOD {
 	return one // 按照 gormcngen 的默认规则，类型只会生成 func (*X) Columns() XColumns {} 这样的成员函数
 }
 
-// Ums returns a slice of models (MOD), useful for queries that expect a slice of models (e.g., Find queries).
-// Ums 返回模型（mod）切片，适用于需要模型切片的查询（例如 Find 查询）。
+// Ums returns a slice of records (MOD), supporting queries that expect a slice of records (e.g., Find queries).
+// Ums 返回记录（mod）切片，适用于需要记录切片的查询（例如 Find 查询）。
 func Ums[MOD ModelCols[CLS], CLS any](MOD) []MOD {
 	return []MOD{}
 }
 
-// Uss returns an empty slice of models (MOD), typically used for initialization or preparing for future object population without needing the columns (CLS).
-// Uss 返回一个空的模型（mod）切片，通常用于初始化或为未来填充对象做准备，无需关联列（cls）。
+// Uss returns a blank slice of records (MOD), often used to set up and prepare future data population without needing the columns (CLS).
+// Uss 返回一个空白的记录（mod）切片，通常用于设置和准备未来的数据填充，无需关联列（cls）。
 func Uss[MOD ModelCols[CLS], CLS any]() []MOD {
 	return []MOD{}
 }
 
-// Usn returns a slice of models (MOD) with a specified initial capacity, optimizing memory allocation based on the expected number of objects (MOD).
-// Usn 返回一个具有指定初始容量的模型（mod）切片，优化内存分配以适应预期的对象数量（MOD）。
+// Usn returns a slice of records (MOD) with a specified starting size, optimizing storage allocation based on the expected count of records (MOD).
+// Usn 返回一个具有指定起始容量的记录（mod）切片，优化存储分配以适应预期的记录数量（MOD）。
 func Usn[MOD ModelCols[CLS], CLS any](cap int) []MOD {
 	return make([]MOD, 0, cap)
 }

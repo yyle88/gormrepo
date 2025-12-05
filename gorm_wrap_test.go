@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
+	"github.com/yyle88/gormcnm"
 	"github.com/yyle88/gormrepo"
 	"github.com/yyle88/must"
 	"github.com/yyle88/neatjson/neatjsons"
@@ -91,7 +92,34 @@ func TestGormWrap_Updates(t *testing.T) {
 		return cls.
 			Kw(cls.Nickname.Kv(newNickname)).
 			Kw(cls.Password.Kv(newPassword)).
-			AsMap()
+			AsMap() // Convert to map[string]interface{} // 转换为 map[string]interface{} 类型
+	}).Error)
+
+	var res Account
+	require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	}, &res).Error)
+	require.Equal(t, newNickname, res.Nickname)
+	require.Equal(t, newPassword, res.Password)
+}
+
+// TestGormWrap_UpdatesM tests fluent API without AsMap() call
+// TestGormWrap_UpdatesM 测试流畅的 API，无需调用 AsMap()
+func TestGormWrap_UpdatesM(t *testing.T) {
+	username := uuid.New().String()
+	require.NoError(t, caseDB.Save(newAccount(username)).Error)
+
+	repo := gormrepo.NewGormWrap(gormrepo.Use(caseDB, &Account{}))
+
+	newNickname := uuid.New().String()
+	newPassword := uuid.New().String()
+	require.NoError(t, repo.UpdatesM(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	}, func(cls *AccountColumns) gormcnm.ColumnValueMap {
+		return cls.
+			Kw(cls.Nickname.Kv(newNickname)).
+			Kw(cls.Password.Kv(newPassword))
+		// No AsMap() needed! // 不需要 AsMap()！
 	}).Error)
 
 	var res Account
@@ -239,4 +267,76 @@ func TestGormWrap_DeleteM(t *testing.T) {
 		return db.Where(cls.ID.Eq(account.ID))
 	}).Count(&count).Error)
 	require.Equal(t, int64(0), count)
+}
+
+// TestGormWrap_UpdatesO tests update using object primary key as condition
+// O = Object, updates record located by object's primary key
+//
+// TestGormWrap_UpdatesO 测试使用 object 主键作为条件的更新
+// O = Object，通过 object 的主键定位要更新的记录
+func TestGormWrap_UpdatesO(t *testing.T) {
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
+	must.Done(db.AutoMigrate(&Account{}))
+
+	repo := gormrepo.NewGormWrap(gormrepo.Use(db, &Account{}))
+
+	username := uuid.New().String()
+	account := newAccount(username)
+	require.NoError(t, repo.Create(account).Error)
+
+	newNickname := uuid.New().String()
+	newPassword := uuid.New().String()
+	require.NoError(t, repo.UpdatesO(account, func(cls *AccountColumns) gormcnm.ColumnValueMap {
+		return cls.
+			Kw(cls.Nickname.Kv(newNickname)).
+			Kw(cls.Password.Kv(newPassword))
+	}).Error)
+
+	var res Account
+	require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	}, &res).Error)
+	require.Equal(t, newNickname, res.Nickname)
+	require.Equal(t, newPassword, res.Password)
+}
+
+// TestGormWrap_UpdatesC tests update using combined conditions: object primary key plus where clause
+// C = Combined, uses both object primary key and where conditions for precise targeting
+//
+// TestGormWrap_UpdatesC 测试使用组合条件的更新：object 主键加上 where 子句
+// C = Combined，同时使用 object 主键和 where 条件进行精确定位
+func TestGormWrap_UpdatesC(t *testing.T) {
+	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
+	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}))
+	defer rese.F0(rese.P1(db.DB()).Close)
+	must.Done(db.AutoMigrate(&Account{}))
+
+	repo := gormrepo.NewGormWrap(gormrepo.Use(db, &Account{}))
+
+	username := uuid.New().String()
+	account := newAccount(username)
+	require.NoError(t, repo.Create(account).Error)
+
+	newNickname := uuid.New().String()
+	newPassword := uuid.New().String()
+	require.NoError(t, repo.UpdatesC(account, func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	}, func(cls *AccountColumns) gormcnm.ColumnValueMap {
+		return cls.
+			Kw(cls.Nickname.Kv(newNickname)).
+			Kw(cls.Password.Kv(newPassword))
+	}).Error)
+
+	var res Account
+	require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+		return db.Where(cls.Username.Eq(username))
+	}, &res).Error)
+	require.Equal(t, newNickname, res.Nickname)
+	require.Equal(t, newPassword, res.Password)
 }
