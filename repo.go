@@ -1,18 +1,20 @@
-//go:build go1.23
+//go:build go1.24
 
 package gormrepo
 
-// Repo is a type alias to BaseRepo (Go 1.23+ feature)
-// Since BaseRepo has more explicit meaning, we renamed it to BaseRepo
-// But Repo is shorter and more convenient, so we use type alias
+// Repo is a generic type alias to BaseRepo
+// Generic type alias was introduced in Go 1.23 but needs GOEXPERIMENT=aliastypeparams
+// Go 1.24+ has native support without experiment flag
+// Using go1.24 build constraint to avoid: "generic type alias requires GOEXPERIMENT=aliastypeparams"
 //
-// Repo 是 BaseRepo 的类型别名（Go 1.23+ 特性）
-// 由于 BaseRepo 具有更明确的语义，因此重命名为 BaseRepo
-// 但 Repo 更短更便于使用，因此使用类型别名
+// Repo 是 BaseRepo 的泛型类型别名
+// 泛型类型别名在 Go 1.23 引入，但需要设置 GOEXPERIMENT=aliastypeparams
+// Go 1.24+ 原生支持泛型类型别名，无需实验标志
+// 使用 go1.24 构建约束以避免报错："generic type alias requires GOEXPERIMENT=aliastypeparams"
 type Repo[MOD any, CLS any] = BaseRepo[MOD, CLS]
 
 // NewRepo creates a new Repo instance with column definitions
-// The model parameter is used to infer the type, actual value is not used
+// The model param is used to deduce the type, actual value is not used
 //
 // NewRepo 使用列定义创建新的 Repo 实例
 // model 参数用于类型推断，实际值不使用

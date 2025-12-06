@@ -10,6 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// TestRepo_Repo tests BaseRepo.Repo method to create GormRepo with db connection
+// TestRepo_Repo 测试 BaseRepo.Repo 方法创建带数据库连接的 GormRepo
 func TestRepo_Repo(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
@@ -33,6 +35,8 @@ func TestRepo_Repo(t *testing.T) {
 	})
 }
 
+// TestRepo_Gorm tests BaseRepo.Gorm method to create GormWrap with db connection
+// TestRepo_Gorm 测试 BaseRepo.Gorm 方法创建带数据库连接的 GormWrap
 func TestRepo_Gorm(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
@@ -56,6 +60,8 @@ func TestRepo_Gorm(t *testing.T) {
 	})
 }
 
+// TestRepo_With tests BaseRepo.With method to create GormRepo with context
+// TestRepo_With 测试 BaseRepo.With 方法创建带上下文的 GormRepo
 func TestRepo_With(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
@@ -67,6 +73,8 @@ func TestRepo_With(t *testing.T) {
 	require.Equal(t, "demo-1-nickname", res.Nickname)
 }
 
+// TestRepo_Wrap tests BaseRepo.Wrap method to create GormWrap with context
+// TestRepo_Wrap 测试 BaseRepo.Wrap 方法创建带上下文的 GormWrap
 func TestRepo_Wrap(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 

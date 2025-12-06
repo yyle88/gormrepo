@@ -10,6 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// TestGormRepo_Gorm tests converting GormRepo to GormWrap
+// TestGormRepo_Gorm 测试将 GormRepo 转换为 GormWrap
 func TestGormRepo_Gorm(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
@@ -20,6 +22,8 @@ func TestGormRepo_Gorm(t *testing.T) {
 	require.Equal(t, "demo-1-nickname", account.Nickname)
 }
 
+// TestGormWrap_Repo tests converting GormWrap to GormRepo
+// TestGormWrap_Repo 测试将 GormWrap 转换为 GormRepo
 func TestGormWrap_Repo(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
@@ -30,6 +34,8 @@ func TestGormWrap_Repo(t *testing.T) {
 	require.Equal(t, "demo-1-nickname", res.Nickname)
 }
 
+// TestGormRepo_Mold tests setting default MOD template on GormRepo
+// TestGormRepo_Mold 测试在 GormRepo 上设置默认 MOD 模板
 func TestGormRepo_Mold(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
@@ -51,6 +57,8 @@ func TestGormRepo_Mold(t *testing.T) {
 	}))
 }
 
+// TestGormWrap_Mold tests setting default MOD template on GormWrap
+// TestGormWrap_Mold 测试在 GormWrap 上设置默认 MOD 模板
 func TestGormWrap_Mold(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 
@@ -72,6 +80,8 @@ func TestGormWrap_Mold(t *testing.T) {
 	}))
 }
 
+// TestGormRepo_WithContext tests setting context on GormRepo
+// TestGormRepo_WithContext 测试在 GormRepo 上设置上下文
 func TestGormRepo_WithContext(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 	ctx := context.Background()
@@ -92,6 +102,8 @@ func TestGormRepo_WithContext(t *testing.T) {
 	}
 }
 
+// TestGormWrap_WithContext tests setting context on GormWrap
+// TestGormWrap_WithContext 测试在 GormWrap 上设置上下文
 func TestGormWrap_WithContext(t *testing.T) {
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{}))
 	ctx := context.Background()

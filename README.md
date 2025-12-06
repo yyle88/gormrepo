@@ -300,9 +300,9 @@ err := repo.With(ctx, db).DeleteM(account, func(db *gorm.DB, cls *AccountColumns
 | `DeleteW` | `where func(db *gorm.DB, cls CLS) *gorm.DB`           | `error` | Delete via conditions       |
 | `DeleteM` | `one *MOD, where func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | Delete item with conditions |
 
-#### 7. Custom Operations
+#### 8. Custom Operations
 
-Use `Invoke` when above methods do not fit the case:
+When above methods do not fit, use `Invoke`:
 
 ```go
 // Invoke - batch update
@@ -426,4 +426,4 @@ Welcome to contribute to this project via submitting merge requests and reportin
 
 ## 📈 GitHub Stars
 
-[![Starring](https://starchart.cc/yyle88/gormrepo.svg?variant=adaptive)](https://starchart.cc/yyle88/gormrepo)
+[![Stargazers](https://starchart.cc/yyle88/gormrepo.svg?variant=adaptive)](https://starchart.cc/yyle88/gormrepo)

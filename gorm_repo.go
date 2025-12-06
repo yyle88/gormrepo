@@ -199,10 +199,10 @@ func (repo *GormRepo[MOD, CLS]) Updates(where func(db *gorm.DB, cls CLS) *gorm.D
 }
 
 // UpdatesM updates multiple columns using ColumnValueMap, provides fluent API without AsMap() call
-// Usage: repo.UpdatesM(where, func(cls) { return cls.Kw(cls.Name.Kv("x")).Kw(cls.Age.Kv(1)) })
+// Usage: repo.UpdatesM(where, func(cls CLS) gormcnm.ColumnValueMap { return cls.Kw(cls.Name.Kv("x"))... })
 //
 // UpdatesM 使用 ColumnValueMap 更新多列，提供流畅的 API，无需调用 AsMap()
-// 用法：repo.UpdatesM(where, func(cls) { return cls.Kw(cls.Name.Kv("x")).Kw(cls.Age.Kv(1)) })
+// 用法：repo.UpdatesM(where, func(cls CLS) gormcnm.ColumnValueMap { return cls.Kw(cls.Name.Kv("x"))... })
 func (repo *GormRepo[MOD, CLS]) UpdatesM(where func(db *gorm.DB, cls CLS) *gorm.DB, newValues func(cls CLS) gormcnm.ColumnValueMap) error {
 	return repo.Updates(where, func(cls CLS) map[string]interface{} {
 		return newValues(cls).AsMap()

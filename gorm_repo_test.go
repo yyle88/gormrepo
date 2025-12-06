@@ -20,6 +20,8 @@ import (
 
 var caseDB *gorm.DB
 
+// TestMain sets up the test database and runs all tests
+// TestMain 设置测试数据库并运行所有测试
 func TestMain(m *testing.M) {
 	dsn := fmt.Sprintf("file:db-%s?mode=memory&cache=shared", uuid.New().String())
 	db := rese.P1(gorm.Open(sqlite.Open(dsn), &gorm.Config{
@@ -46,6 +48,8 @@ func TestMain(m *testing.M) {
 	m.Run()
 }
 
+// TestGormRepo_First tests the First method to find a single record
+// TestGormRepo_First 测试 First 方法查找单条记录
 func TestGormRepo_First(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
 
@@ -66,6 +70,8 @@ func TestGormRepo_First(t *testing.T) {
 	}
 }
 
+// TestGormRepo_FirstE tests the FirstE method with structured error handling
+// TestGormRepo_FirstE 测试带结构化错误处理的 FirstE 方法
 func TestGormRepo_FirstE(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
 
@@ -88,6 +94,8 @@ func TestGormRepo_FirstE(t *testing.T) {
 	}
 }
 
+// TestGormRepo_Where tests the Where method to apply custom conditions
+// TestGormRepo_Where 测试 Where 方法应用自定义条件
 func TestGormRepo_Where(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
 
@@ -117,6 +125,8 @@ func TestGormRepo_Where(t *testing.T) {
 	}
 }
 
+// TestGormRepo_Exist tests the Exist method to check record existence
+// TestGormRepo_Exist 测试 Exist 方法检查记录是否存在
 func TestGormRepo_Exist(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
 
@@ -137,6 +147,8 @@ func TestGormRepo_Exist(t *testing.T) {
 	}
 }
 
+// TestGormRepo_Find tests the Find method to retrieve multiple records
+// TestGormRepo_Find 测试 Find 方法检索多条记录
 func TestGormRepo_Find(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
 
@@ -148,6 +160,8 @@ func TestGormRepo_Find(t *testing.T) {
 	t.Log(neatjsons.S(accounts))
 }
 
+// TestGormRepo_FindN tests the FindN method to retrieve limited records
+// TestGormRepo_FindN 测试 FindN 方法检索有限数量的记录
 func TestGormRepo_FindN(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
 
@@ -159,6 +173,8 @@ func TestGormRepo_FindN(t *testing.T) {
 	t.Log(neatjsons.S(accounts))
 }
 
+// TestGormRepo_FindC tests the FindC method with custom paging and count
+// TestGormRepo_FindC 测试带自定义分页和计数的 FindC 方法
 func TestGormRepo_FindC(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
 
@@ -176,6 +192,8 @@ func TestGormRepo_FindC(t *testing.T) {
 	t.Log(neatjsons.S(accounts))
 }
 
+// TestGormRepo_FindPageAndCount tests paginated search with total count
+// TestGormRepo_FindPageAndCount 测试带总数的分页搜索
 func TestGormRepo_FindPageAndCount(t *testing.T) {
 	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
 

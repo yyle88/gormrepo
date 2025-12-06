@@ -8,6 +8,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// TestNewErrorOrNotExist tests ErrorOrNotExist creation and ErrRecordNotFound detection
+// TestNewErrorOrNotExist 测试 ErrorOrNotExist 创建和 ErrRecordNotFound 检测
 func TestNewErrorOrNotExist(t *testing.T) {
 	{
 		erb := NewErrorOrNotExist(errors.New("wrong"))

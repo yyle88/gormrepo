@@ -1,4 +1,4 @@
-//go:build go1.24
+//go:build !go1.24
 
 package gormrepo_test
 
@@ -15,12 +15,12 @@ import (
 // TestRepoVersion shows which Repo version is being used
 // 显示当前使用的 Repo 版本
 func TestRepoVersion(t *testing.T) {
-	t.Log("Running Go 1.24+ test: generic type alias version")
-	t.Log("运行 Go 1.24+ 测试：泛型类型别名版本")
+	t.Log("Running pre-1.24 test: struct embedding approach (no type alias)")
+	t.Log("运行 1.24 之前测试：结构体嵌入方案（无类型别名）")
 }
 
-// TestRepo_Base tests Repo with generic type alias (Go 1.24+ native support)
-// Go 1.24+ 原生支持泛型类型别名，此测试验证类型别名版本
+// TestRepo_Base tests Repo with struct embedding (Go < 1.24)
+// Go 1.24 之前使用结构体嵌入方案，此测试验证兼容版本
 func TestRepo_Base(t *testing.T) {
 	repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
 

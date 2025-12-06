@@ -300,7 +300,7 @@ err := repo.With(ctx, db).DeleteM(account, func(db *gorm.DB, cls *AccountColumns
 | `DeleteW` | `where func(db *gorm.DB, cls CLS) *gorm.DB`           | `error` | 通过条件删除记录  |
 | `DeleteM` | `one *MOD, where func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | 实例加条件删除记录 |
 
-#### 7. 自定义操作
+#### 8. 自定义操作
 
 遇到未涵盖的操作，使用 `Invoke`：
 
@@ -426,4 +426,4 @@ MIT 许可证 - 详见 [LICENSE](LICENSE)。
 
 ## 📈 GitHub Stars
 
-[![Starring](https://starchart.cc/yyle88/gormrepo.svg?variant=adaptive)](https://starchart.cc/yyle88/gormrepo)
+[![Stargazers](https://starchart.cc/yyle88/gormrepo.svg?variant=adaptive)](https://starchart.cc/yyle88/gormrepo)
