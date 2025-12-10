@@ -1,7 +1,7 @@
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/yyle88/gormrepo/release.yml?branch=main&label=BUILD)](https://github.com/yyle88/gormrepo/actions/workflows/release.yml?query=branch%3Amain)
 [![GoDoc](https://pkg.go.dev/badge/github.com/yyle88/gormrepo)](https://pkg.go.dev/github.com/yyle88/gormrepo)
 [![Coverage Status](https://img.shields.io/coveralls/github/yyle88/gormrepo/main.svg)](https://coveralls.io/github/yyle88/gormrepo?branch=main)
-[![Supported Go Versions](https://img.shields.io/badge/Go-1.22+-lightgrey.svg)](https://go.dev/)
+[![Supported Go Versions](https://img.shields.io/badge/Go-1.24+-lightgrey.svg)](https://go.dev/)
 [![GitHub Release](https://img.shields.io/github/release/yyle88/gormrepo.svg)](https://github.com/yyle88/gormrepo/releases)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yyle88/gormrepo)](https://goreportcard.com/report/github.com/yyle88/gormrepo)
 
@@ -84,7 +84,11 @@ type AccountColumns struct {
 #### 3. 创建 Repo
 
 ```go
+// 创建 repo，传入列定义
 repo := gormrepo.NewRepo(&Account{}, (&Account{}).Columns())
+
+// gormrepo/gormclass 简洁写法
+repo := gormrepo.NewRepo(gormclass.Use(&Account{}))
 ```
 
 #### 4. 如何查询

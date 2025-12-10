@@ -7,13 +7,19 @@ import (
 	"github.com/yyle88/gormcnm"
 	"github.com/yyle88/gormrepo"
 	"github.com/yyle88/gormrepo/gormclass"
+	"github.com/yyle88/gormrepo/internal/tests"
 	"github.com/yyle88/neatjson/neatjsons"
+	"github.com/yyle88/rese"
 	"gorm.io/gorm"
 )
 
 // TestRepo_NewScope tests NewScope via matching Accounts via username
 // TestRepo_NewScope 测试通过用户名匹配 Account 的 NewScope 方法
 func TestRepo_NewScope(t *testing.T) {
+	db := tests.NewMemDB(t)
+	defer rese.F0(rese.P1(db.DB()).Close)
+	setupDemoData(t, db)
+
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{})) // Init repo with Account // 使用 Account 初始化仓储
 
 	// Create scope to match via username="demo-1-username"
@@ -25,7 +31,7 @@ func TestRepo_NewScope(t *testing.T) {
 	// Query first matching Account
 	// 查询第一个匹配的 Account
 	var account Account
-	err := caseDB.Scopes(scope).First(&account).Error
+	err := db.Scopes(scope).First(&account).Error
 	require.NoError(t, err) // Check no error // 检查无错误
 
 	t.Log(neatjsons.S(account)) // Log result // 打印结果
@@ -36,6 +42,10 @@ func TestRepo_NewScope(t *testing.T) {
 // TestRepo_Paginate tests new-paginate-scope with sorting and pagination
 // TestRepo_Paginate 测试带排序和分页的 new-paginate-scope
 func TestRepo_Paginate(t *testing.T) {
+	db := tests.NewMemDB(t)
+	defer rese.F0(rese.P1(db.DB()).Close)
+	setupDemoData(t, db)
+
 	repo := gormrepo.NewBaseRepo(gormclass.Use(&Account{})) // Init repo with Account // 使用 Account 初始化仓储
 
 	// Create scope to match via username in ("demo-1-username", "demo-2-username")
@@ -56,7 +66,7 @@ func TestRepo_Paginate(t *testing.T) {
 	// Query Accounts with pagination
 	// 带分页查询 Accounts
 	var accounts []*Account
-	err := caseDB.Scopes(condScope, pageScope).Find(&accounts).Error
+	err := db.Scopes(condScope, pageScope).Find(&accounts).Error
 	require.NoError(t, err) // Check no error // 检查无错误
 
 	t.Log(neatjsons.S(accounts)) // Log results // 打印结果

@@ -9,6 +9,7 @@ import (
 	"github.com/yyle88/gormcngen"
 	"github.com/yyle88/gormcnm"
 	"github.com/yyle88/gormrepo"
+	"github.com/yyle88/gormrepo/internal/tests"
 	"github.com/yyle88/osexistpath/osmustexist"
 	"github.com/yyle88/runpath"
 	"gorm.io/gorm"
@@ -102,13 +103,17 @@ func TestGenerateColumns(t *testing.T) {
 // TestUse tests the Use function to get db, model, and columns
 // TestUse 测试 Use 函数获取 db、model 和 columns
 func TestUse(t *testing.T) {
-	repo := gormrepo.NewGormRepo(gormrepo.Use(caseDB, &Account{}))
-	require.NotNil(t, repo)
+	tests.NewDBRun(t, func(db *gorm.DB) {
+		repo := gormrepo.NewGormRepo(gormrepo.Use(db, &Account{}))
+		require.NotNil(t, repo)
+	})
 }
 
 // TestUmc tests the Umc function (alias to Use)
 // TestUmc 测试 Umc 函数（Use 的别名）
 func TestUmc(t *testing.T) {
-	repo := gormrepo.NewGormRepo(gormrepo.Umc(caseDB, &Account{}))
-	require.NotNil(t, repo)
+	tests.NewDBRun(t, func(db *gorm.DB) {
+		repo := gormrepo.NewGormRepo(gormrepo.Umc(db, &Account{}))
+		require.NotNil(t, repo)
+	})
 }

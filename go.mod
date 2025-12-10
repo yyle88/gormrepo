@@ -1,6 +1,6 @@
 module github.com/yyle88/gormrepo
 
-go 1.22.8
+go 1.24.0
 
 require (
 	github.com/google/uuid v1.6.0
@@ -8,9 +8,9 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/yyle88/done v1.0.28
 	github.com/yyle88/erero v1.0.24
-	github.com/yyle88/gormcngen v1.0.48
-	github.com/yyle88/gormcnm v1.0.59
-	github.com/yyle88/must v0.0.28
+	github.com/yyle88/gormcngen v1.0.49
+	github.com/yyle88/gormcnm v1.0.60
+	github.com/yyle88/must v0.0.29
 	github.com/yyle88/mutexmap v1.0.15
 	github.com/yyle88/neatjson v0.0.13
 	github.com/yyle88/osexistpath v0.0.18
@@ -30,16 +30,16 @@ require (
 	github.com/yyle88/printgo v1.0.6 // indirect
 	github.com/yyle88/sortx v1.0.11 // indirect
 	github.com/yyle88/sure v0.0.42 // indirect
-	github.com/yyle88/syntaxgo v0.0.53 // indirect
+	github.com/yyle88/syntaxgo v0.0.54 // indirect
 	github.com/yyle88/tern v0.0.10 // indirect
 	github.com/yyle88/zaplog v0.0.27 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.1 // indirect
-	golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac // indirect
-	golang.org/x/mod v0.23.0 // indirect
-	golang.org/x/sync v0.11.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
-	golang.org/x/tools v0.30.0 // indirect
+	golang.org/x/exp v0.0.0-20251209150349-8475f28825e9 // indirect
+	golang.org/x/mod v0.31.0 // indirect
+	golang.org/x/sync v0.19.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/tools v0.40.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 

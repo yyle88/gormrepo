@@ -11,14 +11,15 @@ import (
 // TestNewErrorOrNotExist tests ErrorOrNotExist creation and ErrRecordNotFound detection
 // TestNewErrorOrNotExist 测试 ErrorOrNotExist 创建和 ErrRecordNotFound 检测
 func TestNewErrorOrNotExist(t *testing.T) {
-	{
+	t.Run("case-1", func(t *testing.T) {
 		erb := NewErrorOrNotExist(errors.New("wrong"))
 		require.NotErrorIs(t, erb.Cause, gorm.ErrRecordNotFound)
 		require.False(t, erb.NotExist)
-	}
-	{
+	})
+
+	t.Run("case-2", func(t *testing.T) {
 		erb := NewErrorOrNotExist(gorm.ErrRecordNotFound)
 		require.ErrorIs(t, erb.Cause, gorm.ErrRecordNotFound)
 		require.True(t, erb.NotExist)
-	}
+	})
 }

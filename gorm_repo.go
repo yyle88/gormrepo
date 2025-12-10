@@ -5,23 +5,23 @@ import (
 	"gorm.io/gorm"
 )
 
-// GormRepo is the main repository struct with database connection and column definitions
-// Provides CRUD operations with error-returning methods
-// All query methods accept type-safe where functions using column definitions
+// GormRepo is the main repo struct with database connection and column definitions
+// Provides CRUD operations with (T, error) return signatures
+// All methods accept type-safe where functions using column definitions
 //
 // GormRepo 是带有数据库连接和列定义的主仓储结构体
-// 提供带有错误返回的 CRUD 操作
-// 所有查询方法接受使用列定义的类型安全 where 函数
+// 提供返回 (T, error) 签名的 CRUD 操作
+// 所有方法接受使用列定义的类型安全 where 函数
 type GormRepo[MOD any, CLS any] struct {
 	db  *gorm.DB // Database connection // 数据库连接
 	cls CLS      // Column definitions // 列定义
 }
 
 // NewGormRepo creates a new GormRepo instance with database connection and column definitions
-// The model parameter is used to infer the type, actual value is not used
+// The MOD param is used to deduce the type, its value is not used
 //
 // NewGormRepo 使用数据库连接和列定义创建新的 GormRepo 实例
-// model 参数用于类型推断，实际值不使用
+// MOD 参数用于类型推断，其值不使用
 func NewGormRepo[MOD any, CLS any](db *gorm.DB, _ *MOD, cls CLS) *GormRepo[MOD, CLS] {
 	return &GormRepo[MOD, CLS]{
 		db:  db,
@@ -43,10 +43,10 @@ func (repo *GormRepo[MOD, CLS]) First(where func(db *gorm.DB, cls CLS) *gorm.DB)
 }
 
 // FirstE finds the first record with structured error handling
-// Returns ErrorOrNotExist to distinguish between not found and actual errors
+// Returns ErrorOrNotExist to distinguish between not found and other errors
 //
 // FirstE 查找第一条记录，带有结构化错误处理
-// 返回 ErrorOrNotExist 以区分记录未找到和实际错误
+// 返回 ErrorOrNotExist 以区分记录未找到和其他错误
 func (repo *GormRepo[MOD, CLS]) FirstE(where func(db *gorm.DB, cls CLS) *gorm.DB) (*MOD, *ErrorOrNotExist) {
 	var result = new(MOD)
 	if err := repo.Gorm().First(where, result).Error; err != nil {
@@ -55,11 +55,11 @@ func (repo *GormRepo[MOD, CLS]) FirstE(where func(db *gorm.DB, cls CLS) *gorm.DB
 	return result, nil
 }
 
-// Where applies the where condition and returns the gorm.DB for further chaining
-// Useful when you need custom operations not provided by GormRepo
+// Where applies the where condition and returns the gorm.DB to enable chaining
+// Use when you need custom operations not provided by GormRepo
 //
-// Where 应用 where 条件并返回 gorm.DB 以便进一步链式调用
-// 当需要 GormRepo 未提供的自定义操作时很有用
+// Where 应用 where 条件并返回 gorm.DB 以便链式调用
+// 当需要 GormRepo 未提供的自定义操作时使用
 func (repo *GormRepo[MOD, CLS]) Where(where func(db *gorm.DB, cls CLS) *gorm.DB) *gorm.DB {
 	return where(repo.db, repo.cls)
 }
@@ -90,7 +90,7 @@ func (repo *GormRepo[MOD, CLS]) Find(where func(db *gorm.DB, cls CLS) *gorm.DB) 
 	return results, nil
 }
 
-// FindN retrieves limited number of records matching the where condition
+// FindN retrieves records matching the where condition with size limit
 // Returns up to size records
 //
 // FindN 检索有限数量的符合 where 条件的记录
@@ -234,10 +234,10 @@ func (repo *GormRepo[MOD, CLS]) UpdatesC(object *MOD, where func(db *gorm.DB, cl
 }
 
 // Invoke executes a custom operation using the database connection and column definitions
-// Returns error from the custom operation
+// Returns the custom operation's resulting error
 //
 // Invoke 使用数据库连接和列定义执行自定义操作
-// 返回自定义操作的错误
+// 返回自定义操作产生的错误
 func (repo *GormRepo[MOD, CLS]) Invoke(clsRun func(db *gorm.DB, cls CLS) *gorm.DB) error {
 	if err := clsRun(repo.db, repo.cls).Error; err != nil {
 		return err

@@ -5,11 +5,11 @@ import (
 	"gorm.io/gorm"
 )
 
-// GormWrap is a wrapper around GORM with column definitions
-// Returns *gorm.DB from all operations for method chaining
-// Provides lower-level access compared to GormRepo
+// GormWrap is a GORM database connection with column definitions
+// Returns *gorm.DB from all operations that enables method chaining
+// Provides more primitive access compared to GormRepo
 //
-// GormWrap 是带有列定义的 GORM 封装器
+// GormWrap 是带有列定义的 GORM 数据库连接封装
 // 所有操作返回 *gorm.DB 以便方法链式调用
 // 相比 GormRepo 提供更底层的访问
 type GormWrap[MOD any, CLS any] struct {
@@ -18,10 +18,10 @@ type GormWrap[MOD any, CLS any] struct {
 }
 
 // NewGormWrap creates a new GormWrap instance with database connection and column definitions
-// The model parameter is used to infer the type, actual value is not used
+// The MOD param is used to deduce the type, its value is not used
 //
 // NewGormWrap 使用数据库连接和列定义创建新的 GormWrap 实例
-// model 参数用于类型推断，实际值不使用
+// MOD 参数用于类型推断，其值不使用
 func NewGormWrap[MOD any, CLS any](db *gorm.DB, _ *MOD, cls CLS) *GormWrap[MOD, CLS] {
 	return &GormWrap[MOD, CLS]{
 		db:  db,
@@ -38,11 +38,11 @@ func (wrap *GormWrap[MOD, CLS]) First(where func(db *gorm.DB, cls CLS) *gorm.DB,
 	return where(wrap.db, wrap.cls).First(dest)
 }
 
-// Where applies the where condition and returns the gorm.DB for further chaining
-// Useful when you need custom operations not provided by GormWrap
+// Where applies the where condition and returns the gorm.DB to enable chaining
+// Use when you need custom operations not provided by GormWrap
 //
-// Where 应用 where 条件并返回 gorm.DB 以便进一步链式调用
-// 当需要 GormWrap 未提供的自定义操作时很有用
+// Where 应用 where 条件并返回 gorm.DB 以便链式调用
+// 当需要 GormWrap 未提供的自定义操作时使用
 func (wrap *GormWrap[MOD, CLS]) Where(where func(db *gorm.DB, cls CLS) *gorm.DB) *gorm.DB {
 	return where(wrap.db, wrap.cls)
 }
@@ -104,10 +104,10 @@ func (wrap *GormWrap[MOD, CLS]) UpdatesC(object *MOD, where func(db *gorm.DB, cl
 }
 
 // Invoke executes a custom operation using the database connection and column definitions
-// Returns *gorm.DB for checking errors or further chaining
+// Returns *gorm.DB to check errors and enable chaining
 //
 // Invoke 使用数据库连接和列定义执行自定义操作
-// 返回 *gorm.DB 以便检查错误或进一步链式调用
+// 返回 *gorm.DB 以便检查错误和链式调用
 func (wrap *GormWrap[MOD, CLS]) Invoke(clsRun func(db *gorm.DB, cls CLS) *gorm.DB) *gorm.DB {
 	return clsRun(wrap.db, wrap.cls)
 }
