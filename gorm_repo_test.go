@@ -14,6 +14,7 @@ import (
 	"github.com/yyle88/neatjson/neatjsons"
 	"github.com/yyle88/rese"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // setupDemoData creates demo data in database
@@ -566,5 +567,92 @@ func TestGormRepo_UpdatesC(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, newNickname, res.Nickname)
 		require.Equal(t, newPassword, res.Password)
+	})
+}
+
+// TestGormRepo_Clauses tests Clauses method for upsert operations
+// TestGormRepo_Clauses 测试 Clauses 方法的 upsert 操作
+func TestGormRepo_Clauses(t *testing.T) {
+	tests.NewDBRun(t, func(db *gorm.DB) {
+		must.Done(db.AutoMigrate(&Account{}))
+
+		repo := gormrepo.NewGormRepo(gormrepo.Use(db, &Account{}))
+
+		// First create
+		// 首次创建
+		account1 := &Account{
+			Username: uuid.New().String(),
+			Password: uuid.New().String(),
+			Nickname: uuid.New().String(),
+		}
+		require.NoError(t, repo.Create(account1))
+		require.NotZero(t, account1.ID)
+
+		// Upsert with Clauses - should update nickname
+		// 使用 Clauses 进行 upsert - 应该更新 nickname
+		account2 := &Account{
+			Username: account1.Username,
+			Password: uuid.New().String(),
+			Nickname: uuid.New().String(),
+		}
+		cls := account2.Columns()
+		require.NoError(t, repo.Clauses(clause.OnConflict{
+			Columns:   []clause.Column{{Name: cls.Username.Name()}},
+			DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
+		}).Create(account2))
+
+		// Verify the nickname was updated
+		// 验证 nickname 已被更新
+		res, err := repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.Username.Eq(account1.Username))
+		})
+		require.NoError(t, err)
+		require.Equal(t, account2.Username, res.Username)
+		require.Equal(t, account2.Nickname, res.Nickname)
+		require.Equal(t, account1.Password, res.Password)
+	})
+}
+
+// TestGormRepo_Clause tests Clause method for type-safe upsert operations
+// TestGormRepo_Clause 测试 Clause 方法的类型安全 upsert 操作
+func TestGormRepo_Clause(t *testing.T) {
+	tests.NewDBRun(t, func(db *gorm.DB) {
+		must.Done(db.AutoMigrate(&Account{}))
+
+		repo := gormrepo.NewGormRepo(gormrepo.Use(db, &Account{}))
+
+		// First create
+		// 首次创建
+		account1 := &Account{
+			Username: uuid.New().String(),
+			Password: uuid.New().String(),
+			Nickname: uuid.New().String(),
+		}
+		require.NoError(t, repo.Create(account1))
+		require.NotZero(t, account1.ID)
+
+		// Upsert with Clause - type-safe column names
+		// 使用 Clause 进行 upsert - 类型安全的列名
+		account2 := &Account{
+			Username: account1.Username,
+			Password: uuid.New().String(),
+			Nickname: uuid.New().String(),
+		}
+		require.NoError(t, repo.Clause(func(cls *AccountColumns) clause.Expression {
+			return clause.OnConflict{
+				Columns:   []clause.Column{{Name: cls.Username.Name()}},
+				DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
+			}
+		}).Create(account2))
+
+		// Verify the nickname was updated
+		// 验证 nickname 已被更新
+		res, err := repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.Username.Eq(account1.Username))
+		})
+		require.NoError(t, err)
+		require.Equal(t, account2.Username, res.Username)
+		require.Equal(t, account2.Nickname, res.Nickname)
+		require.Equal(t, account1.Password, res.Password)
 	})
 }

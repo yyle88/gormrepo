@@ -24,6 +24,7 @@
 ## CHINESE README
 
 [中文说明](README.zh.md)
+
 <!-- TEMPLATE (EN) END: LANGUAGE NAVIGATION -->
 
 ---
@@ -193,7 +194,7 @@ accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) 
 | Method             | Parameters                                  | Returns                  | Description                           |
 |--------------------|---------------------------------------------|--------------------------|---------------------------------------|
 | `First`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, error`            | Find first matching record            |
-| `FirstE`           | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, *ErrorOrNotExist` | Find first or not-exist indication    |
+| `FirstE`           | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, *ErrorOrNotExist` | Find first with not-exist indication  |
 | `Find`             | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `[]*MOD, error`          | Find each matching records            |
 | `FindPage`         | `where, ordering, pagination`               | `[]*MOD, error`          | Paginated search                      |
 | `FindPageAndCount` | `where, ordering, pagination`               | `[]*MOD, int64, error`   | Paginated search with record count    |
@@ -341,6 +342,34 @@ err := repo.With(ctx, db).Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB
 | Method   | Parameters                                   | Returns | Description              |
 |----------|----------------------------------------------|---------|--------------------------|
 | `Invoke` | `clsRun func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | Execute custom operation |
+
+#### 9. Upsert with Clauses
+
+Use `Clauses` / `Clause` to handle upsert (insert / update on conflict):
+
+```go
+// Clauses - pass clause.Expression
+cls := account.Columns()
+err := repo.With(ctx, db).Clauses(clause.OnConflict{
+    Columns:   []clause.Column{{Name: cls.Username.Name()}},
+    DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
+}).Create(&account)
+
+// Clause - type-safe with column definitions
+err := repo.With(ctx, db).Clause(func(cls *AccountColumns) clause.Expression {
+    return clause.OnConflict{
+        Columns:   []clause.Column{{Name: cls.Username.Name()}},
+        DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
+    }
+}).Create(&account)
+```
+
+#### Clause Operations
+
+| Method    | Parameters                                    | Returns      | Description                          |
+|-----------|-----------------------------------------------|--------------|--------------------------------------|
+| `Clauses` | `clauses ...clause.Expression`                | `*GormRepo`  | Add clauses and return new repo      |
+| `Clause`  | `func(cls CLS) clause.Expression`             | `*GormRepo`  | Build clause with column definitions |
 
 ---
 

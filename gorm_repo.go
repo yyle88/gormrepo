@@ -3,6 +3,7 @@ package gormrepo
 import (
 	"github.com/yyle88/gormcnm"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // GormRepo is the main repo struct with database connection and column definitions
@@ -305,4 +306,26 @@ func (repo *GormRepo[MOD, CLS]) DeleteM(one *MOD, where func(db *gorm.DB, cls CL
 		return err
 	}
 	return nil
+}
+
+// Clauses adds clauses to the database and returns a new GormRepo
+// Enables upsert and other clause-based operations via method chaining
+// Example: repo.Clauses(clause.OnConflict{...}).Create(&record)
+//
+// Clauses 向数据库添加子句并返回新的 GormRepo
+// 通过方法链支持 upsert 和其他基于子句的操作
+// 示例：repo.Clauses(clause.OnConflict{...}).Create(&record)
+func (repo *GormRepo[MOD, CLS]) Clauses(clauses ...clause.Expression) *GormRepo[MOD, CLS] {
+	return NewGormRepo[MOD, CLS](repo.db.Clauses(clauses...), new(MOD), repo.cls)
+}
+
+// Clause adds a clause built from column definitions and returns a new GormRepo
+// Enables type-safe clause construction using column names
+// Example: repo.Clause(func(cls) clause.Expression { return clause.OnConflict{Columns: []clause.Column{{Name: string(cls.ID.Name())}}} }).Create(&record)
+//
+// Clause 使用列定义构建子句并返回新的 GormRepo
+// 支持使用列名进行类型安全的子句构建
+// 示例：repo.Clause(func(cls) clause.Expression { return clause.OnConflict{Columns: []clause.Column{{Name: string(cls.ID.Name())}}} }).Create(&record)
+func (repo *GormRepo[MOD, CLS]) Clause(clauseFunc func(cls CLS) clause.Expression) *GormRepo[MOD, CLS] {
+	return repo.Clauses(clauseFunc(repo.cls))
 }

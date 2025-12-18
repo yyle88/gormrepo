@@ -24,6 +24,7 @@
 ## 英文文档
 
 [ENGLISH README](README.md)
+
 <!-- TEMPLATE (ZH) END: LANGUAGE NAVIGATION -->
 
 ---
@@ -341,6 +342,34 @@ err := repo.With(ctx, db).Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB
 | 方法       | 参数                                           | 返回值     | 描述      |
 |----------|----------------------------------------------|---------|---------|
 | `Invoke` | `clsRun func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | 执行自定义操作 |
+
+#### 9. 使用 Clauses 实现 Upsert
+
+使用 `Clauses` 或 `Clause` 实现 upsert（冲突时插入或更新）：
+
+```go
+// Clauses - 直接传入 clause.Expression
+cls := account.Columns()
+err := repo.With(ctx, db).Clauses(clause.OnConflict{
+    Columns:   []clause.Column{{Name: cls.Username.Name()}},
+    DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
+}).Create(&account)
+
+// Clause - 类型安全，使用列定义构建
+err := repo.With(ctx, db).Clause(func(cls *AccountColumns) clause.Expression {
+    return clause.OnConflict{
+        Columns:   []clause.Column{{Name: cls.Username.Name()}},
+        DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
+    }
+}).Create(&account)
+```
+
+#### 子句操作
+
+| 方法        | 参数                                          | 返回值         | 描述              |
+|-----------|---------------------------------------------|-------------|-----------------|
+| `Clauses` | `clauses ...clause.Expression`              | `*GormRepo` | 添加子句并返回新 repo   |
+| `Clause`  | `func(cls CLS) clause.Expression`           | `*GormRepo` | 使用列定义构建子句       |
 
 ---
 

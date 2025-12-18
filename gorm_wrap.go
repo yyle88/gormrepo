@@ -3,6 +3,7 @@ package gormrepo
 import (
 	"github.com/yyle88/gormcnm"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // GormWrap is a GORM database connection with column definitions
@@ -157,4 +158,26 @@ func (wrap *GormWrap[MOD, CLS]) DeleteW(where func(db *gorm.DB, cls CLS) *gorm.D
 // M = Model + Where，组合对象和 where 条件
 func (wrap *GormWrap[MOD, CLS]) DeleteM(one *MOD, where func(db *gorm.DB, cls CLS) *gorm.DB) *gorm.DB {
 	return where(wrap.db, wrap.cls).Delete(one)
+}
+
+// Clauses adds clauses to the database and returns a new GormWrap
+// Enables upsert and other clause-based operations via method chaining
+// Example: wrap.Clauses(clause.OnConflict{...}).Create(&record)
+//
+// Clauses 向数据库添加子句并返回新的 GormWrap
+// 通过方法链支持 upsert 和其他基于子句的操作
+// 示例：wrap.Clauses(clause.OnConflict{...}).Create(&record)
+func (wrap *GormWrap[MOD, CLS]) Clauses(clauses ...clause.Expression) *GormWrap[MOD, CLS] {
+	return NewGormWrap[MOD, CLS](wrap.db.Clauses(clauses...), new(MOD), wrap.cls)
+}
+
+// Clause adds a clause built from column definitions and returns a new GormWrap
+// Enables type-safe clause construction using column names
+// Example: wrap.Clause(func(cls) clause.Expression { return clause.OnConflict{Columns: []clause.Column{{Name: string(cls.ID.Name())}}} }).Create(&record)
+//
+// Clause 使用列定义构建子句并返回新的 GormWrap
+// 支持使用列名进行类型安全的子句构建
+// 示例：wrap.Clause(func(cls) clause.Expression { return clause.OnConflict{Columns: []clause.Column{{Name: string(cls.ID.Name())}}} }).Create(&record)
+func (wrap *GormWrap[MOD, CLS]) Clause(clauseFunc func(cls CLS) clause.Expression) *GormWrap[MOD, CLS] {
+	return wrap.Clauses(clauseFunc(wrap.cls))
 }
