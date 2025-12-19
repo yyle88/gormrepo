@@ -217,6 +217,85 @@ func TestGormWrap_Save(t *testing.T) {
 	})
 }
 
+// TestGormWrap_Creates tests batch insert of multiple records
+// TestGormWrap_Creates 测试批量插入多条记录
+func TestGormWrap_Creates(t *testing.T) {
+	tests.NewDBRun(t, func(db *gorm.DB) {
+		must.Done(db.AutoMigrate(&Account{}))
+
+		repo := gormrepo.NewGormWrap(gormrepo.Use(db, &Account{}))
+
+		accounts := []*Account{
+			newAccount(uuid.New().String()),
+			newAccount(uuid.New().String()),
+			newAccount(uuid.New().String()),
+		}
+		require.NoError(t, repo.Creates(accounts).Error)
+
+		// Verify all records have IDs assigned
+		// 验证所有记录都分配了 ID
+		for _, account := range accounts {
+			require.NotZero(t, account.ID)
+		}
+
+		// Verify all records exist in database
+		// 验证所有记录都存在于数据库中
+		var count int64
+		require.NoError(t, repo.Mold().Where(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.Username.In([]string{
+				accounts[0].Username,
+				accounts[1].Username,
+				accounts[2].Username,
+			}))
+		}).Count(&count).Error)
+		require.Equal(t, int64(3), count)
+	})
+}
+
+// TestGormWrap_Saves tests batch insert or update of multiple records
+// TestGormWrap_Saves 测试批量插入或更新多条记录
+func TestGormWrap_Saves(t *testing.T) {
+	tests.NewDBRun(t, func(db *gorm.DB) {
+		must.Done(db.AutoMigrate(&Account{}))
+
+		repo := gormrepo.NewGormWrap(gormrepo.Use(db, &Account{}))
+
+		// First save - should create new records
+		// 首次保存 - 应该创建新记录
+		accounts := []*Account{
+			newAccount(uuid.New().String()),
+			newAccount(uuid.New().String()),
+		}
+		require.NoError(t, repo.Saves(accounts).Error)
+
+		for _, account := range accounts {
+			require.NotZero(t, account.ID)
+		}
+
+		// Update nicknames and save again - should update existing records
+		// 更新 nickname 并再次保存 - 应该更新现有记录
+		newNickname0 := uuid.New().String()
+		newNickname1 := uuid.New().String()
+		accounts[0].Nickname = newNickname0
+		accounts[1].Nickname = newNickname1
+		require.NoError(t, repo.Saves(accounts).Error)
+
+		// Verify updates
+		// 验证更新
+		var res0 Account
+		require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.ID.Eq(accounts[0].ID))
+		}, &res0).Error)
+		require.Equal(t, newNickname0, res0.Nickname)
+
+		var res1 Account
+		require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.ID.Eq(accounts[1].ID))
+		}, &res1).Error)
+		require.Equal(t, newNickname1, res1.Nickname)
+	})
+}
+
 func TestGormWrap_Delete(t *testing.T) {
 	tests.NewDBRun(t, func(db *gorm.DB) {
 		must.Done(db.AutoMigrate(&Account{}))
@@ -431,5 +510,79 @@ func TestGormWrap_Clause(t *testing.T) {
 		require.Equal(t, account2.Username, res.Username)
 		require.Equal(t, account2.Nickname, res.Nickname)
 		require.Equal(t, account1.Password, res.Password)
+	})
+}
+
+// TestGormWrap_Clause_Creates tests Clause + Creates for batch upsert operations
+// TestGormWrap_Clause_Creates 测试 Clause + Creates 的批量 upsert 操作
+func TestGormWrap_Clause_Creates(t *testing.T) {
+	tests.NewDBRun(t, func(db *gorm.DB) {
+		must.Done(db.AutoMigrate(&Account{}))
+
+		repo := gormrepo.NewGormWrap(gormrepo.Use(db, &Account{}))
+
+		// Prepare nicknames
+		// 准备 nicknames
+		preNick1 := uuid.New().String()
+		preNick2 := uuid.New().String()
+		preNick3 := uuid.New().String()
+
+		// First create some accounts
+		// 首先创建一些账户
+		accounts := []*Account{
+			{Username: uuid.New().String(), Password: uuid.New().String(), Nickname: preNick1},
+			{Username: uuid.New().String(), Password: uuid.New().String(), Nickname: preNick2},
+			{Username: uuid.New().String(), Password: uuid.New().String(), Nickname: preNick3},
+		}
+		require.NoError(t, repo.Creates(accounts).Error)
+
+		newNick1 := uuid.New().String()
+		newNick2 := uuid.New().String()
+		newNick4 := uuid.New().String()
+
+		// Batch upsert with Clause - update nicknames
+		// 使用 Clause 进行批量 upsert - 更新 nicknames
+		upsertAccounts := []*Account{
+			{Username: accounts[0].Username, Password: uuid.New().String(), Nickname: newNick1},
+			{Username: accounts[1].Username, Password: uuid.New().String(), Nickname: newNick2},
+			{Username: uuid.New().String(), Password: uuid.New().String(), Nickname: newNick4},
+		}
+		require.NoError(t, repo.Clause(func(cls *AccountColumns) clause.Expression {
+			return clause.OnConflict{
+				Columns:   []clause.Column{{Name: cls.Username.Name()}},
+				DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
+			}
+		}).Creates(upsertAccounts).Error)
+
+		// Verify updates
+		// 验证更新结果
+		var res1 Account
+		require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.Username.Eq(accounts[0].Username))
+		}, &res1).Error)
+		require.Equal(t, newNick1, res1.Nickname)
+		require.Equal(t, accounts[0].Password, res1.Password)
+
+		var res2 Account
+		require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.Username.Eq(accounts[1].Username))
+		}, &res2).Error)
+		require.Equal(t, newNick2, res2.Nickname)
+
+		// Verify new insert
+		// 验证新插入的记录
+		var res4 Account
+		require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.Username.Eq(upsertAccounts[2].Username))
+		}, &res4).Error)
+		require.Equal(t, newNick4, res4.Nickname)
+
+		// Verify original account not affected
+		// 验证原始账户未受影响
+		var res3 Account
+		require.NoError(t, repo.First(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.Username.Eq(accounts[2].Username))
+		}, &res3).Error)
+		require.Equal(t, preNick3, res3.Nickname)
 	})
 }

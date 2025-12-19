@@ -122,6 +122,15 @@ func (wrap *GormWrap[MOD, CLS]) Create(one *MOD) *gorm.DB {
 	return wrap.db.Create(one)
 }
 
+// Creates inserts multiple records into the database in batch
+// Returns *gorm.DB for checking errors via .Error field
+//
+// Creates 批量向数据库插入多条记录
+// 返回 *gorm.DB 以便通过 .Error 字段检查错误
+func (wrap *GormWrap[MOD, CLS]) Creates(ones []*MOD) *gorm.DB {
+	return wrap.db.Create(ones)
+}
+
 // Save inserts or updates a record based on primary key
 // If primary key is zero value, creates new record; otherwise updates existing
 //
@@ -129,6 +138,15 @@ func (wrap *GormWrap[MOD, CLS]) Create(one *MOD) *gorm.DB {
 // 如果主键是零值，创建新记录；否则更新现有记录
 func (wrap *GormWrap[MOD, CLS]) Save(one *MOD) *gorm.DB {
 	return wrap.db.Save(one)
+}
+
+// Saves inserts or updates multiple records based on primary keys
+// For each record: if primary key is zero value, creates new; otherwise updates existing
+//
+// Saves 根据主键批量插入或更新多条记录
+// 对于每条记录：如果主键是零值，创建新记录；否则更新现有记录
+func (wrap *GormWrap[MOD, CLS]) Saves(ones []*MOD) *gorm.DB {
+	return wrap.db.Save(ones)
 }
 
 // Delete deletes the given record using its primary key
@@ -168,7 +186,7 @@ func (wrap *GormWrap[MOD, CLS]) DeleteM(one *MOD, where func(db *gorm.DB, cls CL
 // 通过方法链支持 upsert 和其他基于子句的操作
 // 示例：wrap.Clauses(clause.OnConflict{...}).Create(&record)
 func (wrap *GormWrap[MOD, CLS]) Clauses(clauses ...clause.Expression) *GormWrap[MOD, CLS] {
-	return NewGormWrap[MOD, CLS](wrap.db.Clauses(clauses...), new(MOD), wrap.cls)
+	return NewGormWrap[MOD, CLS](wrap.db.Clauses(clauses...), (*MOD)(nil), wrap.cls)
 }
 
 // Clause adds a clause built from column definitions and returns a new GormWrap

@@ -31,12 +31,12 @@
 
 ## 🔄 技术对比
 
-| 生态系统      | Java MyBatis Plus  | Python SQLAlchemy | Go GORM 生态系统    |
-|-----------|--------------------|-------------------|-----------------|
-| **类型安全列** | `Example::getName` | `Example.name`    | `cls.Name.Eq()` |
-| **代码生成**  | ✅ 插件支持             | ✅ 反射机制            | ✅ AST 精度        |
-| **仓储模式**  | ✅ BaseMapper       | ✅ Session API     | ✅ GormRepo      |
-| **原生语言**  | 🟡 有限支持            | 🟡 有限支持           | ✅ 完整支持          |
+| 生态系统       | Java MyBatis Plus  | Python SQLAlchemy | Go GORM 生态系统 |
+| -------------- | ------------------ | ----------------- | ---------------- |
+| **类型安全列** | `Example::getName` | `Example.name`    | `cls.Name.Eq()`  |
+| **代码生成**   | ✅ 插件支持        | ✅ 反射机制       | ✅ AST 精度      |
+| **仓储模式**   | ✅ BaseMapper      | ✅ Session API    | ✅ GormRepo      |
+| **原生语言**   | 🟡 有限支持        | 🟡 有限支持       | ✅ 完整支持      |
 
 ---
 
@@ -191,15 +191,15 @@ accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) 
 
 #### 查询操作
 
-| 方法                 | 参数                                          | 返回值                      | 描述           |
-|--------------------|---------------------------------------------|--------------------------|--------------|
-| `First`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, error`            | 查询第一个匹配记录    |
+| 方法               | 参数                                        | 返回值                   | 描述                     |
+| ------------------ | ------------------------------------------- | ------------------------ | ------------------------ |
+| `First`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, error`            | 查询第一个匹配记录       |
 | `FirstE`           | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, *ErrorOrNotExist` | 查询首条或返回不存在标识 |
-| `Find`             | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `[]*MOD, error`          | 查询所有匹配记录     |
-| `FindPage`         | `where, ordering, pagination`               | `[]*MOD, error`          | 分页查询         |
-| `FindPageAndCount` | `where, ordering, pagination`               | `[]*MOD, int64, error`   | 分页查询带总数      |
-| `Count`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `int64, error`           | 统计匹配记录数      |
-| `Exist`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `bool, error`            | 检查记录是否存在     |
+| `Find`             | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `[]*MOD, error`          | 查询所有匹配记录         |
+| `FindPage`         | `where, ordering, pagination`               | `[]*MOD, error`          | 分页查询                 |
+| `FindPageAndCount` | `where, ordering, pagination`               | `[]*MOD, int64, error`   | 分页查询带总数           |
+| `Count`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `int64, error`           | 统计匹配记录数           |
+| `Exist`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `bool, error`            | 检查记录是否存在         |
 
 #### 5. 如何创建
 
@@ -213,10 +213,12 @@ err := repo.With(ctx, db).Create(&Account{Accountname: "bob", Nickname: "Bob", A
 
 #### 创建操作
 
-| 方法       | 参数         | 返回值     | 描述      |
-|----------|------------|---------|---------|
-| `Create` | `one *MOD` | `error` | 创建新记录   |
-| `Save`   | `one *MOD` | `error` | 插入或更新记录 |
+| 方法      | 参数          | 返回值  | 描述               |
+| --------- | ------------- | ------- | ------------------ |
+| `Create`  | `one *MOD`    | `error` | 创建新记录         |
+| `Creates` | `ones []*MOD` | `error` | 批量创建记录       |
+| `Save`    | `one *MOD`    | `error` | 插入或更新记录     |
+| `Saves`   | `ones []*MOD` | `error` | 批量插入或更新记录 |
 
 #### 6. 如何更新
 
@@ -267,13 +269,13 @@ err := repo.With(ctx, db).UpdatesC(account,
 
 #### 更新操作
 
-| 方法         | 参数                         | 返回值     | 描述                           |
-|------------|----------------------------|---------|------------------------------|
-| `Update`   | `where, valueFunc`         | `error` | 更新单个字段                       |
-| `Updates`  | `where, mapValues`         | `error` | 更新多个字段                       |
+| 方法       | 参数                       | 返回值  | 描述                             |
+| ---------- | -------------------------- | ------- | -------------------------------- |
+| `Update`   | `where, valueFunc`         | `error` | 更新单个字段                     |
+| `Updates`  | `where, mapValues`         | `error` | 更新多个字段                     |
 | `UpdatesM` | `where, newValues`         | `error` | 使用 ColumnValueMap 更新 (M=Map) |
-| `UpdatesO` | `object, newValues`        | `error` | 通过主键更新 (O=Object)            |
-| `UpdatesC` | `object, where, newValues` | `error` | 组合条件更新 (C=Combined)          |
+| `UpdatesO` | `object, newValues`        | `error` | 通过主键更新 (O=Object)          |
+| `UpdatesC` | `object, where, newValues` | `error` | 组合条件更新 (C=Combined)        |
 
 #### 7. 如何删除
 
@@ -299,10 +301,10 @@ err := repo.With(ctx, db).DeleteM(account, func(db *gorm.DB, cls *AccountColumns
 
 #### 删除操作
 
-| 方法        | 参数                                                    | 返回值     | 描述        |
-|-----------|-------------------------------------------------------|---------|-----------|
-| `Delete`  | `one *MOD`                                            | `error` | 通过实例删除记录  |
-| `DeleteW` | `where func(db *gorm.DB, cls CLS) *gorm.DB`           | `error` | 通过条件删除记录  |
+| 方法      | 参数                                                  | 返回值  | 描述               |
+| --------- | ----------------------------------------------------- | ------- | ------------------ |
+| `Delete`  | `one *MOD`                                            | `error` | 通过实例删除记录   |
+| `DeleteW` | `where func(db *gorm.DB, cls CLS) *gorm.DB`           | `error` | 通过条件删除记录   |
 | `DeleteM` | `one *MOD, where func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | 实例加条件删除记录 |
 
 #### 8. 自定义操作
@@ -339,8 +341,8 @@ err := repo.With(ctx, db).Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB
 
 #### 调用操作
 
-| 方法       | 参数                                           | 返回值     | 描述      |
-|----------|----------------------------------------------|---------|---------|
+| 方法     | 参数                                         | 返回值  | 描述           |
+| -------- | -------------------------------------------- | ------- | -------------- |
 | `Invoke` | `clsRun func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | 执行自定义操作 |
 
 #### 9. 使用 Clauses 实现 Upsert
@@ -362,14 +364,26 @@ err := repo.With(ctx, db).Clause(func(cls *AccountColumns) clause.Expression {
         DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
     }
 }).Create(&account)
+
+// 批量 upsert，使用 Clause + Creates
+accounts := []*Account{
+    {Username: "user1", Nickname: "nick1"},
+    {Username: "user2", Nickname: "nick2"},
+}
+err := repo.With(ctx, db).Clause(func(cls *AccountColumns) clause.Expression {
+    return clause.OnConflict{
+        Columns:   []clause.Column{{Name: cls.Username.Name()}},
+        DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
+    }
+}).Creates(accounts)
 ```
 
 #### 子句操作
 
-| 方法        | 参数                                          | 返回值         | 描述              |
-|-----------|---------------------------------------------|-------------|-----------------|
-| `Clauses` | `clauses ...clause.Expression`              | `*GormRepo` | 添加子句并返回新 repo   |
-| `Clause`  | `func(cls CLS) clause.Expression`           | `*GormRepo` | 使用列定义构建子句       |
+| 方法      | 参数                              | 返回值      | 描述                  |
+| --------- | --------------------------------- | ----------- | --------------------- |
+| `Clauses` | `clauses ...clause.Expression`    | `*GormRepo` | 添加子句并返回新 repo |
+| `Clause`  | `func(cls CLS) clause.Expression` | `*GormRepo` | 使用列定义构建子句    |
 
 ---
 

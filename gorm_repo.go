@@ -258,6 +258,18 @@ func (repo *GormRepo[MOD, CLS]) Create(one *MOD) error {
 	return nil
 }
 
+// Creates inserts multiple records into the database in batch
+// All records' primary keys will be populated after creation
+//
+// Creates 批量向数据库插入多条记录
+// 创建后所有记录的主键将被填充
+func (repo *GormRepo[MOD, CLS]) Creates(ones []*MOD) error {
+	if err := repo.db.Create(ones).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // Save inserts or updates a record based on primary key
 // If primary key is zero value, creates new record; otherwise updates existing
 //
@@ -265,6 +277,18 @@ func (repo *GormRepo[MOD, CLS]) Create(one *MOD) error {
 // 如果主键是零值，创建新记录；否则更新现有记录
 func (repo *GormRepo[MOD, CLS]) Save(one *MOD) error {
 	if err := repo.db.Save(one).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// Saves inserts or updates multiple records based on primary keys
+// For each record: if primary key is zero value, creates new; otherwise updates existing
+//
+// Saves 根据主键批量插入或更新多条记录
+// 对于每条记录：如果主键是零值，创建新记录；否则更新现有记录
+func (repo *GormRepo[MOD, CLS]) Saves(ones []*MOD) error {
+	if err := repo.db.Save(ones).Error; err != nil {
 		return err
 	}
 	return nil
@@ -316,7 +340,7 @@ func (repo *GormRepo[MOD, CLS]) DeleteM(one *MOD, where func(db *gorm.DB, cls CL
 // 通过方法链支持 upsert 和其他基于子句的操作
 // 示例：repo.Clauses(clause.OnConflict{...}).Create(&record)
 func (repo *GormRepo[MOD, CLS]) Clauses(clauses ...clause.Expression) *GormRepo[MOD, CLS] {
-	return NewGormRepo[MOD, CLS](repo.db.Clauses(clauses...), new(MOD), repo.cls)
+	return NewGormRepo[MOD, CLS](repo.db.Clauses(clauses...), (*MOD)(nil), repo.cls)
 }
 
 // Clause adds a clause built from column definitions and returns a new GormRepo

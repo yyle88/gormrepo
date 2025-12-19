@@ -31,11 +31,11 @@
 
 ## 🔄 Tech Comparison
 
-| Ecosystem             | Java MyBatis Plus  | Python SQLAlchemy | Go GORM Ecosystem  |
-|-----------------------|--------------------|-------------------|--------------------|
-| **Type-Safe Columns** | `Example::getName` | `Example.name`    | `cls.Name.Eq()`    |
-| **Code Generation**   | ✅ Plugin support   | ✅ Reflection      | ✅ AST precision    |
-| **Repo Pattern**      | ✅ BaseMapper       | ✅ Session API     | ✅ GormRepo         |
+| Ecosystem             | Java MyBatis Plus  | Python SQLAlchemy | Go GORM Ecosystem   |
+| --------------------- | ------------------ | ----------------- | ------------------- |
+| **Type-Safe Columns** | `Example::getName` | `Example.name`    | `cls.Name.Eq()`     |
+| **Code Generation**   | ✅ Plugin support  | ✅ Reflection     | ✅ AST precision    |
+| **Repo Pattern**      | ✅ BaseMapper      | ✅ Session API    | ✅ GormRepo         |
 | **Native Language**   | 🟡 Limited         | 🟡 Limited        | ✅ Complete support |
 
 ---
@@ -55,7 +55,7 @@ go get github.com/yyle88/gormrepo
 ```go
 type Account struct {
     ID       uint   `gorm:"primaryKey"`
-    Accountname string `gorm:"uniqueIndex" cnm:"accountname"` 
+    Accountname string `gorm:"uniqueIndex" cnm:"accountname"`
     Nickname string `gorm:"index" cnm:"nickname"`
     Age      int    `cnm:"age"`
 }
@@ -191,15 +191,15 @@ accounts, err := repo.With(ctx, db).Find(func(db *gorm.DB, cls *AccountColumns) 
 
 #### Select Operations
 
-| Method             | Parameters                                  | Returns                  | Description                           |
-|--------------------|---------------------------------------------|--------------------------|---------------------------------------|
-| `First`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, error`            | Find first matching record            |
-| `FirstE`           | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, *ErrorOrNotExist` | Find first with not-exist indication  |
-| `Find`             | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `[]*MOD, error`          | Find each matching records            |
-| `FindPage`         | `where, ordering, pagination`               | `[]*MOD, error`          | Paginated search                      |
-| `FindPageAndCount` | `where, ordering, pagination`               | `[]*MOD, int64, error`   | Paginated search with record count    |
-| `Count`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `int64, error`           | Count matching records                |
-| `Exist`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `bool, error`            | Check if records exist                |
+| Method             | Parameters                                  | Returns                  | Description                          |
+| ------------------ | ------------------------------------------- | ------------------------ | ------------------------------------ |
+| `First`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, error`            | Find first matching record           |
+| `FirstE`           | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `*MOD, *ErrorOrNotExist` | Find first with not-exist indication |
+| `Find`             | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `[]*MOD, error`          | Find each matching records           |
+| `FindPage`         | `where, ordering, pagination`               | `[]*MOD, error`          | Paginated search                     |
+| `FindPageAndCount` | `where, ordering, pagination`               | `[]*MOD, int64, error`   | Paginated search with record count   |
+| `Count`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `int64, error`           | Count matching records               |
+| `Exist`            | `where func(db *gorm.DB, cls CLS) *gorm.DB` | `bool, error`            | Check if records exist               |
 
 #### 5. How to Create
 
@@ -213,10 +213,12 @@ err := repo.With(ctx, db).Create(&Account{Accountname: "bob", Nickname: "Bob", A
 
 #### Create Operations
 
-| Method   | Parameters | Returns | Description          |
-|----------|------------|---------|----------------------|
-| `Create` | `one *MOD` | `error` | Create new record    |
-| `Save`   | `one *MOD` | `error` | Insert/update record |
+| Method    | Parameters    | Returns | Description                 |
+| --------- | ------------- | ------- | --------------------------- |
+| `Create`  | `one *MOD`    | `error` | Create new record           |
+| `Creates` | `ones []*MOD` | `error` | Batch create records        |
+| `Save`    | `one *MOD`    | `error` | Insert/update record        |
+| `Saves`   | `ones []*MOD` | `error` | Batch insert/update records |
 
 #### 6. How to Update
 
@@ -268,7 +270,7 @@ err := repo.With(ctx, db).UpdatesC(account,
 #### Update Operations
 
 | Method     | Parameters                 | Returns | Description                                  |
-|------------|----------------------------|---------|----------------------------------------------|
+| ---------- | -------------------------- | ------- | -------------------------------------------- |
 | `Update`   | `where, valueFunc`         | `error` | Update single field                          |
 | `Updates`  | `where, mapValues`         | `error` | Update multiple fields                       |
 | `UpdatesM` | `where, newValues`         | `error` | Update with ColumnValueMap (M=Map)           |
@@ -300,7 +302,7 @@ err := repo.With(ctx, db).DeleteM(account, func(db *gorm.DB, cls *AccountColumns
 #### Delete Operations
 
 | Method    | Parameters                                            | Returns | Description                 |
-|-----------|-------------------------------------------------------|---------|-----------------------------|
+| --------- | ----------------------------------------------------- | ------- | --------------------------- |
 | `Delete`  | `one *MOD`                                            | `error` | Delete record via instance  |
 | `DeleteW` | `where func(db *gorm.DB, cls CLS) *gorm.DB`           | `error` | Delete via conditions       |
 | `DeleteM` | `one *MOD, where func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | Delete item with conditions |
@@ -340,7 +342,7 @@ err := repo.With(ctx, db).Invoke(func(db *gorm.DB, cls *AccountColumns) *gorm.DB
 #### Invoke Operations
 
 | Method   | Parameters                                   | Returns | Description              |
-|----------|----------------------------------------------|---------|--------------------------|
+| -------- | -------------------------------------------- | ------- | ------------------------ |
 | `Invoke` | `clsRun func(db *gorm.DB, cls CLS) *gorm.DB` | `error` | Execute custom operation |
 
 #### 9. Upsert with Clauses
@@ -362,14 +364,26 @@ err := repo.With(ctx, db).Clause(func(cls *AccountColumns) clause.Expression {
         DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
     }
 }).Create(&account)
+
+// Batch upsert with Clause + Creates
+accounts := []*Account{
+    {Username: "user1", Nickname: "nick1"},
+    {Username: "user2", Nickname: "nick2"},
+}
+err := repo.With(ctx, db).Clause(func(cls *AccountColumns) clause.Expression {
+    return clause.OnConflict{
+        Columns:   []clause.Column{{Name: cls.Username.Name()}},
+        DoUpdates: clause.AssignmentColumns([]string{cls.Nickname.Name()}),
+    }
+}).Creates(accounts)
 ```
 
 #### Clause Operations
 
-| Method    | Parameters                                    | Returns      | Description                          |
-|-----------|-----------------------------------------------|--------------|--------------------------------------|
-| `Clauses` | `clauses ...clause.Expression`                | `*GormRepo`  | Add clauses and return new repo      |
-| `Clause`  | `func(cls CLS) clause.Expression`             | `*GormRepo`  | Build clause with column definitions |
+| Method    | Parameters                        | Returns     | Description                          |
+| --------- | --------------------------------- | ----------- | ------------------------------------ |
+| `Clauses` | `clauses ...clause.Expression`    | `*GormRepo` | Add clauses and return new repo      |
+| `Clause`  | `func(cls CLS) clause.Expression` | `*GormRepo` | Build clause with column definitions |
 
 ---
 
