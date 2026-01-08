@@ -252,6 +252,42 @@ func TestGormWrap_Creates(t *testing.T) {
 	})
 }
 
+// TestGormWrap_CreateInBatches tests batch insert with batch size control
+// TestGormWrap_CreateInBatches 测试带批次大小控制的分批插入
+func TestGormWrap_CreateInBatches(t *testing.T) {
+	tests.NewDBRun(t, func(db *gorm.DB) {
+		must.Done(db.AutoMigrate(&Account{}))
+
+		repo := gormrepo.NewGormWrap(gormrepo.Use(db, &Account{}))
+
+		// Create 10 accounts with batch size 3
+		// 创建 10 个账户，每批 3 条
+		accounts := make([]*Account, 10)
+		for i := 0; i < 10; i++ {
+			accounts[i] = newAccount(uuid.New().String())
+		}
+		require.NoError(t, repo.CreateInBatches(accounts, 3).Error)
+
+		// Verify all records have IDs assigned
+		// 验证所有记录都分配了 ID
+		for _, account := range accounts {
+			require.NotZero(t, account.ID)
+		}
+
+		// Verify all records exist in database
+		// 验证所有记录都存在于数据库中
+		usernames := make([]string, len(accounts))
+		for i, account := range accounts {
+			usernames[i] = account.Username
+		}
+		var count int64
+		require.NoError(t, repo.Mold().Where(func(db *gorm.DB, cls *AccountColumns) *gorm.DB {
+			return db.Where(cls.Username.In(usernames))
+		}).Count(&count).Error)
+		require.Equal(t, int64(10), count)
+	})
+}
+
 // TestGormWrap_Saves tests batch insert or update of multiple records
 // TestGormWrap_Saves 测试批量插入或更新多条记录
 func TestGormWrap_Saves(t *testing.T) {

@@ -270,6 +270,18 @@ func (repo *GormRepo[MOD, CLS]) Creates(ones []*MOD) error {
 	return nil
 }
 
+// CreateInBatches inserts records in batches to reduce database and memory pressure
+// Uses batchSize to control records per batch, suitable for large data insertion
+//
+// CreateInBatches 分批插入记录以减少数据库和内存压力
+// 使用 batchSize 控制每批的记录数，适合大量数据插入
+func (repo *GormRepo[MOD, CLS]) CreateInBatches(ones []*MOD, batchSize int) error {
+	if err := repo.db.CreateInBatches(ones, batchSize).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // Save inserts or updates a record based on primary key
 // If primary key is zero value, creates new record; otherwise updates existing
 //

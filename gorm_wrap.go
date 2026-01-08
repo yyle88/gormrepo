@@ -131,6 +131,15 @@ func (wrap *GormWrap[MOD, CLS]) Creates(ones []*MOD) *gorm.DB {
 	return wrap.db.Create(ones)
 }
 
+// CreateInBatches inserts records in batches to reduce database and memory pressure
+// Returns *gorm.DB for checking errors via .Error field
+//
+// CreateInBatches 分批插入记录以减少数据库和内存压力
+// 返回 *gorm.DB 以便通过 .Error 字段检查错误
+func (wrap *GormWrap[MOD, CLS]) CreateInBatches(ones []*MOD, batchSize int) *gorm.DB {
+	return wrap.db.CreateInBatches(ones, batchSize)
+}
+
 // Save inserts or updates a record based on primary key
 // If primary key is zero value, creates new record; otherwise updates existing
 //
